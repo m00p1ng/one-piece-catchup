@@ -4,6 +4,8 @@ A visual guide for tracking your One Piece progress — browse every saga and ar
 
 **Live site:** https://m00p1ng.github.io/one-piece-catchup/
 
+![screenshot](public/screenshot.png)
+
 ## Features
 
 - Browse all sagas and arcs with episode ranges
