@@ -84,7 +84,7 @@ export default function SagaSection({ saga, checkedArcs, onToggle }: SagaSection
         <motion.span
           animate={{ rotate: open ? 0 : -90 }}
           transition={{ duration: 0.2 }}
-          className="text-2xl text-white/50 group-hover:text-white/80 transition-colors flex-shrink-0"
+          className="text-4xl text-white/50 group-hover:text-white/80 transition-colors flex-shrink-0"
         >
           ▾
         </motion.span>
@@ -101,17 +101,9 @@ export default function SagaSection({ saga, checkedArcs, onToggle }: SagaSection
             style={{ overflow: "hidden" }}
           >
             {/* Saga description */}
-            <p className="text-sm text-white/40 mb-5 pl-16 leading-relaxed">
+            <p className="text-sm text-white/40 mb-8 pl-16 leading-relaxed">
               {saga.description}
             </p>
-
-            {/* Separator line with glow */}
-            <div
-              className="h-px mb-6 rounded-full"
-              style={{
-                background: `linear-gradient(90deg, ${saga.color}66, transparent)`,
-              }}
-            />
 
             {/* Arc cards */}
             <div className="grid gap-3">
@@ -129,7 +121,10 @@ export default function SagaSection({ saga, checkedArcs, onToggle }: SagaSection
           </motion.div>
         )}
       </AnimatePresence>
-      <div className="h-px mt-16 bg-white/10 rounded-full" />
+      <div
+        className="h-px mt-8 rounded-full"
+        style={{ background: `linear-gradient(90deg, ${saga.color}66, transparent)` }}
+      />
     </motion.section>
   );
 }
