@@ -9,9 +9,13 @@ A visual guide for tracking your One Piece progress — browse every saga and ar
 ## Features
 
 - Browse all sagas and arcs with episode ranges
-- Track watched episodes at the arc level
+- Dedicated saga pages with arc lists and saga-level progress
+- Track watched episodes at the arc level or episode-by-episode
 - View key landmarks and must-watch moments per arc
 - Arc detail page with villain, highlights, and episode-by-episode breakdown
+- Animated pirate ship riding the progress bar across all pages
+- Hide/show watched arcs toggle with smooth animations
+- Collapsible saga sections
 
 ## Tech Stack
 
