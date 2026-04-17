@@ -84,7 +84,7 @@ export default function SagaSection({ saga, checkedArcs, onToggle }: SagaSection
         <motion.span
           animate={{ rotate: open ? 0 : -90 }}
           transition={{ duration: 0.2 }}
-          className="text-white/30 group-hover:text-white/60 transition-colors flex-shrink-0"
+          className="text-2xl text-white/50 group-hover:text-white/80 transition-colors flex-shrink-0"
         >
           ▾
         </motion.span>
@@ -129,6 +129,7 @@ export default function SagaSection({ saga, checkedArcs, onToggle }: SagaSection
           </motion.div>
         )}
       </AnimatePresence>
+      <div className="h-px mt-16 bg-white/10 rounded-full" />
     </motion.section>
   );
 }
