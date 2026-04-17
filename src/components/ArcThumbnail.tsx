@@ -11,9 +11,8 @@ export default function ArcThumbnail({ arc, sagaColor, size = "card" }: ArcThumb
 
   return (
     <div
-      className={`relative overflow-hidden flex-shrink-0 flex items-center justify-center ${
-        isCard ? "w-24 h-16 rounded-xl" : "w-full h-48 rounded-2xl"
-      }`}
+      className={`relative overflow-hidden flex-shrink-0 flex items-center justify-center ${isCard ? "w-full h-full rounded-xl" : "w-full h-48 rounded-2xl"
+        }`}
       style={{
         background: `linear-gradient(135deg, ${sagaColor}33 0%, ${sagaColor}18 50%, #050d1a 100%)`,
         border: `1px solid ${sagaColor}33`,
@@ -55,14 +54,14 @@ export default function ArcThumbnail({ arc, sagaColor, size = "card" }: ArcThumb
       {/* Episode badge (card only) */}
       {isCard && (
         <div
-          className="absolute bottom-1 right-1 text-[9px] font-bold px-1.5 py-0.5 rounded-md leading-none"
+          className="absolute bottom-1.5 left-1/2 -translate-x-1/2 text-[9px] font-bold px-1.5 py-0.5 rounded-md leading-none z-20 whitespace-nowrap"
           style={{
-            background: "rgba(0,0,0,0.6)",
+            background: "rgba(0,0,0,0.72)",
             color: sagaColor,
             border: `1px solid ${sagaColor}44`,
           }}
         >
-          {arc.count} eps
+          {arc.count} ep
         </div>
       )}
 
