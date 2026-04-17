@@ -5,6 +5,7 @@ import { findArc } from "../data/arcs";
 import { useProgress } from "../hooks/useProgress";
 import ArcThumbnail from "../components/ArcThumbnail";
 import WaveBackground from "../components/WaveBackground";
+import ProgressBarWithShip from "../components/ProgressBarWithShip";
 import type { Landmark } from "../types";
 
 interface EpisodeRowProps {
@@ -91,15 +92,7 @@ export default function ArcDetailPage() {
               </span>
               <span>{watched}/{total} watched</span>
             </div>
-            <div className="relative h-1.5 bg-white/10 rounded-full overflow-hidden">
-              <motion.div
-                className="h-full rounded-full"
-                style={{ background: saga.color }}
-                initial={{ width: 0 }}
-                animate={{ width: `${pct}%` }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-              />
-            </div>
+            <ProgressBarWithShip pct={pct} color={saga.color} />
           </div>
 
           <span className="text-sm font-black flex-shrink-0" style={{ color: saga.color }}>

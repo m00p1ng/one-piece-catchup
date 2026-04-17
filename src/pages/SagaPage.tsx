@@ -5,6 +5,7 @@ import { findSaga } from "../data/arcs";
 import { useProgress } from "../hooks/useProgress";
 import WaveBackground from "../components/WaveBackground";
 import ArcCard from "../components/ArcCard";
+import ProgressBarWithShip from "../components/ProgressBarWithShip";
 
 export default function SagaPage() {
   const { sagaId } = useParams<{ sagaId: string }>();
@@ -53,15 +54,7 @@ export default function SagaPage() {
               </span>
               <span>{completedCount}/{saga.arcs.length} arcs</span>
             </div>
-            <div className="relative h-1.5 bg-white/10 rounded-full overflow-hidden">
-              <motion.div
-                className="h-full rounded-full"
-                style={{ background: saga.color }}
-                initial={{ width: 0 }}
-                animate={{ width: `${pct}%` }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-              />
-            </div>
+            <ProgressBarWithShip pct={pct} color={saga.color} />
           </div>
 
           <span className="text-sm font-black flex-shrink-0" style={{ color: saga.color }}>
