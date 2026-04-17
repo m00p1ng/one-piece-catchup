@@ -1,6 +1,17 @@
 import { motion } from "framer-motion";
 
-export default function Hero({ totalArcs, completedArcs }) {
+interface HeroProps {
+  totalArcs: number;
+  completedArcs: number;
+}
+
+interface StatProps {
+  value: number;
+  label: string;
+  color: string;
+}
+
+export default function Hero({ totalArcs, completedArcs }: HeroProps) {
   const remaining = totalArcs - completedArcs;
 
   return (
@@ -101,7 +112,7 @@ export default function Hero({ totalArcs, completedArcs }) {
   );
 }
 
-function Stat({ value, label, color }) {
+function Stat({ value, label, color }: StatProps) {
   return (
     <motion.div
       key={value}

@@ -1,4 +1,12 @@
-export default function ArcThumbnail({ arc, sagaColor, size = "card" }) {
+import type { Arc } from "../types";
+
+interface ArcThumbnailProps {
+  arc: Arc;
+  sagaColor: string;
+  size?: "card" | "detail";
+}
+
+export default function ArcThumbnail({ arc, sagaColor, size = "card" }: ArcThumbnailProps) {
   const isCard = size === "card";
 
   return (

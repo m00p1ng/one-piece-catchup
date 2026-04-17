@@ -1,7 +1,14 @@
 import { motion } from "framer-motion";
 import ArcCard from "./ArcCard";
+import type { Arc, Saga } from "../types";
 
-export default function SagaSection({ saga, checkedArcs, onToggle }) {
+interface SagaSectionProps {
+  saga: Saga;
+  checkedArcs: Record<string, boolean>;
+  onToggle: (arc: Arc) => void;
+}
+
+export default function SagaSection({ saga, checkedArcs, onToggle }: SagaSectionProps) {
   const completedCount = saga.arcs.filter((a) => checkedArcs[a.id]).length;
   const isAllDone = completedCount === saga.arcs.length;
 

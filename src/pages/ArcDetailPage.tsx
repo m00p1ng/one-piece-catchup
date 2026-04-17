@@ -5,10 +5,21 @@ import { findArc } from "../data/arcs";
 import { useProgress } from "../hooks/useProgress";
 import ArcThumbnail from "../components/ArcThumbnail";
 import WaveBackground from "../components/WaveBackground";
+import type { Landmark } from "../types";
+
+interface EpisodeRowProps {
+  ep: number;
+  landmark: Landmark | undefined;
+  sagaColor: string;
+  thumbnailEmoji: string;
+  watched: boolean;
+  onToggle: () => void;
+  index: number;
+}
 
 export default function ArcDetailPage() {
-  const { arcId } = useParams();
-  const result = findArc(arcId);
+  const { arcId } = useParams<{ arcId: string }>();
+  const result = findArc(arcId ?? "");
   const {
     toggleArc,
     toggleEpisode,
@@ -40,7 +51,7 @@ export default function ArcDetailPage() {
   const [showOnlyNotes, setShowOnlyNotes] = useState(false);
 
   const episodes = useMemo(() => {
-    const list = [];
+    const list: { ep: number; landmark: Landmark | undefined }[] = [];
     for (let i = arc.startEp; i <= arc.endEp; i++) {
       const landmark = arc.landmarks?.find((l) => l.ep === i);
       list.push({ ep: i, landmark });
@@ -322,7 +333,7 @@ export default function ArcDetailPage() {
   );
 }
 
-function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, onToggle, index }) {
+function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, onToggle, index }: EpisodeRowProps) {
   return (
     <motion.div
       initial={{ opacity: 0, x: -10 }}

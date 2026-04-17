@@ -1,4 +1,6 @@
-export const sagas = [
+import type { Saga, Arc } from "../types";
+
+export const sagas: Saga[] = [
   {
     id: "east-blue",
     name: "East Blue Saga",
@@ -1701,7 +1703,7 @@ export const totalEpisodes = sagas.reduce(
   0
 );
 
-export function findArc(arcId) {
+export function findArc(arcId: string): { arc: Arc; saga: Saga } | null {
   for (const saga of sagas) {
     const arc = saga.arcs.find((a) => a.id === arcId);
     if (arc) return { arc, saga };

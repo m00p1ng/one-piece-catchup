@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
+import type { Arc } from "../types";
 
 const ARC_KEY = "one-piece-arcs";
 const EP_KEY = "one-piece-episodes";
 
-function load(key) {
+function load(key: string): Record<string, boolean> {
   try {
     // Migrate from old key name
     if (key === ARC_KEY) {
@@ -12,15 +13,15 @@ function load(key) {
         localStorage.setItem(ARC_KEY, legacy);
       }
     }
-    return JSON.parse(localStorage.getItem(key) || "{}");
+    return JSON.parse(localStorage.getItem(key) || "{}") as Record<string, boolean>;
   } catch {
     return {};
   }
 }
 
 export function useProgress() {
-  const [arcs, setArcs] = useState(() => load(ARC_KEY));
-  const [episodes, setEpisodes] = useState(() => load(EP_KEY));
+  const [arcs, setArcs] = useState<Record<string, boolean>>(() => load(ARC_KEY));
+  const [episodes, setEpisodes] = useState<Record<string, boolean>>(() => load(EP_KEY));
 
   useEffect(() => {
     localStorage.setItem(ARC_KEY, JSON.stringify(arcs));
@@ -30,7 +31,7 @@ export function useProgress() {
     localStorage.setItem(EP_KEY, JSON.stringify(episodes));
   }, [episodes]);
 
-  function toggleArc(arc) {
+  function toggleArc(arc: Arc) {
     const newArcState = !arcs[arc.id];
     setArcs((prev) => ({ ...prev, [arc.id]: newArcState }));
     setEpisodes((prev) => {
@@ -47,7 +48,7 @@ export function useProgress() {
     });
   }
 
-  function toggleEpisode(arc, epNum) {
+  function toggleEpisode(arc: Arc, epNum: number) {
     let allWatched = false;
     setEpisodes((prev) => {
       const key = `${arc.id}:${epNum}`;
@@ -63,15 +64,15 @@ export function useProgress() {
     setArcs((prev) => ({ ...prev, [arc.id]: allWatched }));
   }
 
-  function isArcComplete(arcId) {
+  function isArcComplete(arcId: string): boolean {
     return !!arcs[arcId];
   }
 
-  function isEpisodeWatched(arcId, epNum) {
+  function isEpisodeWatched(arcId: string, epNum: number): boolean {
     return !!episodes[`${arcId}:${epNum}`];
   }
 
-  function getArcEpisodeProgress(arc) {
+  function getArcEpisodeProgress(arc: Arc): { watched: number; total: number } {
     if (!arc.startEp || !arc.endEp) return { watched: 0, total: 0 };
     const total = arc.endEp - arc.startEp + 1;
     let watched = 0;
@@ -81,7 +82,7 @@ export function useProgress() {
     return { watched, total };
   }
 
-  function markAllEpisodes(arc, value) {
+  function markAllEpisodes(arc: Arc, value: boolean) {
     setEpisodes((prev) => {
       const next = { ...prev };
       for (let i = arc.startEp; i <= arc.endEp; i++) {

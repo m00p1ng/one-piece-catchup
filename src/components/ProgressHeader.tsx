@@ -1,7 +1,13 @@
 import { motion } from "framer-motion";
 import { totalEpisodes } from "../data/arcs";
 
-export default function ProgressHeader({ completed, total, watchedEps }) {
+interface ProgressHeaderProps {
+  completed: number;
+  total: number;
+  watchedEps: number;
+}
+
+export default function ProgressHeader({ completed, total, watchedEps }: ProgressHeaderProps) {
   const pct = total === 0 ? 0 : Math.round((completed / total) * 100);
 
   return (

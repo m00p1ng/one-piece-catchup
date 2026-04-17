@@ -1,8 +1,17 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import ArcThumbnail from "./ArcThumbnail";
+import type { Arc } from "../types";
 
-export default function ArcCard({ arc, sagaColor, checked, onToggle, index }) {
+interface ArcCardProps {
+  arc: Arc;
+  sagaColor: string;
+  checked: boolean;
+  onToggle: () => void;
+  index: number;
+}
+
+export default function ArcCard({ arc, sagaColor, checked, onToggle, index }: ArcCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
