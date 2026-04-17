@@ -3,10 +3,10 @@ import { motion } from "framer-motion";
 function PirateShip() {
   return (
     <motion.div
-      className="absolute bottom-[10%] pointer-events-none"
-      style={{ width: 120 }}
-      animate={{ x: ["110vw", "-160px"] }}
-      transition={{ duration: 40, ease: "linear", repeat: Infinity, repeatDelay: 10 }}
+      className="absolute pointer-events-none"
+      style={{ width: 120, bottom: "7vw" }}
+      animate={{ x: ["-160px", "110vw"] }}
+      transition={{ duration: 40, ease: "linear", repeat: Infinity, repeatDelay: 1 }}
     >
       <motion.div
         animate={{ y: [0, -6, 0] }}
@@ -27,8 +27,17 @@ function PirateShip() {
           {/* Fore sail */}
           <path d="M38 20 L60 26 L60 44 L38 44 Z" fill="rgba(220,200,160,0.85)" stroke="rgba(180,150,100,0.5)" strokeWidth="0.5" />
           {/* Jolly Roger flag */}
-          <path d="M61 10 L75 6 L75 13 L61 13 Z" fill="#1a1a1a" />
-          <circle cx="68" cy="9" r="2" fill="white" opacity="0.9" />
+          <path d="M61 4 L80 1 L80 14 L61 14 Z" fill="#1a1a1a" />
+          {/* Skull head */}
+          <ellipse cx="70" cy="7" rx="3.5" ry="3" fill="white" />
+          {/* Skull jaw */}
+          <rect x="67.5" y="9" width="5" height="2" rx="0.5" fill="white" />
+          {/* Skull eyes */}
+          <circle cx="68.5" cy="6.5" r="1" fill="#1a1a1a" />
+          <circle cx="71.5" cy="6.5" r="1" fill="#1a1a1a" />
+          {/* Crossbones */}
+          <line x1="66" y1="11.5" x2="74" y2="13.5" stroke="white" strokeWidth="1" strokeLinecap="round" />
+          <line x1="74" y1="11.5" x2="66" y2="13.5" stroke="white" strokeWidth="1" strokeLinecap="round" />
           {/* Crow's nest */}
           <rect x="54" y="20" width="10" height="5" rx="1" fill="#5a3a10" />
           {/* Cannon ports */}
