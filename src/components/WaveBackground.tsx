@@ -1,3 +1,50 @@
+import { motion } from "framer-motion";
+
+function PirateShip() {
+  return (
+    <motion.div
+      className="absolute bottom-[10%] pointer-events-none"
+      style={{ width: 120 }}
+      animate={{ x: ["110vw", "-160px"] }}
+      transition={{ duration: 40, ease: "linear", repeat: Infinity, repeatDelay: 10 }}
+    >
+      <motion.div
+        animate={{ y: [0, -6, 0] }}
+        transition={{ duration: 3, ease: "easeInOut", repeat: Infinity }}
+      >
+        <svg viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg" width="120">
+          {/* Hull */}
+          <path d="M10 52 Q60 68 110 52 L100 64 Q60 76 20 64 Z" fill="#4a2c0a" />
+          <path d="M20 64 Q60 74 100 64 L95 70 Q60 78 25 70 Z" fill="#3a200a" />
+          {/* Deck */}
+          <rect x="18" y="48" width="84" height="6" rx="2" fill="#6b3d12" />
+          {/* Main mast */}
+          <rect x="57" y="10" width="4" height="40" rx="1" fill="#5a3a10" />
+          {/* Fore mast */}
+          <rect x="35" y="18" width="3" height="32" rx="1" fill="#5a3a10" />
+          {/* Main sail */}
+          <path d="M61 12 L90 22 L90 42 L61 42 Z" fill="rgba(220,200,160,0.9)" stroke="rgba(180,150,100,0.5)" strokeWidth="0.5" />
+          {/* Fore sail */}
+          <path d="M38 20 L60 26 L60 44 L38 44 Z" fill="rgba(220,200,160,0.85)" stroke="rgba(180,150,100,0.5)" strokeWidth="0.5" />
+          {/* Jolly Roger flag */}
+          <path d="M61 10 L75 6 L75 13 L61 13 Z" fill="#1a1a1a" />
+          <circle cx="68" cy="9" r="2" fill="white" opacity="0.9" />
+          {/* Crow's nest */}
+          <rect x="54" y="20" width="10" height="5" rx="1" fill="#5a3a10" />
+          {/* Cannon ports */}
+          <circle cx="30" cy="56" r="2" fill="#2a1a05" />
+          <circle cx="50" cy="57" r="2" fill="#2a1a05" />
+          <circle cx="70" cy="57" r="2" fill="#2a1a05" />
+          <circle cx="90" cy="56" r="2" fill="#2a1a05" />
+          {/* Wake */}
+          <path d="M100 66 Q108 64 118 66" stroke="rgba(255,255,255,0.25)" strokeWidth="1.5" strokeLinecap="round" />
+          <path d="M105 70 Q112 68 120 70" stroke="rgba(255,255,255,0.15)" strokeWidth="1" strokeLinecap="round" />
+        </svg>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 export default function WaveBackground() {
   return (
     <div className="fixed inset-0 -z-10 overflow-hidden bg-[#050d1a]">
@@ -30,6 +77,9 @@ export default function WaveBackground() {
           boxShadow: "0 0 60px 30px rgba(254,243,199,0.15), 0 0 120px 60px rgba(254,243,199,0.07)",
         }}
       />
+
+      {/* Pirate ship */}
+      <PirateShip />
 
       {/* Wave layers */}
       <div className="absolute bottom-0 left-0 right-0">
