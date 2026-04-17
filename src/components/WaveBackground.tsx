@@ -4,7 +4,7 @@ function PirateShip() {
   return (
     <motion.div
       className="absolute pointer-events-none"
-      style={{ width: 120, bottom: "7vw" }}
+      style={{ width: 120, bottom: "calc(7vw + 84px)" }}
       animate={{ x: ["-160px", "110vw"] }}
       transition={{ duration: 40, ease: "linear", repeat: Infinity, repeatDelay: 1 }}
     >
@@ -91,7 +91,7 @@ export default function WaveBackground() {
       <PirateShip />
 
       {/* Wave layers */}
-      <div className="absolute bottom-0 left-0 right-0">
+      <div className="absolute left-0 right-0" style={{ bottom: "84px" }}>
         <svg
           viewBox="0 0 1440 200"
           className="w-full"

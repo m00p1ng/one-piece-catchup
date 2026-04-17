@@ -14,6 +14,7 @@ export default function HomePage() {
   const allArcs = useMemo(() => sagas.flatMap((s) => s.arcs), []);
   const totalArcs = allArcs.length;
   const completedArcs = allArcs.filter((a) => arcs[a.id]).length;
+  const totalEps = useMemo(() => allArcs.reduce((sum, a) => sum + a.count, 0), [allArcs]);
   const watchedEps = allArcs
     .filter((a) => arcs[a.id])
     .reduce((sum, a) => sum + a.count, 0);
@@ -25,7 +26,7 @@ export default function HomePage() {
       <WaveBackground />
 
       <main className="max-w-2xl mx-auto px-4 pb-32">
-        <Hero totalArcs={totalArcs} completedArcs={completedArcs} />
+        <Hero totalArcs={totalArcs} completedArcs={completedArcs} watchedEps={watchedEps} totalEps={totalEps} />
 
         <div className="mt-4">
           {/* Hide watched toggle */}

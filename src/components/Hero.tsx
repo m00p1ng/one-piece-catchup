@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 interface HeroProps {
   totalArcs: number;
   completedArcs: number;
+  watchedEps: number;
+  totalEps: number;
 }
 
 interface StatProps {
@@ -11,7 +13,7 @@ interface StatProps {
   color: string;
 }
 
-export default function Hero({ totalArcs, completedArcs }: HeroProps) {
+export default function Hero({ totalArcs, completedArcs, watchedEps, totalEps }: HeroProps) {
   const remaining = totalArcs - completedArcs;
 
   return (
@@ -78,6 +80,14 @@ export default function Hero({ totalArcs, completedArcs }: HeroProps) {
           <Stat value={completedArcs} label="Completed" color="#10b981" />
           <div className="w-px h-8 bg-white/10" />
           <Stat value={remaining} label="Remaining" color="#8b5cf6" />
+        </div>
+
+        {/* Episode stats */}
+        <div className="flex items-center justify-center gap-3 mt-4">
+          <span className="text-white/40 text-xs">Episodes watched:</span>
+          <span className="text-amber-400 font-black text-sm">{watchedEps.toLocaleString()}</span>
+          <span className="text-white/20 text-xs">/</span>
+          <span className="text-white/60 font-semibold text-sm">{totalEps.toLocaleString()}</span>
         </div>
       </motion.div>
 
