@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { findArc } from "../data/arcs";
@@ -37,6 +37,8 @@ export default function ArcDetailPage() {
   const { watched, total } = getArcEpisodeProgress(arc);
   const pct = total === 0 ? 0 : Math.round((watched / total) * 100);
 
+  const [showOnlyNotes, setShowOnlyNotes] = useState(false);
+
   const episodes = useMemo(() => {
     const list = [];
     for (let i = arc.startEp; i <= arc.endEp; i++) {
@@ -45,6 +47,11 @@ export default function ArcDetailPage() {
     }
     return list;
   }, [arc]);
+
+  const hasNoteEpisodes = episodes.some(({ landmark }) => landmark?.note);
+  const visibleEpisodes = showOnlyNotes
+    ? episodes.filter(({ landmark }) => landmark?.note)
+    : episodes;
 
   const allWatched = total > 0 && watched === total;
 
@@ -172,7 +179,7 @@ export default function ArcDetailPage() {
               background: arcComplete ? `${saga.color}15` : "rgba(255,255,255,0.03)",
               borderColor: arcComplete ? `${saga.color}55` : "rgba(255,255,255,0.1)",
             }}
-            onClick={() => toggleArc(arc.id)}
+            onClick={() => toggleArc(arc)}
           >
             <div>
               <div className="text-sm font-bold text-white">Mark Arc Complete</div>
@@ -239,27 +246,50 @@ export default function ArcDetailPage() {
             </div>
           </div>
 
-          {/* Landmark legend */}
+          {/* Landmark legend + note filter */}
           {arc.landmarks && arc.landmarks.length > 0 && (
-            <div className="flex items-center gap-2 mb-4 text-xs text-white/35">
-              <span
-                className="w-2 h-2 rounded-full flex-shrink-0"
-                style={{ background: saga.color }}
-              />
-              <span>Highlighted episodes are landmark moments</span>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2 text-xs text-white/35">
+                <span
+                  className="w-2 h-2 rounded-full flex-shrink-0"
+                  style={{ background: saga.color }}
+                />
+                <span>Highlighted episodes are landmark moments</span>
+              </div>
+              {hasNoteEpisodes && (
+                <button
+                  onClick={() => setShowOnlyNotes((v) => !v)}
+                  className="text-xs px-3 py-1.5 rounded-lg font-semibold transition-all duration-150 flex-shrink-0"
+                  style={
+                    showOnlyNotes
+                      ? {
+                          background: `${saga.color}18`,
+                          color: saga.color,
+                          border: `1px solid ${saga.color}33`,
+                        }
+                      : {
+                          color: "rgba(255,255,255,0.4)",
+                          border: "1px solid rgba(255,255,255,0.1)",
+                        }
+                  }
+                >
+                  Key only
+                </button>
+              )}
             </div>
           )}
 
           {/* Episode grid */}
           <div className="grid gap-1.5">
-            {episodes.map(({ ep, landmark }, i) => (
+            {visibleEpisodes.map(({ ep, landmark }, i) => (
               <EpisodeRow
                 key={ep}
                 ep={ep}
                 landmark={landmark}
                 sagaColor={saga.color}
+                thumbnailEmoji={arc.thumbnailEmoji}
                 watched={isEpisodeWatched(arc.id, ep)}
-                onToggle={() => toggleEpisode(arc.id, ep)}
+                onToggle={() => toggleEpisode(arc, ep)}
                 index={i}
               />
             ))}
@@ -292,20 +322,20 @@ export default function ArcDetailPage() {
   );
 }
 
-function EpisodeRow({ ep, landmark, sagaColor, watched, onToggle, index }) {
+function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, onToggle, index }) {
   return (
     <motion.div
       initial={{ opacity: 0, x: -10 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.2, delay: Math.min(index * 0.008, 0.3) }}
       onClick={onToggle}
-      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-150 group ${
-        landmark
+      className={`flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer transition-all duration-150 group ${
+        landmark?.note
           ? "border"
           : "hover:bg-white/[0.04]"
       }`}
       style={
-        landmark
+        landmark?.note
           ? {
               background: watched ? `${sagaColor}0c` : `${sagaColor}08`,
               borderColor: watched ? `${sagaColor}33` : `${sagaColor}22`,
@@ -313,6 +343,26 @@ function EpisodeRow({ ep, landmark, sagaColor, watched, onToggle, index }) {
           : {}
       }
     >
+      {/* Thumbnail */}
+      <div
+        className="relative w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden transition-opacity duration-150"
+        style={{
+          background: `linear-gradient(135deg, ${sagaColor}28 0%, ${sagaColor}10 100%)`,
+          border: `1px solid ${landmark?.note ? sagaColor + "33" : sagaColor + "18"}`,
+          opacity: watched ? 0.45 : 1,
+        }}
+      >
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `repeating-linear-gradient(-45deg, transparent, transparent 5px, ${sagaColor}06 5px, ${sagaColor}06 10px)`,
+          }}
+        />
+        <span className="relative z-10 text-base select-none" style={{ filter: `drop-shadow(0 0 4px ${sagaColor}66)` }}>
+          {thumbnailEmoji}
+        </span>
+      </div>
+
       {/* Watched indicator */}
       <div
         className="w-5 h-5 rounded-full border flex items-center justify-center flex-shrink-0 transition-all duration-150"
@@ -339,7 +389,7 @@ function EpisodeRow({ ep, landmark, sagaColor, watched, onToggle, index }) {
         className="text-xs font-mono font-bold flex-shrink-0 w-14"
         style={{ color: watched ? "rgba(255,255,255,0.3)" : "rgba(255,255,255,0.35)" }}
       >
-        <span style={{ color: landmark ? sagaColor : undefined }}>
+        <span style={{ color: landmark?.note ? sagaColor : undefined }}>
           Ep {ep}
         </span>
       </div>
@@ -376,7 +426,7 @@ function EpisodeRow({ ep, landmark, sagaColor, watched, onToggle, index }) {
       </div>
 
       {/* Landmark dot */}
-      {landmark && !watched && (
+      {landmark?.note && !watched && (
         <div
           className="w-1.5 h-1.5 rounded-full flex-shrink-0"
           style={{ background: sagaColor }}

@@ -30,15 +30,37 @@ export function useProgress() {
     localStorage.setItem(EP_KEY, JSON.stringify(episodes));
   }, [episodes]);
 
-  function toggleArc(arcId) {
-    setArcs((prev) => ({ ...prev, [arcId]: !prev[arcId] }));
+  function toggleArc(arc) {
+    const newArcState = !arcs[arc.id];
+    setArcs((prev) => ({ ...prev, [arc.id]: newArcState }));
+    setEpisodes((prev) => {
+      const next = { ...prev };
+      for (let i = arc.startEp; i <= arc.endEp; i++) {
+        const key = `${arc.id}:${i}`;
+        if (newArcState) {
+          next[key] = true;
+        } else {
+          delete next[key];
+        }
+      }
+      return next;
+    });
   }
 
-  function toggleEpisode(arcId, epNum) {
+  function toggleEpisode(arc, epNum) {
+    let allWatched = false;
     setEpisodes((prev) => {
-      const key = `${arcId}:${epNum}`;
-      return { ...prev, [key]: !prev[key] };
+      const key = `${arc.id}:${epNum}`;
+      const next = { ...prev, [key]: !prev[key] };
+      if (arc.startEp && arc.endEp) {
+        allWatched = Array.from(
+          { length: arc.endEp - arc.startEp + 1 },
+          (_, i) => arc.startEp + i
+        ).every((ep) => !!next[`${arc.id}:${ep}`]);
+      }
+      return next;
     });
+    setArcs((prev) => ({ ...prev, [arc.id]: allWatched }));
   }
 
   function isArcComplete(arcId) {
@@ -72,6 +94,7 @@ export function useProgress() {
       }
       return next;
     });
+    setArcs((prev) => ({ ...prev, [arc.id]: value }));
   }
 
   return {

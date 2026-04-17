@@ -90,7 +90,7 @@ export default function SagaSection({ saga, checkedArcs, onToggle }) {
             arc={arc}
             sagaColor={saga.color}
             checked={!!checkedArcs[arc.id]}
-            onToggle={() => onToggle(arc.id)}
+            onToggle={() => onToggle(arc)}
             index={i}
           />
         ))}
