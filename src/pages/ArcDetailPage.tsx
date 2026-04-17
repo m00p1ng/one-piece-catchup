@@ -49,6 +49,7 @@ export default function ArcDetailPage() {
   const pct = total === 0 ? 0 : Math.round((watched / total) * 100);
 
   const [showOnlyNotes, setShowOnlyNotes] = useState(false);
+  const [hideWatched, setHideWatched] = useState(false);
 
   const episodes = useMemo(() => {
     const list: { ep: number; landmark: Landmark | undefined }[] = [];
@@ -60,9 +61,9 @@ export default function ArcDetailPage() {
   }, [arc]);
 
   const hasNoteEpisodes = episodes.some(({ landmark }) => landmark?.note);
-  const visibleEpisodes = showOnlyNotes
-    ? episodes.filter(({ landmark }) => landmark?.note)
-    : episodes;
+  const visibleEpisodes = episodes
+    .filter(({ landmark }) => !showOnlyNotes || landmark?.note)
+    .filter(({ ep }) => !hideWatched || !isEpisodeWatched(arc.id, ep));
 
   const allWatched = total > 0 && watched === total;
 
@@ -238,6 +239,17 @@ export default function ArcDetailPage() {
 
             <div className="flex items-center gap-2">
               <button
+                onClick={() => setHideWatched((v) => !v)}
+                className="text-xs px-3 py-1.5 rounded-lg font-semibold transition-all duration-150"
+                style={
+                  hideWatched
+                    ? { background: "rgba(251,191,36,0.12)", color: "#fbbf24", border: "1px solid rgba(251,191,36,0.3)" }
+                    : { color: "rgba(255,255,255,0.4)", border: "1px solid rgba(255,255,255,0.1)" }
+                }
+              >
+                {hideWatched ? "👁 Show" : "👁 Hide"}
+              </button>
+              <button
                 onClick={() => markAllEpisodes(arc, true)}
                 className="text-xs px-3 py-1.5 rounded-lg font-semibold transition-all duration-150"
                 style={{
@@ -292,18 +304,41 @@ export default function ArcDetailPage() {
 
           {/* Episode grid */}
           <div className="grid gap-1.5">
-            {visibleEpisodes.map(({ ep, landmark }, i) => (
-              <EpisodeRow
-                key={ep}
-                ep={ep}
-                landmark={landmark}
-                sagaColor={saga.color}
-                thumbnailEmoji={arc.thumbnailEmoji}
-                watched={isEpisodeWatched(arc.id, ep)}
-                onToggle={() => toggleEpisode(arc, ep)}
-                index={i}
-              />
-            ))}
+            <AnimatePresence initial={false}>
+              {visibleEpisodes.length === 0 ? (
+                <motion.p
+                  key="empty"
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.2 }}
+                  className="text-sm text-white/25 italic py-2"
+                >
+                  All episodes watched
+                </motion.p>
+              ) : (
+                visibleEpisodes.map(({ ep, landmark }, i) => (
+                  <motion.div
+                    key={ep}
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.18, ease: "easeInOut", delay: i * 0.008 }}
+                    style={{ overflow: "hidden" }}
+                  >
+                    <EpisodeRow
+                      ep={ep}
+                      landmark={landmark}
+                      sagaColor={saga.color}
+                      thumbnailEmoji={arc.thumbnailEmoji}
+                      watched={isEpisodeWatched(arc.id, ep)}
+                      onToggle={() => toggleEpisode(arc, ep)}
+                      index={i}
+                    />
+                  </motion.div>
+                ))
+              )}
+            </AnimatePresence>
           </div>
 
           {/* Completion celebration */}

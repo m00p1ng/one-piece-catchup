@@ -8,10 +8,12 @@ interface SagaSectionProps {
   saga: Saga;
   checkedArcs: Record<string, boolean>;
   onToggle: (arc: Arc) => void;
+  hideWatched?: boolean;
 }
 
-export default function SagaSection({ saga, checkedArcs, onToggle }: SagaSectionProps) {
+export default function SagaSection({ saga, checkedArcs, onToggle, hideWatched = false }: SagaSectionProps) {
   const completedCount = saga.arcs.filter((a) => checkedArcs[a.id]).length;
+  const visibleArcs = hideWatched ? saga.arcs.filter((a) => !checkedArcs[a.id]) : saga.arcs;
   const isAllDone = completedCount === saga.arcs.length;
   const [open, setOpen] = useState(true);
 
@@ -114,16 +116,39 @@ export default function SagaSection({ saga, checkedArcs, onToggle }: SagaSection
 
             {/* Arc cards */}
             <div className="grid gap-3">
-              {saga.arcs.map((arc, i) => (
-                <ArcCard
-                  key={arc.id}
-                  arc={arc}
-                  sagaColor={saga.color}
-                  checked={!!checkedArcs[arc.id]}
-                  onToggle={() => onToggle(arc)}
-                  index={i}
-                />
-              ))}
+              <AnimatePresence initial={false}>
+                {visibleArcs.length === 0 ? (
+                  <motion.p
+                    key="empty"
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.2 }}
+                    className="text-sm text-white/25 pl-16 italic"
+                  >
+                    All arcs watched
+                  </motion.p>
+                ) : (
+                  visibleArcs.map((arc, i) => (
+                    <motion.div
+                      key={arc.id}
+                      initial={{ opacity: 0, height: 0, marginBottom: 0 }}
+                      animate={{ opacity: 1, height: "auto", marginBottom: 0 }}
+                      exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+                      transition={{ duration: 0.25, ease: "easeInOut", delay: i * 0.03 }}
+                      style={{ overflow: "hidden" }}
+                    >
+                      <ArcCard
+                        arc={arc}
+                        sagaColor={saga.color}
+                        checked={!!checkedArcs[arc.id]}
+                        onToggle={() => onToggle(arc)}
+                        index={i}
+                      />
+                    </motion.div>
+                  ))
+                )}
+              </AnimatePresence>
             </div>
           </motion.div>
         )}

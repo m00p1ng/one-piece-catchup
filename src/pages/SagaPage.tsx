@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { findSaga } from "../data/arcs";
 import { useProgress } from "../hooks/useProgress";
 import WaveBackground from "../components/WaveBackground";
@@ -9,6 +10,7 @@ export default function SagaPage() {
   const { sagaId } = useParams<{ sagaId: string }>();
   const saga = findSaga(sagaId ?? "");
   const { arcs, toggleArc } = useProgress();
+  const [hideWatched, setHideWatched] = useState(false);
 
   if (!saga) {
     return (
@@ -108,17 +110,55 @@ export default function SagaPage() {
         />
 
         {/* Arc list */}
+        <div className="flex justify-end mb-4">
+          <button
+            onClick={() => setHideWatched((v) => !v)}
+            className="flex items-center gap-2 text-xs px-3 py-1.5 rounded-full border transition-all duration-150 font-semibold"
+            style={
+              hideWatched
+                ? { background: "rgba(251,191,36,0.12)", color: "#fbbf24", borderColor: "rgba(251,191,36,0.3)" }
+                : { color: "rgba(255,255,255,0.4)", borderColor: "rgba(255,255,255,0.1)" }
+            }
+          >
+            {hideWatched ? "👁 Show watched" : "👁 Hide watched"}
+          </button>
+        </div>
         <div className="grid gap-3">
-          {saga.arcs.map((arc, i) => (
-            <ArcCard
-              key={arc.id}
-              arc={arc}
-              sagaColor={saga.color}
-              checked={!!arcs[arc.id]}
-              onToggle={() => toggleArc(arc)}
-              index={i}
-            />
-          ))}
+          <AnimatePresence initial={false}>
+            {saga.arcs.filter((a) => !hideWatched || !arcs[a.id]).length === 0 ? (
+              <motion.p
+                key="empty"
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2 }}
+                className="text-sm text-white/25 italic"
+              >
+                All arcs watched
+              </motion.p>
+            ) : (
+              saga.arcs
+                .filter((a) => !hideWatched || !arcs[a.id])
+                .map((arc, i) => (
+                  <motion.div
+                    key={arc.id}
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.25, ease: "easeInOut", delay: i * 0.03 }}
+                    style={{ overflow: "hidden" }}
+                  >
+                    <ArcCard
+                      arc={arc}
+                      sagaColor={saga.color}
+                      checked={!!arcs[arc.id]}
+                      onToggle={() => toggleArc(arc)}
+                      index={i}
+                    />
+                  </motion.div>
+                ))
+            )}
+          </AnimatePresence>
         </div>
       </main>
     </div>

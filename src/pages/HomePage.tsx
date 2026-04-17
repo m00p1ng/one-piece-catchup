@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { sagas } from "../data/arcs";
 import { useProgress } from "../hooks/useProgress";
@@ -9,6 +9,7 @@ import SagaSection from "../components/SagaSection";
 
 export default function HomePage() {
   const { arcs, toggleArc } = useProgress();
+  const [hideWatched, setHideWatched] = useState(false);
 
   const allArcs = useMemo(() => sagas.flatMap((s) => s.arcs), []);
   const totalArcs = allArcs.length;
@@ -27,12 +28,28 @@ export default function HomePage() {
         <Hero totalArcs={totalArcs} completedArcs={completedArcs} />
 
         <div className="mt-4">
+          {/* Hide watched toggle */}
+          <div className="flex justify-end mb-4">
+            <button
+              onClick={() => setHideWatched((v) => !v)}
+              className="flex items-center gap-2 text-xs px-3 py-1.5 rounded-full border transition-all duration-150 font-semibold"
+              style={
+                hideWatched
+                  ? { background: "rgba(251,191,36,0.12)", color: "#fbbf24", borderColor: "rgba(251,191,36,0.3)" }
+                  : { color: "rgba(255,255,255,0.4)", borderColor: "rgba(255,255,255,0.1)" }
+              }
+            >
+              {hideWatched ? "👁 Show watched" : "👁 Hide watched"}
+            </button>
+          </div>
+
           {sagas.map((saga) => (
             <SagaSection
               key={saga.id}
               saga={saga}
               checkedArcs={arcs}
               onToggle={toggleArc}
+              hideWatched={hideWatched}
             />
           ))}
         </div>
