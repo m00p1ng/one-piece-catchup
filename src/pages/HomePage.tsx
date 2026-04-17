@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { sagas } from "../data/arcs";
 import { useProgress } from "../hooks/useProgress";
@@ -20,6 +20,21 @@ export default function HomePage() {
     .reduce((sum, a) => sum + a.count, 0);
 
   const isAllDone = completedArcs === totalArcs;
+
+  const firstIncompleteSagaId = useMemo(
+    () =>
+      completedArcs > 0
+        ? (sagas.find((s) => s.arcs.some((a) => !arcs[a.id]))?.id ?? null)
+        : null,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  useEffect(() => {
+    if (!firstIncompleteSagaId) return;
+    const el = document.getElementById(`saga-${firstIncompleteSagaId}`);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [firstIncompleteSagaId]);
 
   return (
     <div className="min-h-screen text-white">
@@ -45,13 +60,14 @@ export default function HomePage() {
           </div>
 
           {sagas.map((saga) => (
-            <SagaSection
-              key={saga.id}
-              saga={saga}
-              checkedArcs={arcs}
-              onToggle={toggleArc}
-              hideWatched={hideWatched}
-            />
+            <div key={saga.id} id={`saga-${saga.id}`}>
+              <SagaSection
+                saga={saga}
+                checkedArcs={arcs}
+                onToggle={toggleArc}
+                hideWatched={hideWatched}
+              />
+            </div>
           ))}
         </div>
 

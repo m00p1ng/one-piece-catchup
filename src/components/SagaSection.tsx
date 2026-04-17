@@ -15,7 +15,7 @@ export default function SagaSection({ saga, checkedArcs, onToggle, hideWatched =
   const completedCount = saga.arcs.filter((a) => checkedArcs[a.id]).length;
   const visibleArcs = hideWatched ? saga.arcs.filter((a) => !checkedArcs[a.id]) : saga.arcs;
   const isAllDone = completedCount === saga.arcs.length;
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(!isAllDone);
 
   return (
     <motion.section

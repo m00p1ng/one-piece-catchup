@@ -124,7 +124,26 @@ export default function ArcDetailPage() {
             </div>
 
             <div className="flex-1 min-w-0">
-              <h1 className="text-2xl font-black text-white mb-1">{arc.name}</h1>
+              <div className="flex items-start gap-3 mb-1">
+                <h1 className="text-2xl font-black text-white">{arc.name}</h1>
+                <AnimatePresence>
+                  {arcComplete && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 1.4, rotate: -15 }}
+                      animate={{ opacity: 1, scale: 1, rotate: -12 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 18 }}
+                      className="flex-shrink-0 mt-1 px-2.5 py-1 rounded border-2 text-[10px] font-black tracking-widest uppercase select-none"
+                      style={{
+                        color: "#10b981",
+                        borderColor: "#10b981",
+                        boxShadow: "0 0 12px rgba(16,185,129,0.25)",
+                      }}
+                    >
+                      ✓ Complete
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
               <div className="text-sm text-white/40 font-mono mb-3">
                 Episodes {arc.episodes} · {arc.count} eps
               </div>

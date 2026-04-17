@@ -29,6 +29,7 @@ export default function SagaPage() {
 
   const completedCount = saga.arcs.filter((a) => arcs[a.id]).length;
   const pct = Math.round((completedCount / saga.arcs.length) * 100);
+  const isAllDone = completedCount === saga.arcs.length;
 
   return (
     <div className="min-h-screen text-white">
@@ -82,10 +83,28 @@ export default function SagaPage() {
             >
               {saga.icon}
             </div>
-            <div>
+            <div className="flex-1 min-w-0">
               <h1 className="text-2xl font-black text-white tracking-tight">{saga.name}</h1>
               <p className="text-sm text-white/40 italic">{saga.subtitle}</p>
             </div>
+            <AnimatePresence>
+              {isAllDone && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 1.4, rotate: -15 }}
+                  animate={{ opacity: 1, scale: 1, rotate: -12 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 18 }}
+                  className="flex-shrink-0 px-3 py-1.5 rounded border-2 text-xs font-black tracking-widest uppercase select-none"
+                  style={{
+                    color: "#10b981",
+                    borderColor: "#10b981",
+                    boxShadow: "0 0 12px rgba(16,185,129,0.25)",
+                    opacity: 0.9,
+                  }}
+                >
+                  ✓ Complete
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           <div className="flex items-center gap-3 mb-4 text-xs text-white/30 font-mono">
