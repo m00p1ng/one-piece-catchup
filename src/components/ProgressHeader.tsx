@@ -11,7 +11,7 @@ export default function ProgressHeader({ completed, total, watchedEps }: Progres
   const pct = total === 0 ? 0 : Math.round((completed / total) * 100);
 
   return (
-    <div className="sticky top-0 z-50 backdrop-blur-md bg-black/40 border-b border-white/10 px-4 py-3">
+    <div className="fixed bottom-0 left-0 right-0 z-50 backdrop-blur-md bg-black/40 border-t border-white/10 px-4 py-3">
       <div className="max-w-5xl mx-auto flex items-center gap-4">
         {/* Ship emoji sailing */}
         <div className="flex-1">

@@ -22,11 +22,6 @@ export default function HomePage() {
   return (
     <div className="min-h-screen text-white">
       <WaveBackground />
-      <ProgressHeader
-        completed={completedArcs}
-        total={totalArcs}
-        watchedEps={watchedEps}
-      />
 
       <main className="max-w-2xl mx-auto px-4 pb-32">
         <Hero totalArcs={totalArcs} completedArcs={completedArcs} />
@@ -47,6 +42,12 @@ export default function HomePage() {
           <p>The One Piece is real.</p>
         </div>
       </main>
+
+      <ProgressHeader
+        completed={completedArcs}
+        total={totalArcs}
+        watchedEps={watchedEps}
+      />
 
       {/* All done celebration */}
       <AnimatePresence>

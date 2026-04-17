@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import ArcCard from "./ArcCard";
 import type { Arc, Saga } from "../types";
@@ -25,7 +26,7 @@ export default function SagaSection({ saga, checkedArcs, onToggle }: SagaSection
       {/* Saga header */}
       <button
         onClick={() => setOpen((v) => !v)}
-        className="w-full flex items-center gap-4 mb-6 cursor-pointer group text-left"
+        className="w-full flex items-center gap-4 mb-6 cursor-pointer text-left"
       >
         <div
           className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0 shadow-lg"
@@ -40,7 +41,13 @@ export default function SagaSection({ saga, checkedArcs, onToggle }: SagaSection
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-3 flex-wrap">
-            <h2 className="text-xl font-black text-white tracking-tight">{saga.name}</h2>
+            <Link
+              to={`/saga/${saga.id}`}
+              onClick={(e) => e.stopPropagation()}
+              className="text-xl font-black text-white tracking-tight hover:text-amber-300 transition-colors"
+            >
+              {saga.name}
+            </Link>
             {isAllDone && (
               <motion.span
                 initial={{ scale: 0 }}
@@ -66,7 +73,7 @@ export default function SagaSection({ saga, checkedArcs, onToggle }: SagaSection
         </div>
 
         {/* Mini progress bar */}
-        <div className="hidden sm:block w-24">
+        <div className="hidden sm:block w-24 flex-shrink-0">
           <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
             <motion.div
               className="h-full rounded-full"
@@ -84,7 +91,7 @@ export default function SagaSection({ saga, checkedArcs, onToggle }: SagaSection
         <motion.span
           animate={{ rotate: open ? 0 : -90 }}
           transition={{ duration: 0.2 }}
-          className="text-4xl text-white/50 group-hover:text-white/80 transition-colors flex-shrink-0"
+          className="text-4xl text-white/50 flex-shrink-0"
         >
           ▾
         </motion.span>

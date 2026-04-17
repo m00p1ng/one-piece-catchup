@@ -2066,3 +2066,7 @@ export function findArc(arcId: string): { arc: Arc; saga: Saga } | null {
   }
   return null;
 }
+
+export function findSaga(sagaId: string): Saga | null {
+  return sagas.find((s) => s.id === sagaId) ?? null;
+}
