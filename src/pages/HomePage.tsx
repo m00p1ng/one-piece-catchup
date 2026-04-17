@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { sagas } from "../data/arcs";
 import { useProgress } from "../hooks/useProgress";
-import WaveBackground from "../components/WaveBackground";
 import ProgressHeader from "../components/ProgressHeader";
 import Hero from "../components/Hero";
 import SagaSection from "../components/SagaSection";
@@ -38,8 +37,6 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen text-white">
-      <WaveBackground />
-
       <main className="max-w-2xl mx-auto px-4 pb-32 " style={{ backdropFilter: "blur(8px)" }}>
         <Hero totalArcs={totalArcs} completedArcs={completedArcs} watchedEps={watchedEps} totalEps={totalEps} />
 

@@ -3,7 +3,6 @@ import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { findSaga } from "../data/arcs";
 import { useProgress } from "../hooks/useProgress";
-import WaveBackground from "../components/WaveBackground";
 import ArcCard from "../components/ArcCard";
 import ProgressBarWithShip from "../components/ProgressBarWithShip";
 
@@ -33,8 +32,6 @@ export default function SagaPage() {
 
   return (
     <div className="min-h-screen text-white">
-      <WaveBackground />
-
       {/* Sticky top bar */}
       <div className="sticky top-0 z-50 backdrop-blur-md bg-black/50 border-b border-white/10 px-4 py-3">
         <div className="max-w-2xl mx-auto flex items-center gap-4">

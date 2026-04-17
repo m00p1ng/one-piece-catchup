@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { findArc } from "../data/arcs";
 import { useProgress } from "../hooks/useProgress";
 import ArcThumbnail from "../components/ArcThumbnail";
-import WaveBackground from "../components/WaveBackground";
 import ProgressBarWithShip from "../components/ProgressBarWithShip";
 import type { Landmark } from "../types";
 
@@ -70,8 +69,6 @@ export default function ArcDetailPage() {
 
   return (
     <div className="min-h-screen text-white">
-      <WaveBackground />
-
       {/* Sticky top bar */}
       <div className="sticky top-0 z-50 backdrop-blur-md bg-black/50 border-b border-white/10 px-4 py-3">
         <div className="max-w-2xl mx-auto flex items-center gap-4">
