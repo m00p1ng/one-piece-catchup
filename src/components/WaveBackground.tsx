@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useRef, useMemo } from "react";
 
 function PirateShip() {
   return (
@@ -54,6 +55,161 @@ function PirateShip() {
   );
 }
 
+function Lightning() {
+  const [visible, setVisible] = useState(false);
+  const [boltX, setBoltX] = useState(50);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    const schedule = () => {
+      const delay = Math.random() * 7000 + 3000;
+      timerRef.current = setTimeout(() => {
+        setBoltX(Math.random() * 65 + 10);
+        setVisible(true);
+        setTimeout(() => setVisible(false), 600);
+        schedule();
+      }, delay);
+    };
+    schedule();
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
+
+  return (
+    <AnimatePresence>
+      {visible && (
+        <>
+          {/* Screen flash */}
+          <motion.div
+            key="flash"
+            className="absolute inset-0 pointer-events-none"
+            style={{ zIndex: 10, background: "rgba(200, 230, 255, 1)" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0, 0.25, 0, 0.15, 0] }}
+            transition={{ duration: 0.5, times: [0, 0.1, 0.25, 0.35, 1] }}
+          />
+          {/* Lightning bolt */}
+          <motion.div
+            key="bolt"
+            className="absolute pointer-events-none"
+            style={{ left: `${boltX}%`, top: 0, zIndex: 9 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0, 1, 0.8, 1, 0] }}
+            transition={{ duration: 0.5, times: [0, 0.1, 0.3, 0.4, 1] }}
+          >
+            <svg width="32" height="200" viewBox="0 0 32 200" fill="none">
+              <defs>
+                <filter id="bolt-glow" x="-80%" y="-20%" width="260%" height="140%">
+                  <feGaussianBlur stdDeviation="5" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+              <path
+                d="M22 0 L9 82 L17 82 L4 200 L30 72 L19 72 Z"
+                fill="rgba(255, 255, 210, 0.98)"
+                filter="url(#bolt-glow)"
+              />
+            </svg>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+}
+
+function StormClouds() {
+  return (
+    <>
+      {/* Cloud mass — left */}
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{
+          top: "-8%",
+          left: "-15%",
+          width: "58%",
+          height: "230px",
+          background:
+            "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(12,15,28,0.88) 0%, rgba(8,10,22,0.6) 60%, transparent 100%)",
+          borderRadius: "50%",
+          filter: "blur(20px)",
+        }}
+        animate={{ x: ["0%", "3%", "0%"], y: ["0%", "2%", "0%"] }}
+        transition={{ duration: 28, ease: "easeInOut", repeat: Infinity }}
+      />
+      {/* Cloud mass — right */}
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{
+          top: "-10%",
+          right: "-12%",
+          width: "52%",
+          height: "210px",
+          background:
+            "radial-gradient(ellipse 80% 65% at 50% 50%, rgba(16,13,32,0.82) 0%, rgba(9,9,26,0.55) 60%, transparent 100%)",
+          borderRadius: "50%",
+          filter: "blur(22px)",
+        }}
+        animate={{ x: ["0%", "-3%", "0%"], y: ["0%", "3%", "0%"] }}
+        transition={{ duration: 33, ease: "easeInOut", repeat: Infinity, delay: 6 }}
+      />
+      {/* Cloud mass — center */}
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{
+          top: "0%",
+          left: "18%",
+          width: "72%",
+          height: "190px",
+          background:
+            "radial-gradient(ellipse 90% 70% at 50% 50%, rgba(10,14,26,0.72) 0%, rgba(6,10,20,0.45) 60%, transparent 100%)",
+          borderRadius: "50%",
+          filter: "blur(26px)",
+        }}
+        animate={{ x: ["0%", "-2%", "0%"], y: ["0%", "1.5%", "0%"] }}
+        transition={{ duration: 38, ease: "easeInOut", repeat: Infinity, delay: 12 }}
+      />
+    </>
+  );
+}
+
+function Rain() {
+  const drops = useMemo(
+    () =>
+      Array.from({ length: 60 }, (_, i) => ({
+        id: i,
+        left: Math.random() * 112 - 6,
+        delay: Math.random() * 2.5,
+        duration: Math.random() * 0.55 + 0.65,
+        height: Math.random() * 12 + 8,
+        opacity: Math.random() * 0.28 + 0.12,
+      })),
+    []
+  );
+
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      {drops.map((d) => (
+        <div
+          key={d.id}
+          className="absolute"
+          style={{
+            left: `${d.left}%`,
+            top: "-20px",
+            width: "1px",
+            height: `${d.height}px`,
+            background: `rgba(180, 215, 255, ${d.opacity})`,
+            animation: `rain ${d.duration}s ${d.delay}s linear infinite`,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
 export default function WaveBackground() {
   return (
     <div className="fixed inset-0 -z-10 overflow-hidden bg-[#050d1a]">
@@ -78,6 +234,15 @@ export default function WaveBackground() {
 
       {/* Deep ocean gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#050d1a] via-[#071829] to-[#0a2040]" />
+
+      {/* Storm clouds */}
+      <StormClouds />
+
+      {/* Rain */}
+      <Rain />
+
+      {/* Lightning */}
+      <Lightning />
 
       {/* Moon glow */}
       <div
