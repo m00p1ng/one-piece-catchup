@@ -25,7 +25,7 @@ export default function HomePage() {
     <div className="min-h-screen text-white">
       <WaveBackground />
 
-      <main className="max-w-2xl mx-auto px-4 pb-32">
+      <main className="max-w-2xl mx-auto px-4 pb-32 " style={{ backdropFilter: "blur(8px)" }}>
         <Hero totalArcs={totalArcs} completedArcs={completedArcs} watchedEps={watchedEps} totalEps={totalEps} />
 
         <div className="mt-4">

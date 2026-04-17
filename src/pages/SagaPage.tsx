@@ -63,7 +63,7 @@ export default function SagaPage() {
         </div>
       </div>
 
-      <main className="max-w-2xl mx-auto px-4 pb-24">
+      <main className="max-w-2xl mx-auto px-4 pb-24 " style={{ backdropFilter: "blur(8px)" }}>
         {/* Saga header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

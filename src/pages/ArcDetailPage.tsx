@@ -101,7 +101,7 @@ export default function ArcDetailPage() {
         </div>
       </div>
 
-      <main className="max-w-2xl mx-auto px-4 pb-24">
+      <main className="max-w-2xl mx-auto px-4 pb-24 " style={{ backdropFilter: "blur(8px)" }}>
         {/* Arc header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -279,14 +279,14 @@ export default function ArcDetailPage() {
                   style={
                     showOnlyNotes
                       ? {
-                          background: `${saga.color}18`,
-                          color: saga.color,
-                          border: `1px solid ${saga.color}33`,
-                        }
+                        background: `${saga.color}18`,
+                        color: saga.color,
+                        border: `1px solid ${saga.color}33`,
+                      }
                       : {
-                          color: "rgba(255,255,255,0.4)",
-                          border: "1px solid rgba(255,255,255,0.1)",
-                        }
+                        color: "rgba(255,255,255,0.4)",
+                        border: "1px solid rgba(255,255,255,0.1)",
+                      }
                   }
                 >
                   Key only
@@ -368,17 +368,16 @@ function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, onToggle
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.2, delay: Math.min(index * 0.008, 0.3) }}
       onClick={onToggle}
-      className={`flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer transition-all duration-150 group ${
-        landmark?.note
-          ? "border"
-          : "hover:bg-white/[0.04]"
-      }`}
+      className={`flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer transition-all duration-150 group ${landmark?.note
+        ? "border"
+        : "hover:bg-white/[0.04]"
+        }`}
       style={
         landmark?.note
           ? {
-              background: watched ? `${sagaColor}0c` : `${sagaColor}08`,
-              borderColor: watched ? `${sagaColor}33` : `${sagaColor}22`,
-            }
+            background: watched ? `${sagaColor}0c` : `${sagaColor}08`,
+            borderColor: watched ? `${sagaColor}33` : `${sagaColor}22`,
+          }
           : {}
       }
     >
@@ -438,9 +437,8 @@ function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, onToggle
         {landmark ? (
           <div>
             <div
-              className={`text-xs font-semibold leading-snug ${
-                watched ? "text-white/40 line-through" : "text-white/80"
-              }`}
+              className={`text-xs font-semibold leading-snug ${watched ? "text-white/40 line-through" : "text-white/80"
+                }`}
             >
               {landmark.title}
             </div>
@@ -455,9 +453,8 @@ function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, onToggle
           </div>
         ) : (
           <div
-            className={`text-xs ${
-              watched ? "text-white/25" : "text-white/30 group-hover:text-white/45"
-            }`}
+            className={`text-xs ${watched ? "text-white/25" : "text-white/30 group-hover:text-white/45"
+              }`}
           >
             Episode {ep}
           </div>
