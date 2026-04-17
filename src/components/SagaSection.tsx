@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import ArcCard from "./ArcCard";
 import type { Arc, Saga } from "../types";
 
@@ -11,6 +12,7 @@ interface SagaSectionProps {
 export default function SagaSection({ saga, checkedArcs, onToggle }: SagaSectionProps) {
   const completedCount = saga.arcs.filter((a) => checkedArcs[a.id]).length;
   const isAllDone = completedCount === saga.arcs.length;
+  const [open, setOpen] = useState(true);
 
   return (
     <motion.section
@@ -21,7 +23,10 @@ export default function SagaSection({ saga, checkedArcs, onToggle }: SagaSection
       className="mb-16"
     >
       {/* Saga header */}
-      <div className="flex items-center gap-4 mb-6">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center gap-4 mb-6 cursor-pointer group text-left"
+      >
         <div
           className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0 shadow-lg"
           style={{
@@ -74,34 +79,56 @@ export default function SagaSection({ saga, checkedArcs, onToggle }: SagaSection
             />
           </div>
         </div>
-      </div>
 
-      {/* Saga description */}
-      <p className="text-sm text-white/40 mb-5 pl-16 leading-relaxed">
-        {saga.description}
-      </p>
+        {/* Chevron */}
+        <motion.span
+          animate={{ rotate: open ? 0 : -90 }}
+          transition={{ duration: 0.2 }}
+          className="text-white/30 group-hover:text-white/60 transition-colors flex-shrink-0"
+        >
+          ▾
+        </motion.span>
+      </button>
 
-      {/* Separator line with glow */}
-      <div
-        className="h-px mb-6 rounded-full"
-        style={{
-          background: `linear-gradient(90deg, ${saga.color}66, transparent)`,
-        }}
-      />
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            key="content"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            style={{ overflow: "hidden" }}
+          >
+            {/* Saga description */}
+            <p className="text-sm text-white/40 mb-5 pl-16 leading-relaxed">
+              {saga.description}
+            </p>
 
-      {/* Arc cards */}
-      <div className="grid gap-3">
-        {saga.arcs.map((arc, i) => (
-          <ArcCard
-            key={arc.id}
-            arc={arc}
-            sagaColor={saga.color}
-            checked={!!checkedArcs[arc.id]}
-            onToggle={() => onToggle(arc)}
-            index={i}
-          />
-        ))}
-      </div>
+            {/* Separator line with glow */}
+            <div
+              className="h-px mb-6 rounded-full"
+              style={{
+                background: `linear-gradient(90deg, ${saga.color}66, transparent)`,
+              }}
+            />
+
+            {/* Arc cards */}
+            <div className="grid gap-3">
+              {saga.arcs.map((arc, i) => (
+                <ArcCard
+                  key={arc.id}
+                  arc={arc}
+                  sagaColor={saga.color}
+                  checked={!!checkedArcs[arc.id]}
+                  onToggle={() => onToggle(arc)}
+                  index={i}
+                />
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.section>
   );
 }
