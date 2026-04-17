@@ -124,8 +124,13 @@ export default function ArcDetailPage() {
             </div>
 
             <div className="flex-1 min-w-0">
-              <div className="flex items-start gap-3 mb-1">
+              <div className="flex items-start gap-3 mb-1 flex-wrap">
                 <h1 className="text-2xl font-black text-white">{arc.name}</h1>
+                {arc.rating != null && (
+                  <span className="text-sm font-bold text-amber-400 mt-1 flex-shrink-0">
+                    ★ {arc.rating.toFixed(1)}
+                  </span>
+                )}
                 <AnimatePresence>
                   {arcComplete && (
                     <motion.div

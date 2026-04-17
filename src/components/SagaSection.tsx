@@ -50,6 +50,11 @@ export default function SagaSection({ saga, checkedArcs, onToggle, hideWatched =
             >
               {saga.name}
             </Link>
+            {saga.rating != null && (
+              <span className="flex items-center gap-1 text-sm font-bold text-amber-400">
+                ★ {saga.rating.toFixed(1)}
+              </span>
+            )}
             {isAllDone && (
               <motion.span
                 initial={{ scale: 0 }}
@@ -60,7 +65,7 @@ export default function SagaSection({ saga, checkedArcs, onToggle, hideWatched =
               </motion.span>
             )}
           </div>
-          <div className="flex items-center gap-3 mt-0.5">
+          <div className="flex items-center gap-3 mt-0.5 flex-wrap">
             <span className="text-sm text-white/40 italic">{saga.subtitle}</span>
             <span className="text-xs text-white/30">·</span>
             <span className="text-xs text-white/30 font-mono">Ep {saga.episodes}</span>

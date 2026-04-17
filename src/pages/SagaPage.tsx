@@ -84,7 +84,14 @@ export default function SagaPage() {
               {saga.icon}
             </div>
             <div className="flex-1 min-w-0">
-              <h1 className="text-2xl font-black text-white tracking-tight">{saga.name}</h1>
+              <div className="flex items-center gap-3 flex-wrap mb-0.5">
+                <h1 className="text-2xl font-black text-white tracking-tight">{saga.name}</h1>
+                {saga.rating != null && (
+                  <span className="text-sm font-bold text-amber-400">
+                    ★ {saga.rating.toFixed(1)}
+                  </span>
+                )}
+              </div>
               <p className="text-sm text-white/40 italic">{saga.subtitle}</p>
             </div>
             <AnimatePresence>
