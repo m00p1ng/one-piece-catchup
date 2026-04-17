@@ -78,8 +78,7 @@ export default function HomePage() {
       </main>
 
       <ProgressHeader
-        completed={completedArcs}
-        total={totalArcs}
+        total={totalEps}
         watchedEps={watchedEps}
       />
 

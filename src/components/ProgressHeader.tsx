@@ -1,8 +1,6 @@
 import { motion } from "framer-motion";
-import { totalEpisodes } from "../data/arcs";
 
 interface ProgressHeaderProps {
-  completed: number;
   total: number;
   watchedEps: number;
 }
@@ -38,19 +36,16 @@ function MiniPirateShip() {
   );
 }
 
-export default function ProgressHeader({ completed, total, watchedEps }: ProgressHeaderProps) {
-  const pct = total === 0 ? 0 : Math.round((completed / total) * 100);
+export default function ProgressHeader({ total, watchedEps }: ProgressHeaderProps) {
+  const pct = total === 0 ? 0 : Math.round((watchedEps / total) * 100);
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 backdrop-blur-md bg-black/40 border-t border-white/10 px-4 py-3">
-      <div className="max-w-5xl mx-auto flex items-center gap-4">
+      <div className="max-w-2xl mx-auto flex items-center gap-4">
         <div className="flex-1">
           <div className="flex justify-between text-xs text-white/60 mb-1">
             <span className="font-semibold text-amber-400">
-              🏴‍☠️ {completed}/{total} arcs complete
-            </span>
-            <span className="text-white/40">
-              ~{watchedEps.toLocaleString()} / {totalEpisodes.toLocaleString()} eps
+              🏴‍☠️ {watchedEps} / {total} eps complete
             </span>
           </div>
 
@@ -67,7 +62,7 @@ export default function ProgressHeader({ completed, total, watchedEps }: Progres
               <motion.div
                 animate={{ y: [0, -3, 0] }}
                 transition={{ duration: 2.5, ease: "easeInOut", repeat: Infinity }}
-                style={{ marginLeft: "-28px" }}
+                style={{ marginLeft: "-16px" }}
               >
                 <MiniPirateShip />
               </motion.div>
@@ -77,20 +72,11 @@ export default function ProgressHeader({ completed, total, watchedEps }: Progres
               <motion.div
                 className="h-full rounded-full"
                 style={{
-                  background: "linear-gradient(90deg, #f59e0b, #ef4444, #8b5cf6)",
+                  background: "linear-gradient(90deg, #0ea5e9, #06b6d4, #0284c7)",
                 }}
                 initial={{ width: 0 }}
                 animate={{ width: `${pct}%` }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
-              />
-              {/* Shimmer */}
-              <div
-                className="absolute inset-0 rounded-full"
-                style={{
-                  background:
-                    "linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)",
-                  animation: "shimmer 2s infinite",
-                }}
               />
             </div>
           </div>

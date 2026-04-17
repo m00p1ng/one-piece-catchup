@@ -42,7 +42,7 @@ export default function Hero({ totalArcs, completedArcs, watchedEps, totalEps }:
         className="text-7xl mb-6 inline-block"
         style={{ filter: "drop-shadow(0 0 20px rgba(245,158,11,0.5))" }}
       >
-        🌊
+        🏴‍☠️👒
       </motion.div>
 
       <motion.div
