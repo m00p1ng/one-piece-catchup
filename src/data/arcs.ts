@@ -11,6 +11,7 @@ export const sagas: Saga[] = [
     darkColor: "#1e3a8a",
     icon: "⚓",
     description: "Luffy leaves his village and assembles his first crew across the East Blue Sea",
+    rating: 7.9,
     arcs: [
       {
         id: "romance-dawn",
@@ -21,9 +22,10 @@ export const sagas: Saga[] = [
         count: 3,
         thumbnailEmoji: "🏴‍☠️",
         description: "A young boy with a dream bigger than the ocean sets sail for adventure",
-        villain: "None",
+        villain: "Alvida / Captain Morgan",
         highlight: "Shanks saves Luffy & gives him his straw hat",
         mustWatch: true,
+        rating: 8.2,
         landmarks: [
           { ep: 1, title: "I'm Luffy! The Man Who Will Become the Pirate King!", note: "Series premier" },
           { ep: 2, title: "The Great Swordsman Appears! Pirate Hunter Roronoa Zoro" },
@@ -42,6 +44,7 @@ export const sagas: Saga[] = [
         villain: "Buggy the Clown",
         highlight: "Nami joins the crew (temporarily)",
         mustWatch: true,
+        rating: 7.7,
         landmarks: [
           { ep: 4, title: "Luffy's Past! The Red-Haired Shanks Appears!", note: "Buggy revealed" },
           { ep: 5, title: "Fear, Mysterious Power! Pirate Clown Captain Buggy!" },
@@ -62,6 +65,7 @@ export const sagas: Saga[] = [
         villain: "Captain Kuro",
         highlight: "Usopp and the Going Merry join",
         mustWatch: true,
+        rating: 7.4,
         landmarks: [
           { ep: 9, title: "Honorable Liar? Captain Usopp", note: "Usopp introduced" },
           { ep: 10, title: "The World's Strongest Weirdo! Jango the Hypnotist!" },
@@ -87,6 +91,7 @@ export const sagas: Saga[] = [
         villain: "Don Krieg / Mihawk",
         highlight: "Zoro vs Mihawk — the defining moment of ambition",
         mustWatch: true,
+        rating: 8.0,
         landmarks: [
           { ep: 19, title: "Past of the Three Swords! The Promise Between Zoro and Kuina!", note: "Sanji introduced" },
           { ep: 20, title: "The Famous Cook! Sanji of the Floating Restaurant" },
@@ -114,6 +119,7 @@ export const sagas: Saga[] = [
         villain: "Arlong",
         highlight: '"Help me!" — the defining scene of the series',
         mustWatch: true,
+        rating: 8.1,
         landmarks: [
           { ep: 31, title: "The Most Wicked Man of East Blue, Fish-Man Pirate Arlong", note: "Nami's village revealed" },
           { ep: 32, title: "The Witch of Cocoyasi Village, Arlong's Female Officer" },
@@ -144,6 +150,7 @@ export const sagas: Saga[] = [
         villain: "Kumate Tribe",
         highlight: "Buggy meets Alvida and forms the first major pirate alliance of the series",
         mustWatch: true,
+        rating: 5.5,
         landmarks: [
           { ep: 46, title: "Following the Straw Hat! Buggy's Big Adventure", note: "Canon cover story" },
           { ep: 47, title: "The Wait is Over! The Return of Captain Buggy!", note: "Buggy and Alvida unite" },
@@ -161,6 +168,7 @@ export const sagas: Saga[] = [
         villain: "Smoker",
         highlight: "Luffy stands on the execution platform",
         mustWatch: true,
+        rating: 7.8,
         landmarks: [
           { ep: 48, title: "The Town of the Beginning and the End - Arrival at Loguetown", note: "Loguetown reached" },
           { ep: 49, title: "Sandai Kitetsu and Yubashiri! Zoro's New Swords, and the Female Master Chief Petty Officer" },
@@ -182,6 +190,7 @@ export const sagas: Saga[] = [
         villain: "Eric the Whirlwind / Commodore Nelson",
         highlight: "The Straw Hats' first encounter with a mythical creature before entering the Grand Line",
         mustWatch: false,
+        rating: 6.9,
         landmarks: [
           { ep: 54, title: "Precursor to a New Adventure! Apis, a Mysterious Girl", note: "Filler arc starts" },
           { ep: 55, title: "Miraculous Creature! Apis' Secret and the Legendary Island" },
@@ -205,6 +214,7 @@ export const sagas: Saga[] = [
     darkColor: "#78350f",
     icon: "🏜️",
     description: "A kingdom on the brink of civil war, a princess fighting for her people, and a Warlord pulling the strings",
+    rating: 8.0,
     arcs: [
       {
         id: "reverse-mountain",
@@ -215,9 +225,10 @@ export const sagas: Saga[] = [
         count: 2,
         thumbnailEmoji: "🌊",
         description: "The crew enters the Grand Line through the impossible mountain river",
-        villain: "None",
+        villain: "Mr. 9 & Miss Wednesday",
         highlight: "The Grand Line begins — everything changes",
         mustWatch: true,
+        rating: 7.5,
         landmarks: [
           { ep: 62, title: "The First Obstacle? Giant Whale Laboon Appears", note: "Grand Line entered" },
           { ep: 63, title: "A Man's Promise! Luffy and the Whale Vow to Meet Again" },
@@ -235,6 +246,7 @@ export const sagas: Saga[] = [
         villain: "Mr. 9 & Miss Wednesday",
         highlight: "Zoro vs the whole town",
         mustWatch: true,
+        rating: 7.9,
         landmarks: [
           { ep: 64, title: "A Pirate-Loving Town? Arrival at Whisky Peak", note: "Baroque Works revealed" },
           { ep: 65, title: "Exploding Santoryu! Zoro vs. Baroque Works!" },
@@ -254,6 +266,7 @@ export const sagas: Saga[] = [
         villain: "Morgan (briefly)",
         highlight: "Coby and Helmeppo's growth from cowards to dedicated Marine recruits",
         mustWatch: true,
+        rating: 7.0,
         landmarks: [
           { ep: 68, title: "Persist, Koby! Diary of Koby-Meppo's Marine Struggles", note: "Canon cover story" },
           { ep: 69, title: "Koby-Meppo's Determination! Vice Admiral Garp's Fatherly Pride", note: "Garp's debut" },
@@ -271,6 +284,7 @@ export const sagas: Saga[] = [
         villain: "Mr. 3",
         highlight: "Giants' friendship & the wax trap escape",
         mustWatch: false,
+        rating: 7.4,
         landmarks: [
           { ep: 70, title: "An Ancient Island! The Shadow Lurking in Little Garden!", note: "Giants introduced" },
           { ep: 71, title: "Humongous Battle! The Giants Dorry and Brogy!" },
@@ -294,6 +308,7 @@ export const sagas: Saga[] = [
         villain: "Wapol",
         highlight: "Chopper joins — most emotional new crew member intro",
         mustWatch: true,
+        rating: 7.9,
         landmarks: [
           { ep: 78, title: "Nami is Sick? Beyond the Snow that Falls on the Ocean!", note: "Drum Island reached" },
           { ep: 79, title: "Ambush! The Bliking and Wapol the Blik" },
@@ -323,6 +338,7 @@ export const sagas: Saga[] = [
         villain: "Crocodile (Mr. 0)",
         highlight: "Luffy vs Crocodile trilogy — determination vs overwhelming power",
         mustWatch: true,
+        rating: 8.0,
         landmarks: [
           { ep: 92, title: "The Hero of Arabasta and the Ballerina on Deck", note: "Alabasta reached" },
           { ep: 93, title: "Coming to the Desert Kingdom! The Rain-Calling Powder and the Rebel Army" },
@@ -377,6 +393,7 @@ export const sagas: Saga[] = [
         villain: "None",
         highlight: "Deep dives into Chopper, Nami, Sanji, Usopp, and Zoro's individual motivations",
         mustWatch: false,
+        rating: 6.8,
         landmarks: [
           { ep: 131, title: "The First Patient! The Untold Story of the Rumble Ball", note: "Chopper focused" },
           { ep: 132, title: "The Navigator's Mutiny! For an Unwavering Dream!", note: "Nami focused" },
@@ -397,6 +414,7 @@ export const sagas: Saga[] = [
     darkColor: "#3b0764",
     icon: "☁️",
     description: "An island in the sky, a god's wrath, and the mystery of the Void Century's bell",
+    rating: 7.8,
     arcs: [
       {
         id: "goat-island",
@@ -410,6 +428,7 @@ export const sagas: Saga[] = [
         villain: "Marine Captain Moore",
         highlight: "A lighthearted filler adventure involving a goat-herding ex-pirate",
         mustWatch: false,
+        rating: 5.0,
         landmarks: [
           { ep: 136, title: "Zenny of the Island of Goats and the Pirate Ship in the Mountains!", note: "Filler arc starts" },
           { ep: 137, title: "How's the Money? The Ambition of Zenny the Money Lender!" },
@@ -428,6 +447,7 @@ export const sagas: Saga[] = [
         villain: "Wetton",
         highlight: "The mystery of the children trapped inside the timeless mist for decades",
         mustWatch: false,
+        rating: 6.5,
         landmarks: [
           { ep: 139, title: "Legend of the Rainbow Mist! Old Man Henzo of Luluka Island", note: "Rainbow Mist intro" },
           { ep: 140, title: "Residents of Neverland! The Pumpkin Pirates!" },
@@ -448,6 +468,7 @@ export const sagas: Saga[] = [
         villain: "Bellamy",
         highlight: "Luffy & Zoro take a beating without fighting back",
         mustWatch: true,
+        rating: 7.9,
         landmarks: [
           { ep: 144, title: "The Log is Taken! Salvage King, Masira!", note: "Jaya reached" },
           { ep: 145, title: "Monsters Appear! Don't Touch the Whitebeard Pirates" },
@@ -472,6 +493,7 @@ export const sagas: Saga[] = [
         villain: "Enel",
         highlight: "Robin reads the Poneglyph — first glimpse of the true world",
         mustWatch: true,
+        rating: 7.9,
         landmarks: [
           { ep: 153, title: "This is the Sea of the Sky! The Knight of the Sky and Heaven's Gate", note: "Skypiea reached" },
           { ep: 154, title: "Godland Skypiea! The Angels Of the Cloud Beach" },
@@ -530,6 +552,7 @@ export const sagas: Saga[] = [
         villain: "Vice Admiral Jonathan",
         highlight: "Widely considered the best filler arc in anime history for its clever writing",
         mustWatch: false,
+        rating: 7.3,
         landmarks: [
           { ep: 196, title: "A State of Emergency is Issued! A Notorious Pirate Ship has Infiltrated!", note: "Base infiltration" },
           { ep: 197, title: "Sanji the Cook! Proving His Merit at the Marine Dining Hall!" },
@@ -556,6 +579,7 @@ export const sagas: Saga[] = [
     darkColor: "#164e63",
     icon: "🌊",
     description: "The crew fractures, Robin disappears, and Luffy faces his greatest challenge — losing a crewmate",
+    rating: 8.5,
     arcs: [
       {
         id: "long-ring",
@@ -569,6 +593,7 @@ export const sagas: Saga[] = [
         villain: "Foxy the Silver Fox",
         highlight: "Zoro saves Robin — first hint of her secret",
         mustWatch: false,
+        rating: 7.1,
         landmarks: [
           { ep: 207, title: "Long Ring Long Land's Big Adventure", note: "Long Ring reached" },
           { ep: 208, title: "The Foxy Pirate Crew and the Davy Back!" },
@@ -597,6 +622,7 @@ export const sagas: Saga[] = [
         villain: "The Seahorse",
         highlight: "Nico Robin remains the only one with her memory intact",
         mustWatch: false,
+        rating: 6.5,
         landmarks: [
           { ep: 220, title: "Was It Lost? Stolen? Who Are You?", note: "Memories wiped" },
           { ep: 221, title: "The Mysterious Boy with the Whistle and Robin's Guess!" },
@@ -617,6 +643,7 @@ export const sagas: Saga[] = [
         villain: "Foxy the Silver Fox",
         highlight: "A brief filler skirmish before the encounter with Admiral Aokiji",
         mustWatch: false,
+        rating: 6.0,
         landmarks: [
           { ep: 225, title: "The Man of Proud Honor! Silver Fox Foxy", note: "Foxy returns" },
           { ep: 226, title: "The Guy Who's the Closest to Invincible? And the Most Dangerous Man!" },
@@ -634,6 +661,7 @@ export const sagas: Saga[] = [
         villain: "Admiral Aokiji (Kuzan)",
         highlight: "Luffy is completely frozen, showing the terrifying power of the Navy",
         mustWatch: true,
+        rating: 7.8,
         landmarks: [
           { ep: 227, title: "Marine High Command Admiral Aokiji! The Threat of the Greatest Power", note: "Canon story resumes" },
         ],
@@ -650,6 +678,7 @@ export const sagas: Saga[] = [
         villain: "CP9",
         highlight: "Luffy's breakdown — the most human moment in the series",
         mustWatch: true,
+        rating: 8.1,
         landmarks: [
           { ep: 228, title: "Rubber and Ice One-On-One Fight! Luffy vs. Aokiji!", note: "Water 7 reached" },
           { ep: 229, title: "Running Sea Train! The City of Water, Water 7" },
@@ -701,6 +730,7 @@ export const sagas: Saga[] = [
         villain: "Rob Lucci",
         highlight: "\"I want to live!\" — Robin's declaration. Luffy burns the World Government flag",
         mustWatch: true,
+        rating: 8.2,
         landmarks: [
           { ep: 264, title: "Operation Disembarkation Commences! The Straw Hat Crew Rushes In!", note: "Enies Lobby reached" },
           { ep: 265, title: "Luffy Charges In! Great Decisive Battle on the Judiciary Island!!" },
@@ -765,6 +795,7 @@ export const sagas: Saga[] = [
         villain: "None",
         highlight: "Farewell to the Going Merry — bring tissues",
         mustWatch: true,
+        rating: 8.0,
         landmarks: [
           { ep: 313, title: "The Disturbance of Peace! The Vice-Admiral with the Fist of Love" },
           { ep: 314, title: "The Strongest Family Lineage? Luffy's Father Revealed!" },
@@ -793,6 +824,7 @@ export const sagas: Saga[] = [
     darkColor: "#2e1065",
     icon: "💀",
     description: "A ghost island haunted by a Warlord who steals shadows and the crew fights for their very existence",
+    rating: 7.7,
     arcs: [
       {
         id: "ice-hunter",
@@ -806,6 +838,7 @@ export const sagas: Saga[] = [
         villain: "Don Accino",
         highlight: "Luffy fights the heat-manipulating patriarch to reclaim the pirate flag",
         mustWatch: false,
+        rating: 6.8,
         landmarks: [
           { ep: 326, title: "The Mysterious Party of Pirates! The Sunny and a Dangerous Trap", note: "Arc starts" },
           { ep: 327, title: "Sunny in a Pinch! Roar, Secret High-speed Mechanical Feature" },
@@ -832,6 +865,7 @@ export const sagas: Saga[] = [
         villain: "Gecko Moria",
         highlight: "Nothing happened. — Zoro's sacrifice, one of the greatest moments ever",
         mustWatch: true,
+        rating: 7.9,
         landmarks: [
           { ep: 337, title: "Venture Into the Devil's Sea! The Mysterious Skeleton Floating Through the Fog", note: "Brook introduced" },
           { ep: 338, title: "The Delight of Having Met People! The Gentleman Skeleton's True Colors" },
@@ -892,6 +926,7 @@ export const sagas: Saga[] = [
         villain: "Dorans",
         highlight: "Brook's first adventure as an official member of the Straw Hat crew",
         mustWatch: false,
+        rating: 6.5,
         landmarks: [
           { ep: 382, title: "The Noro Noro Menace - Return of Foxy the Silver Fox", note: "Filler arc starts" },
           { ep: 383, title: "The Great Treasure Contest! Collapse! Spa Island" },
@@ -910,6 +945,7 @@ export const sagas: Saga[] = [
     darkColor: "#7f1d1d",
     icon: "⚔️",
     description: "The series' first major climax — Luffy storms the world's strongest prison to save his brother, then witnesses war",
+    rating: 8.8,
     arcs: [
       {
         id: "sabaody",
@@ -923,6 +959,7 @@ export const sagas: Saga[] = [
         villain: "Kizaru / Kuma",
         highlight: "The Straw Hats are scattered — the most devastating defeat in the series",
         mustWatch: true,
+        rating: 8.5,
         landmarks: [
           { ep: 385, title: "Arriving at Halfway Through the Grand Line! The Red Line", note: "Sabaody reached" },
           { ep: 386, title: "He Hates The Straw Hat Crew - Iron Masked Duval Makes His Appearance" },
@@ -959,6 +996,7 @@ export const sagas: Saga[] = [
         villain: "Buggy the Clown (Thriller Company)",
         highlight: "A fun, feudal Japan-style reimagining of the Straw Hat crew",
         mustWatch: false,
+        rating: 7.0,
         landmarks: [
           { ep: 406, title: "Special Historical Arc - Boss Luffy Appears Again", note: "Feudal Japan setting" },
           { ep: 407, title: "Special Historical Arc - Destroy! Thriller Company's Trap", note: "Boss Luffy vs Thriller Co." },
@@ -976,6 +1014,7 @@ export const sagas: Saga[] = [
         villain: "Boa Hancock (briefly)",
         highlight: "Hancock joins the story — instant fan favorite",
         mustWatch: true,
+        rating: 8.2,
         landmarks: [
           { ep: 408, title: "Landing! No-Boys-Allowed Island Amazon Lily", note: "Amazon Lily reached" },
           { ep: 409, title: "Hurry! Back to the Crew - Adventure on the Isle of Women" },
@@ -1005,6 +1044,7 @@ export const sagas: Saga[] = [
         villain: "Magellan",
         highlight: "Mr. 2 saves Luffy — the power of bonds across enemy lines",
         mustWatch: true,
+        rating: 8.0,
         landmarks: [
           { ep: 422, title: "A Life-threatening Break-in! The Underwater Prison Impel Down!", note: "Impel Down infiltration" },
           { ep: 423, title: "Reunion in Hell!? The User of the Bara Bara No Mi!" },
@@ -1057,6 +1097,7 @@ export const sagas: Saga[] = [
         villain: "Akainu",
         highlight: "The most emotional and devastating arc in the entire series",
         mustWatch: true,
+        rating: 9.1,
         landmarks: [
           { ep: 459, title: "Tides of the Great Battle! The Navy vs. The Whitebeard Pirates", note: "War begins" },
           { ep: 460, title: "An Enormous Fleet Appears - Invasion! The Whitebeard Pirates" },
@@ -1103,6 +1144,7 @@ export const sagas: Saga[] = [
         villain: "None",
         highlight: "The bell rings 16 times — Luffy's message to his crew",
         mustWatch: true,
+        rating: 8.0,
         landmarks: [
           { ep: 490, title: "Powerful Independent Rivals! The Beginning of the \"New Era\"!", note: "Aftermath begins" },
           { ep: 491, title: "Arrival at the Island of Women - Cruel Reality Tortures Luffy" },
@@ -1145,6 +1187,7 @@ export const sagas: Saga[] = [
     darkColor: "#082f49",
     icon: "🐟",
     description: "The crew reunites 2 years later and ventures to the underwater kingdom",
+    rating: 7.5,
     arcs: [
       {
         id: "return-sabaody",
@@ -1155,9 +1198,10 @@ export const sagas: Saga[] = [
         count: 6,
         thumbnailEmoji: "🌟",
         description: "The crew reunites after two years — everyone is completely different",
-        villain: "None",
+        villain: "Sentomaru / Fake Luffy",
         highlight: "The timeskip reveal — pure hype",
         mustWatch: true,
+        rating: 8.5,
         landmarks: [
           { ep: 517, title: "A New Chapter Begins - The Straw Hat Crew Reunites!", note: "Timeskip reveal — entire crew" },
           { ep: 518, title: "A Hair-Trigger! Luffy vs. Fake Luffy" },
@@ -1179,6 +1223,7 @@ export const sagas: Saga[] = [
         villain: "Hody Jones",
         highlight: "Luffy destroys Noah — raw power showcase after the timeskip",
         mustWatch: false,
+        rating: 7.6,
         landmarks: [
           { ep: 523, title: "The Shocking Truth - The Man Who Protected the Sunny", note: "Fish-Man Island reached" },
           { ep: 524, title: "Undersea Struggle - The Demon of the Ocean Appears" },
@@ -1246,6 +1291,7 @@ export const sagas: Saga[] = [
         villain: "Shuzo",
         highlight: "Luffy's first encounter with the Neo Marines in the New World",
         mustWatch: false,
+        rating: 6.8,
         landmarks: [
           { ep: 575, title: "Z's Ambition Arc - A Tiny Giant Lily!", note: "New World entry" },
           { ep: 576, title: "Z's Ambition Arc - A Mysterious Strongest Army Appears!" },
@@ -1265,6 +1311,7 @@ export const sagas: Saga[] = [
     darkColor: "#881337",
     icon: "🌹",
     description: "A kingdom ruled by a smiling tyrant, gladiators, and the truth about the shichibukai system",
+    rating: 8.1,
     arcs: [
       {
         id: "punk-hazard",
@@ -1278,6 +1325,7 @@ export const sagas: Saga[] = [
         villain: "Caesar Clown",
         highlight: "Law joins as an ally — the partnership begins",
         mustWatch: true,
+        rating: 7.7,
         landmarks: [
           { ep: 579, title: "Landing! The Burning Island, Punk Hazard", note: "Punk Hazard reached" },
           { ep: 580, title: "A Scorching Battle! Luffy vs. the Giant Dragon!" },
@@ -1340,6 +1388,7 @@ export const sagas: Saga[] = [
         villain: "Breed",
         highlight: "Luffy and Law teaming up to fight the Peto Peto no Mi powers",
         mustWatch: false,
+        rating: 6.5,
         landmarks: [
           { ep: 626, title: "Caesar Goes Missing! The Pirate Alliance Makes a Sortie", note: "Filler arc starts" },
           { ep: 627, title: "Luffy Dies at Sea?! The Pirate Alliance Comes Apart" },
@@ -1358,6 +1407,7 @@ export const sagas: Saga[] = [
         villain: "Donquixote Doflamingo",
         highlight: "Gear 4 debut. The Straw Hat Grand Fleet formed. Rebecca's story.",
         mustWatch: true,
+        rating: 8.3,
         landmarks: [
           { ep: 629, title: "Startling! The Big News Shakes Up the New World", note: "Dressrosa reached" },
           { ep: 630, title: "Adventure! The Country of Love and Passion, Dressrosa" },
@@ -1491,6 +1541,7 @@ export const sagas: Saga[] = [
         villain: "Bill",
         highlight: "A tie-in arc for Film Gold featuring the Silver Pirate Alliance",
         mustWatch: false,
+        rating: 6.2,
         landmarks: [
           { ep: 747, title: "The Silver Fortress! Luffy and Barto's Great Adventure!", note: "Filler arc starts" },
           { ep: 748, title: "An Underground Maze! Luffy vs. the Tram Human!" },
@@ -1510,6 +1561,7 @@ export const sagas: Saga[] = [
     darkColor: "#831843",
     icon: "🎂",
     description: "Sanji is in trouble — the crew infiltrates a Yonko's territory for the first time",
+    rating: 8.3,
     arcs: [
       {
         id: "zou",
@@ -1523,6 +1575,7 @@ export const sagas: Saga[] = [
         villain: "Jack",
         highlight: "The Road Poneglyphs explained — the path to Laugh Tale",
         mustWatch: true,
+        rating: 7.8,
         landmarks: [
           { ep: 751, title: "Curtain-up on a New Adventure - Arriving at the Phantom Island, Zou!", note: "Zou reached" },
           { ep: 752, title: "The New Warlord - The Legendary Whitebeard's Son Appears" },
@@ -1567,6 +1620,7 @@ export const sagas: Saga[] = [
         villain: "Vice Admiral Grount",
         highlight: "A fun kitchen infiltration and Luffy fighting young, hot-headed Marine prodigies",
         mustWatch: false,
+        rating: 6.9,
         landmarks: [
           { ep: 780, title: "A Hungry Front! Luffy and the Marine Rookies!", note: "Infiltration starts" },
           { ep: 781, title: "The Implacable Three! A Big Chase After the Straw Hats!" },
@@ -1585,6 +1639,7 @@ export const sagas: Saga[] = [
         villain: "Big Mom / Charlotte Family",
         highlight: "Sanji's backstory. Luffy vs Katakuri — the best fight of the post-TS era",
         mustWatch: true,
+        rating: 8.5,
         landmarks: [
           { ep: 783, title: "Sanji's Homecoming - Into Big Mom's Territory!", note: "WCI reached" },
           { ep: 784, title: "0 and 4 — Encountering Germa 66!" },
@@ -1695,6 +1750,7 @@ export const sagas: Saga[] = [
         villain: "The World Government / Imu",
         highlight: "Massive world-building revelations and the mysterious introduction of Imu",
         mustWatch: true,
+        rating: 7.3,
         landmarks: [
           { ep: 878, title: "The World is Astonished! The Fifth Emperor of the Sea Emerges!", note: "Bounty reveal" },
           { ep: 879, title: "To the Levely! The Straw Hats' Allies Come Together" },
@@ -1722,6 +1778,7 @@ export const sagas: Saga[] = [
     darkColor: "#450a0a",
     icon: "⛩️",
     description: "A closed country under a Yonko's iron fist — the greatest alliance the series has ever seen",
+    rating: 8.6,
     arcs: [
       {
         id: "wano",
@@ -1735,6 +1792,7 @@ export const sagas: Saga[] = [
         villain: "Kaido / Orochi",
         highlight: "Gear 5. Luffy's true awakening. The most epic fights in the entire series.",
         mustWatch: true,
+        rating: 8.5,
         landmarks: [
           { ep: 890, title: "Marco! The Keeper of Whitebeard's Last Memento", note: "Wano reached" },
           { ep: 891, title: "Climbing Up a Waterfall! A Great Journey Through Wano Country's Sea Zone!" },
@@ -1946,6 +2004,7 @@ export const sagas: Saga[] = [
     darkColor: "#0f172a",
     icon: "🤖",
     description: "Dr. Vegapunk's futuristic island — world-shaking revelations about the Void Century begin",
+    rating: 8.4,
     arcs: [
       {
         id: "egghead",
@@ -1959,6 +2018,7 @@ export const sagas: Saga[] = [
         villain: "Gorosei / Im-sama",
         highlight: "Vegapunk's final message to the world — 800 years of mystery begins to surface",
         mustWatch: true,
+        rating: 8.4,
         landmarks: [
           { ep: 1086, title: "A New Emperor! Buggy the Genius Jester!", note: "Egghead reached" },
           { ep: 1087, title: "The Amazon Lily Incident! A Case Involving the Former Warlord" },
@@ -2044,6 +2104,7 @@ export const sagas: Saga[] = [
         villain: "Loki / Prince of Elbaph",
         highlight: "The emotional reunion with old friends and the unveiling of the massive Prince Loki",
         mustWatch: true,
+        rating: 8.5,
         landmarks: [
           { ep: 1156, title: "The Long-sought Elbaph! The Big Reunion Banquet", note: "Straw Hats reach Giant Land." },
           { ep: 1157, title: "Nami in a Fix! An Adventure in Block Kingdom" },

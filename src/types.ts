@@ -16,6 +16,7 @@ export interface Arc {
   villain: string;
   highlight?: string;
   mustWatch?: boolean;
+  rating: number;
   landmarks?: Landmark[];
 }
 
@@ -29,5 +30,6 @@ export interface Saga {
   darkColor: string;
   icon: string;
   description: string;
+  rating: number;
   arcs: Arc[];
 }
