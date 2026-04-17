@@ -172,6 +172,86 @@ function StormClouds() {
         animate={{ x: ["0%", "-2%", "0%"], y: ["0%", "1.5%", "0%"] }}
         transition={{ duration: 38, ease: "easeInOut", repeat: Infinity, delay: 12 }}
       />
+      {/* Cloud mass — far left lower */}
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{
+          top: "12%",
+          left: "-20%",
+          width: "45%",
+          height: "160px",
+          background:
+            "radial-gradient(ellipse 85% 65% at 50% 50%, rgba(14,17,30,0.75) 0%, rgba(8,11,22,0.45) 60%, transparent 100%)",
+          borderRadius: "50%",
+          filter: "blur(18px)",
+        }}
+        animate={{ x: ["0%", "4%", "0%"], y: ["0%", "-2%", "0%"] }}
+        transition={{ duration: 22, ease: "easeInOut", repeat: Infinity, delay: 3 }}
+      />
+      {/* Cloud mass — far right lower */}
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{
+          top: "10%",
+          right: "-18%",
+          width: "48%",
+          height: "175px",
+          background:
+            "radial-gradient(ellipse 85% 60% at 50% 50%, rgba(13,16,30,0.78) 0%, rgba(7,10,22,0.48) 60%, transparent 100%)",
+          borderRadius: "50%",
+          filter: "blur(19px)",
+        }}
+        animate={{ x: ["0%", "-4%", "0%"], y: ["0%", "2.5%", "0%"] }}
+        transition={{ duration: 26, ease: "easeInOut", repeat: Infinity, delay: 9 }}
+      />
+      {/* Cloud mass — mid left accent */}
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{
+          top: "5%",
+          left: "5%",
+          width: "35%",
+          height: "130px",
+          background:
+            "radial-gradient(ellipse 90% 70% at 50% 50%, rgba(11,14,26,0.65) 0%, rgba(6,9,20,0.35) 60%, transparent 100%)",
+          borderRadius: "50%",
+          filter: "blur(15px)",
+        }}
+        animate={{ x: ["0%", "2%", "0%"], y: ["0%", "3%", "0%"] }}
+        transition={{ duration: 31, ease: "easeInOut", repeat: Infinity, delay: 16 }}
+      />
+      {/* Cloud mass — mid right accent */}
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{
+          top: "8%",
+          right: "5%",
+          width: "38%",
+          height: "145px",
+          background:
+            "radial-gradient(ellipse 88% 68% at 50% 50%, rgba(13,15,28,0.68) 0%, rgba(7,9,21,0.38) 60%, transparent 100%)",
+          borderRadius: "50%",
+          filter: "blur(16px)",
+        }}
+        animate={{ x: ["0%", "-2%", "0%"], y: ["0%", "-2%", "0%"] }}
+        transition={{ duration: 36, ease: "easeInOut", repeat: Infinity, delay: 20 }}
+      />
+      {/* Wide dark overcast layer */}
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{
+          top: "-15%",
+          left: "-5%",
+          width: "110%",
+          height: "280px",
+          background:
+            "radial-gradient(ellipse 95% 55% at 50% 40%, rgba(8,10,20,0.55) 0%, rgba(5,7,16,0.3) 65%, transparent 100%)",
+          borderRadius: "50%",
+          filter: "blur(35px)",
+        }}
+        animate={{ x: ["0%", "1.5%", "0%"] }}
+        transition={{ duration: 45, ease: "easeInOut", repeat: Infinity, delay: 5 }}
+      />
     </>
   );
 }
