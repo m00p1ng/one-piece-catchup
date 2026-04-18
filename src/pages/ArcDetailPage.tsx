@@ -404,7 +404,7 @@ function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, onToggle
     >
       {/* Thumbnail */}
       <div
-        className="relative w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden transition-opacity duration-150"
+        className="relative w-10 h-10 rounded-lg hidden sm:flex items-center justify-center flex-shrink-0 overflow-hidden transition-opacity duration-150"
         style={{
           background: `linear-gradient(135deg, ${sagaColor}28 0%, ${sagaColor}10 100%)`,
           border: `1px solid ${landmark?.note ? sagaColor + "33" : sagaColor + "18"}`,

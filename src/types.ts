@@ -2,6 +2,7 @@ export interface Landmark {
   ep: number;
   title: string;
   note?: string;
+  rating: number;
 }
 
 export interface Arc {
