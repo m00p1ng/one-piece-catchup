@@ -21,9 +21,27 @@ export default function HomePage() {
   const isAllDone = completedArcs === totalArcs;
 
   const [showHeader, setShowHeader] = useState(false);
+  const [activeSagaId, setActiveSagaId] = useState<string | null>(null);
 
   useEffect(() => {
     const onScroll = () => setShowHeader(window.scrollY > window.innerHeight * 0.8);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => {
+      let activeId: string | null = null;
+      for (const saga of sagas) {
+        const el = document.getElementById(`saga-${saga.id}`);
+        if (el && el.getBoundingClientRect().top < 0) {
+          activeId = saga.id;
+        } else {
+          break;
+        }
+      }
+      setActiveSagaId(activeId);
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -42,6 +60,10 @@ export default function HomePage() {
     const el = document.getElementById(`saga-${firstIncompleteSagaId}`);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [firstIncompleteSagaId]);
+
+  const activeSaga = showHeader
+    ? (sagas.find((s) => s.id === activeSagaId) ?? sagas[0] ?? null)
+    : null;
 
   return (
     <div className="min-h-screen text-white">
@@ -81,6 +103,63 @@ export default function HomePage() {
           <p>The One Piece is real.</p>
         </div>
       </main>
+
+      {/* Sticky saga indicator */}
+      <AnimatePresence>
+        {activeSaga && (
+          <motion.div
+            key={`sticky-saga-${activeSaga.id}`}
+            initial={{ y: "-100%", opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: "-100%", opacity: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              right: 0,
+              zIndex: 40,
+              backdropFilter: "blur(16px)",
+              background: `linear-gradient(135deg, ${activeSaga.color}18, rgba(0,0,0,0.6))`,
+              borderBottom: `1px solid ${activeSaga.color}33`,
+            }}
+          >
+            <div className="max-w-2xl mx-auto px-4 py-2.5 flex items-center gap-3">
+              <div
+                className="w-8 h-8 rounded-xl flex items-center justify-center text-base flex-shrink-0"
+                style={{
+                  background: `linear-gradient(135deg, ${activeSaga.color}33, ${activeSaga.color}11)`,
+                  border: `1px solid ${activeSaga.color}44`,
+                }}
+              >
+                {activeSaga.icon}
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-sm font-black text-white tracking-tight truncate">
+                    {activeSaga.name}
+                  </span>
+                  <span className="text-xs font-mono text-white/30">Ep {activeSaga.episodes}</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <span className="text-xs font-semibold" style={{ color: activeSaga.color + "cc" }}>
+                  {activeSaga.arcs.filter((a) => arcs[a.id]).length}/{activeSaga.arcs.length} arcs
+                </span>
+                <div className="w-16 h-1 bg-white/10 rounded-full overflow-hidden">
+                  <div
+                    className="h-full rounded-full transition-all duration-500"
+                    style={{
+                      background: activeSaga.color,
+                      width: `${(activeSaga.arcs.filter((a) => arcs[a.id]).length / activeSaga.arcs.length) * 100}%`,
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {showHeader && (
