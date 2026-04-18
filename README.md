@@ -14,6 +14,7 @@ A visual guide for tracking your One Piece progress — browse every saga and ar
 - View key landmarks and must-watch moments per arc
 - Arc detail page with villain, highlights, and episode-by-episode breakdown
 - Animated pirate ship riding the progress bar across all pages
+- Sticky saga header that appears on scroll, showing current saga progress
 - Hide/show watched arcs toggle with smooth animations
 - Collapsible saga sections
 - Star ratings on sagas and arcs
