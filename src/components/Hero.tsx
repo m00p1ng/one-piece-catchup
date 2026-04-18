@@ -17,7 +17,7 @@ export default function Hero({ totalArcs, completedArcs, watchedEps, totalEps }:
   const remaining = totalArcs - completedArcs;
 
   return (
-    <div className="relative pt-20 pb-16 px-4 text-center overflow-hidden">
+    <div className="relative h-screen flex flex-col items-center justify-center px-4 text-center overflow-hidden">
       {/* Floating orbs */}
       <div
         className="absolute top-8 left-1/4 w-64 h-64 rounded-full pointer-events-none"
@@ -89,17 +89,9 @@ export default function Hero({ totalArcs, completedArcs, watchedEps, totalEps }:
           <span className="text-white/20 text-xs">/</span>
           <span className="text-white/60 font-semibold text-sm">{totalEps.toLocaleString()}</span>
         </div>
-      </motion.div>
 
-      {/* Scroll hint */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1 }}
-        className="absolute bottom-4 left-1/2 -translate-x-1/2"
-      >
         <div
-          className="text-white/30 text-xs flex flex-col items-center gap-1"
+          className="text-white/30 text-s flex flex-col items-center gap-1 mt-8"
           style={{ animation: "bounce 2s infinite" }}
         >
           <span>scroll to explore</span>

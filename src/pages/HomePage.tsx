@@ -37,9 +37,9 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen text-white">
-      <main className="max-w-2xl mx-auto px-4 pb-32 " style={{ backdropFilter: "blur(8px)" }}>
-        <Hero totalArcs={totalArcs} completedArcs={completedArcs} watchedEps={watchedEps} totalEps={totalEps} />
+      <Hero totalArcs={totalArcs} completedArcs={completedArcs} watchedEps={watchedEps} totalEps={totalEps} />
 
+      <main className="max-w-2xl mx-auto px-4 pb-32 " style={{ backdropFilter: "blur(8px)" }}>
         <div className="mt-4">
           {/* Hide watched toggle */}
           <div className="flex justify-end mb-4">
