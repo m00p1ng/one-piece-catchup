@@ -458,9 +458,13 @@ function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, onToggle
         {landmark ? (
           <div>
             <div
-              className={`text-xs font-semibold leading-snug ${watched ? "text-white/40 line-through" : "text-white/80"
-                }`}
+              className={`text-xs font-semibold leading-snug ${watched ? "text-white/40 line-through" : "text-white/80"}`}
             >
+              {landmark.rating != null && (
+                <span className="text-[10px] font-bold text-amber-400/80 mr-1">
+                  ★ {landmark.rating.toFixed(1)}
+                </span>
+              )}
               {landmark.title}
             </div>
             {landmark.note && (
