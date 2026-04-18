@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import ArcCard from "./ArcCard";
@@ -9,13 +8,14 @@ interface SagaSectionProps {
   checkedArcs: Record<string, boolean>;
   onToggle: (arc: Arc) => void;
   hideWatched?: boolean;
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
 }
 
-export default function SagaSection({ saga, checkedArcs, onToggle, hideWatched = false }: SagaSectionProps) {
+export default function SagaSection({ saga, checkedArcs, onToggle, hideWatched = false, open, onOpenChange }: SagaSectionProps) {
   const completedCount = saga.arcs.filter((a) => checkedArcs[a.id]).length;
   const visibleArcs = hideWatched ? saga.arcs.filter((a) => !checkedArcs[a.id]) : saga.arcs;
   const isAllDone = completedCount === saga.arcs.length;
-  const [open, setOpen] = useState(!isAllDone);
 
   return (
     <motion.section
@@ -27,7 +27,7 @@ export default function SagaSection({ saga, checkedArcs, onToggle, hideWatched =
     >
       {/* Saga header */}
       <button
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => onOpenChange(!open)}
         className="w-full flex items-center gap-4 mb-6 cursor-pointer text-left"
       >
         <div

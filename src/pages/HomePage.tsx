@@ -23,6 +23,11 @@ export default function HomePage() {
   const [showHeader, setShowHeader] = useState(false);
   const [activeSagaId, setActiveSagaId] = useState<string | null>(null);
 
+  const [openSagas, setOpenSagas] = useState<Record<string, boolean>>(() =>
+    Object.fromEntries(sagas.map((s) => [s.id, s.arcs.some((a) => !arcs[a.id])]))
+  );
+
+
   useEffect(() => {
     const onScroll = () => setShowHeader(window.scrollY > window.innerHeight * 0.8);
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -62,7 +67,10 @@ export default function HomePage() {
   }, [firstIncompleteSagaId]);
 
   const activeSaga = showHeader
-    ? (sagas.find((s) => s.id === activeSagaId) ?? sagas[0] ?? null)
+    ? (() => {
+        const s = sagas.find((s) => s.id === activeSagaId) ?? sagas[0] ?? null;
+        return s && openSagas[s.id] ? s : null;
+      })()
     : null;
 
   return (
@@ -93,6 +101,8 @@ export default function HomePage() {
                 checkedArcs={arcs}
                 onToggle={toggleArc}
                 hideWatched={hideWatched}
+                open={openSagas[saga.id] ?? true}
+                onOpenChange={(v) => setOpenSagas((prev) => ({ ...prev, [saga.id]: v }))}
               />
             </div>
           ))}
