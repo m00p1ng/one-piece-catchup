@@ -23,7 +23,7 @@ export default function SagaSection({ saga, checkedArcs, onToggle, hideWatched =
       whileInView={{ opacity: 1 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.5 }}
-      className="mb-16"
+      className="mb-6"
     >
       {/* Saga header */}
       <button
