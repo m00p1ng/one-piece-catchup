@@ -310,7 +310,7 @@ export default function WaveBackground() {
 
       {/* Moon glow */}
       <div
-        className="absolute top-16 right-24 w-20 h-20 rounded-full bg-amber-100 opacity-80"
+        className="absolute top-16 right-8 sm:right-24 w-20 h-20 rounded-full bg-amber-100 opacity-80"
         style={{
           boxShadow: "0 0 60px 30px rgba(254,243,199,0.15), 0 0 120px 60px rgba(254,243,199,0.07)",
         }}
