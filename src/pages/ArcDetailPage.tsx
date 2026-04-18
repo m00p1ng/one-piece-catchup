@@ -26,7 +26,6 @@ export default function ArcDetailPage() {
     isArcComplete,
     isEpisodeWatched,
     getArcEpisodeProgress,
-    markAllEpisodes,
   } = useProgress();
 
   if (!result) {
@@ -263,23 +262,6 @@ export default function ArcDetailPage() {
               >
                 {hideWatched ? "👁 Show" : "👁 Hide"}
               </button>
-              <button
-                onClick={() => markAllEpisodes(arc, true)}
-                className="text-xs px-3 py-1.5 rounded-lg font-semibold transition-all duration-150"
-                style={{
-                  background: `${saga.color}18`,
-                  color: saga.color,
-                  border: `1px solid ${saga.color}33`,
-                }}
-              >
-                All watched
-              </button>
-              <button
-                onClick={() => markAllEpisodes(arc, false)}
-                className="text-xs px-3 py-1.5 rounded-lg font-semibold transition-all duration-150 text-white/40 border border-white/10 hover:border-white/20"
-              >
-                Clear
-              </button>
             </div>
           </div>
 
@@ -291,7 +273,7 @@ export default function ArcDetailPage() {
                   className="w-2 h-2 rounded-full flex-shrink-0"
                   style={{ background: saga.color }}
                 />
-                <span>Highlighted episodes are landmark moments</span>
+                <span>Highlighted episode</span>
               </div>
               {hasNoteEpisodes && (
                 <button
@@ -383,6 +365,8 @@ export default function ArcDetailPage() {
 }
 
 function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, onToggle, index }: EpisodeRowProps) {
+  const [titleExpanded, setTitleExpanded] = useState(false);
+
   return (
     <motion.div
       initial={{ opacity: 0, x: -10 }}
@@ -445,7 +429,7 @@ function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, onToggle
 
       {/* Episode number */}
       <div
-        className="text-xs font-mono font-bold flex-shrink-0 w-14"
+        className="text-sm font-mono font-bold flex-shrink-0 w-14"
         style={{ color: watched ? "rgba(255,255,255,0.3)" : "rgba(255,255,255,0.35)" }}
       >
         <span style={{ color: landmark?.note ? sagaColor : undefined }}>
@@ -458,10 +442,11 @@ function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, onToggle
         {landmark ? (
           <div>
             <div
-              className={`text-xs font-semibold leading-snug ${watched ? "text-white/40 line-through" : "text-white/80"}`}
+              className={`text-sm font-semibold leading-snug ${watched ? "text-white/40 line-through" : "text-white/80"} ${titleExpanded ? "" : "line-clamp-2"} cursor-text`}
+              onClick={(e) => { e.stopPropagation(); setTitleExpanded((v) => !v); }}
             >
               {landmark.rating != null && (
-                <span className="text-[10px] font-bold text-amber-400/80 mr-1">
+                <span className="text-xs font-bold text-amber-400/80 mr-1">
                   ★ {landmark.rating.toFixed(1)}
                 </span>
               )}
@@ -469,7 +454,7 @@ function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, onToggle
             </div>
             {landmark.note && (
               <div
-                className="text-[10px] mt-0.5 font-medium"
+                className="text-xs mt-0.5 font-medium"
                 style={{ color: watched ? "rgba(255,255,255,0.25)" : sagaColor + "bb" }}
               >
                 {landmark.note}
@@ -478,7 +463,7 @@ function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, onToggle
           </div>
         ) : (
           <div
-            className={`text-xs ${watched ? "text-white/25" : "text-white/30 group-hover:text-white/45"
+            className={`text-sm ${watched ? "text-white/25" : "text-white/30 group-hover:text-white/45"
               }`}
           >
             Episode {ep}

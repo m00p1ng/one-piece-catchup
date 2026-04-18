@@ -94,18 +94,27 @@ export default function HomePage() {
             </button>
           </div>
 
-          {sagas.map((saga) => (
-            <div key={saga.id} id={`saga-${saga.id}`}>
-              <SagaSection
-                saga={saga}
-                checkedArcs={arcs}
-                onToggle={toggleArc}
-                hideWatched={hideWatched}
-                open={openSagas[saga.id] ?? true}
-                onOpenChange={(v) => setOpenSagas((prev) => ({ ...prev, [saga.id]: v }))}
-              />
-            </div>
-          ))}
+          <AnimatePresence initial={false}>
+            {sagas.filter((saga) => !hideWatched || saga.arcs.some((a) => !arcs[a.id])).map((saga) => (
+              <motion.div
+                key={saga.id}
+                id={`saga-${saga.id}`}
+                initial={{ opacity: 0, height: 0, overflow: "hidden" }}
+                animate={{ opacity: 1, height: "auto", overflow: "visible" }}
+                exit={{ opacity: 0, height: 0, overflow: "hidden" }}
+                transition={{ duration: 0.35, ease: "easeInOut" }}
+              >
+                <SagaSection
+                  saga={saga}
+                  checkedArcs={arcs}
+                  onToggle={toggleArc}
+                  hideWatched={hideWatched}
+                  open={openSagas[saga.id] ?? true}
+                  onOpenChange={(v) => setOpenSagas((prev) => ({ ...prev, [saga.id]: v }))}
+                />
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
 
         <div className="text-center py-8 text-white/20 text-xs">
