@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { findArc } from "../data/arcs";
 import { useProgress } from "../hooks/useProgress";
 import ArcThumbnail from "../components/ArcThumbnail";
-import ProgressBarWithShip from "../components/ProgressBarWithShip";
+import ProgressBar from "../components/ProgressBar";
 import type { Landmark } from "../types";
 
 interface EpisodeRowProps {
@@ -68,35 +68,6 @@ export default function ArcDetailPage() {
 
   return (
     <div className="min-h-screen text-white">
-      {/* Sticky top bar */}
-      <div className="sticky top-0 z-50 backdrop-blur-md bg-black/50 border-b border-white/10 px-4 py-3">
-        <div className="max-w-2xl mx-auto flex items-center gap-4">
-          <Link
-            to="/"
-            className="flex items-center gap-1.5 text-white/50 hover:text-white transition-colors text-sm"
-          >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            Back
-          </Link>
-
-          <div className="flex-1 min-w-0">
-            <div className="flex justify-between text-xs text-white/40 mb-1">
-              <span className="font-semibold truncate" style={{ color: saga.color }}>
-                {arc.name}
-              </span>
-              <span>{watched}/{total} watched</span>
-            </div>
-            <ProgressBarWithShip pct={pct} color={saga.color} />
-          </div>
-
-          <span className="text-sm font-black flex-shrink-0" style={{ color: saga.color }}>
-            {pct}%
-          </span>
-        </div>
-      </div>
-
       <main className="max-w-2xl mx-auto px-4 pb-24 " style={{ backdropFilter: "blur(8px)" }}>
         {/* Arc header */}
         <motion.div
@@ -105,6 +76,16 @@ export default function ArcDetailPage() {
           transition={{ duration: 0.4 }}
           className="pt-8 pb-6"
         >
+          <Link
+            to="/"
+            className="inline-flex items-center gap-1.5 text-white/50 hover:text-white transition-colors text-sm mb-6"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back
+          </Link>
+
           {/* Saga badge */}
           <div className="flex items-center gap-2 mb-4">
             <span className="text-lg">{saga.icon}</span>
@@ -145,9 +126,22 @@ export default function ArcDetailPage() {
                   )}
                 </AnimatePresence>
               </div>
-              <div className="text-sm text-white/40 font-mono mb-3">
-                Episodes {arc.episodes} · {arc.count} eps
+              <div className="text-sm text-white/40 font-mono">
+                <span>Episodes {arc.episodes}</span>
+                <span> · </span>
+                <span style={{ color: saga.color + "cc" }}>{watched}/{total} completed</span>
               </div>
+
+              {/* Progress */}
+              <div className="flex items-baseline gap-3">
+                <div className="flex-1">
+                  <ProgressBar pct={pct} color={saga.color} />
+                </div>
+                <span className="text-sm font-black flex-shrink-0 mb-4" style={{ color: saga.color }}>
+                  {pct}%
+                </span>
+              </div>
+
               <p className="text-sm text-white/55 leading-relaxed">{arc.description}</p>
             </div>
           </div>
@@ -246,7 +240,7 @@ export default function ArcDetailPage() {
             <h2 className="text-base font-black text-white">
               Episodes
               <span className="ml-2 text-sm font-normal text-white/30">
-                ({total} total)
+                ({total})
               </span>
             </h2>
 
@@ -429,11 +423,11 @@ function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, onToggle
 
       {/* Episode number */}
       <div
-        className="text-sm font-mono font-bold flex-shrink-0 w-14"
+        className="text-sm font-mono font-bold text-center shrink-0 w-16"
         style={{ color: watched ? "rgba(255,255,255,0.3)" : "rgba(255,255,255,0.35)" }}
       >
         <span style={{ color: landmark?.note ? sagaColor : undefined }}>
-          Ep {ep}
+          Ep.{ep}
         </span>
       </div>
 
