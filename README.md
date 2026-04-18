@@ -16,6 +16,8 @@ A visual guide for tracking your One Piece progress — browse every saga and ar
 - Animated pirate ship riding the progress bar across all pages
 - Hide/show watched arcs toggle with smooth animations
 - Collapsible saga sections
+- Star ratings on sagas and arcs
+- Stormy animated background with rain, lightning flashes, and drifting storm clouds
 
 ## Tech Stack
 
