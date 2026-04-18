@@ -20,6 +20,14 @@ export default function HomePage() {
 
   const isAllDone = completedArcs === totalArcs;
 
+  const [showHeader, setShowHeader] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setShowHeader(window.scrollY > window.innerHeight * 0.8);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   const firstIncompleteSagaId = useMemo(
     () =>
       completedArcs > 0
@@ -74,10 +82,20 @@ export default function HomePage() {
         </div>
       </main>
 
-      <ProgressHeader
-        total={totalEps}
-        watchedEps={watchedEps}
-      />
+      <AnimatePresence>
+        {showHeader && (
+          <motion.div
+            key="progress-header"
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "100%" }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 50 }}
+          >
+            <ProgressHeader total={totalEps} watchedEps={watchedEps} />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* All done celebration */}
       <AnimatePresence>

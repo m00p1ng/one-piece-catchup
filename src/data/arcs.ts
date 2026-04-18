@@ -1383,7 +1383,7 @@ export const sagas: Saga[] = [
         startEp: 626,
         endEp: 628,
         count: 3,
-        thumbnailEmoji: "🧪",
+        thumbnailEmoji: "🐶",
         description: "A mysterious person boards the Sunny to kidnap Caesar Clown from the Straw Hats",
         villain: "Breed",
         highlight: "Luffy and Law teaming up to fight the Peto Peto no Mi powers",
