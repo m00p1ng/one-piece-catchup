@@ -1,3 +1,4 @@
+import cn from "classnames";
 import type { Arc } from "../types";
 
 interface ArcThumbnailProps {
@@ -11,8 +12,10 @@ export default function ArcThumbnail({ arc, sagaColor, size = "card" }: ArcThumb
 
   return (
     <div
-      className={`relative overflow-hidden flex-shrink-0 flex items-center justify-center ${isCard ? "w-full h-full rounded-xl" : "w-full h-48 rounded-2xl"
-        }`}
+      className={cn(
+        "relative overflow-hidden shrink-0 flex items-center justify-center",
+        isCard ? "w-full h-full rounded-xl" : "w-full h-48 rounded-2xl"
+      )}
       style={{
         background: `linear-gradient(135deg, ${sagaColor}33 0%, ${sagaColor}18 50%, #050d1a 100%)`,
         border: `1px solid ${sagaColor}33`,

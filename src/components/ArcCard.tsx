@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import cn from "classnames";
 import ArcThumbnail from "./ArcThumbnail";
 import type { Arc } from "../types";
 
@@ -18,10 +19,12 @@ export default function ArcCard({ arc, sagaColor, checked, onToggle, index }: Ar
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.35, delay: index * 0.04 }}
-      className={`relative rounded-2xl border overflow-hidden transition-colors duration-300 ${checked
-        ? "border-white/10 bg-white/[0.02]"
-        : "border-white/10 bg-white/[0.04] hover:border-white/20 hover:bg-white/[0.06]"
-        }`}
+      className={cn(
+        "relative rounded-2xl border overflow-hidden transition-colors duration-300",
+        checked
+          ? "border-white/10 bg-white/2"
+          : "border-white/10 bg-white/4 hover:border-white/20 hover:bg-white/6"
+      )}
       style={{
         boxShadow: checked ? `0 0 0 1px ${sagaColor}33, 0 2px 16px ${sagaColor}0f` : undefined,
       }}
@@ -55,8 +58,12 @@ export default function ArcCard({ arc, sagaColor, checked, onToggle, index }: Ar
         >
           <div className="flex items-center gap-2 mb-0.5">
             <h3
-              className={`font-bold text-sm leading-snug transition-colors duration-200 ${checked ? "text-white/35 line-through decoration-white/20" : "text-white hover:text-amber-300"
-                }`}
+              className={cn(
+                "font-bold text-sm leading-snug transition-colors duration-200",
+                checked
+                  ? "text-white/35 line-through decoration-white/20"
+                  : "text-white hover:text-amber-300"
+              )}
             >
               {arc.name}
             </h3>
@@ -76,7 +83,12 @@ export default function ArcCard({ arc, sagaColor, checked, onToggle, index }: Ar
 
           <span className="text-[11px] text-white/35 font-mono mb-1 mr-2">Ep {arc.episodes}</span>
           {arc.rating != null && (
-            <span className={`text-[11px] font-bold flex-shrink-0 ${checked ? "text-amber-400/30" : "text-amber-400"}`}>
+            <span className={cn(
+              "text-[11px] font-bold shrink-0",
+              checked
+                ? "text-amber-400/30"
+                : "text-amber-400"
+            )}>
               ★ {arc.rating.toFixed(1)}
             </span>
           )}
