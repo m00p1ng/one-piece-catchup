@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef } from "react";
 
 function PirateShip() {
   return (
@@ -241,17 +241,15 @@ function StormClouds() {
 }
 
 function Rain() {
-  const drops = useMemo(
-    () =>
-      Array.from({ length: 60 }, (_, i) => ({
-        id: i,
-        left: Math.random() * 112 - 6,
-        delay: Math.random() * 2.5,
-        duration: Math.random() * 0.55 + 0.65,
-        height: Math.random() * 12 + 8,
-        opacity: Math.random() * 0.28 + 0.12,
-      })),
-    []
+  const [drops] = useState(() =>
+    Array.from({ length: 60 }, (_, i) => ({
+      id: i,
+      left: Math.random() * 112 - 6,
+      delay: Math.random() * 2.5,
+      duration: Math.random() * 0.55 + 0.65,
+      height: Math.random() * 12 + 8,
+      opacity: Math.random() * 0.28 + 0.12,
+    }))
   );
 
   return (
@@ -275,22 +273,35 @@ function Rain() {
 }
 
 export default function WaveBackground() {
+  const [stars] = useState(() =>
+    Array.from({ length: 80 }, (_, i) => ({
+      id: i,
+      width: Math.random() * 2 + 1,
+      height: Math.random() * 2 + 1,
+      top: Math.random() * 60,
+      left: Math.random() * 100,
+      opacity: Math.random() * 0.7 + 0.3,
+      duration: Math.random() * 3 + 2,
+      delay: Math.random() * 4,
+    }))
+  );
+
   return (
     <div className="fixed inset-0 -z-10 overflow-hidden bg-[#050d1a]">
       {/* Stars */}
       <div className="absolute inset-0">
-        {Array.from({ length: 80 }).map((_, i) => (
+        {stars.map((s) => (
           <div
-            key={i}
+            key={s.id}
             className="absolute rounded-full bg-white"
             style={{
-              width: Math.random() * 2 + 1 + "px",
-              height: Math.random() * 2 + 1 + "px",
-              top: Math.random() * 60 + "%",
-              left: Math.random() * 100 + "%",
-              opacity: Math.random() * 0.7 + 0.3,
-              animation: `twinkle ${Math.random() * 3 + 2}s ease-in-out infinite`,
-              animationDelay: Math.random() * 4 + "s",
+              width: s.width + "px",
+              height: s.height + "px",
+              top: s.top + "%",
+              left: s.left + "%",
+              opacity: s.opacity,
+              animation: `twinkle ${s.duration}s ease-in-out infinite`,
+              animationDelay: s.delay + "s",
             }}
           />
         ))}

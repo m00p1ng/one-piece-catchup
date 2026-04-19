@@ -28,7 +28,27 @@ export default function ArcDetailPage() {
     getArcEpisodeProgress,
   } = useProgress();
 
-  if (!result) {
+  const [showOnlyNotes, setShowOnlyNotes] = useState(false);
+  const [hideWatched, setHideWatched] = useState(() => localStorage.getItem("hideWatched") === "true");
+
+  const arc = result?.arc;
+  const saga = result?.saga;
+
+  const arcComplete = arc ? isArcComplete(arc.id) : false;
+  const { watched, total } = arc ? getArcEpisodeProgress(arc) : { watched: 0, total: 0 };
+  const pct = total === 0 ? 0 : Math.round((watched / total) * 100);
+
+  const episodes = useMemo(() => {
+    if (!arc) return [];
+    const list: { ep: number; landmark: Landmark | undefined }[] = [];
+    for (let i = arc.startEp; i <= arc.endEp; i++) {
+      const landmark = arc.landmarks?.find((l) => l.ep === i);
+      list.push({ ep: i, landmark });
+    }
+    return list;
+  }, [arc]);
+
+  if (!result || !arc || !saga) {
     return (
       <div className="min-h-screen flex items-center justify-center text-white">
         <div className="text-center">
@@ -41,23 +61,6 @@ export default function ArcDetailPage() {
       </div>
     );
   }
-
-  const { arc, saga } = result;
-  const arcComplete = isArcComplete(arc.id);
-  const { watched, total } = getArcEpisodeProgress(arc);
-  const pct = total === 0 ? 0 : Math.round((watched / total) * 100);
-
-  const [showOnlyNotes, setShowOnlyNotes] = useState(false);
-  const [hideWatched, setHideWatched] = useState(() => localStorage.getItem("hideWatched") === "true");
-
-  const episodes = useMemo(() => {
-    const list: { ep: number; landmark: Landmark | undefined }[] = [];
-    for (let i = arc.startEp; i <= arc.endEp; i++) {
-      const landmark = arc.landmarks?.find((l) => l.ep === i);
-      list.push({ ep: i, landmark });
-    }
-    return list;
-  }, [arc]);
 
   const hasNoteEpisodes = episodes.some(({ landmark }) => landmark?.note);
   const visibleEpisodes = episodes

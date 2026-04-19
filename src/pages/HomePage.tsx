@@ -19,6 +19,17 @@ export default function HomePage() {
 
   const isAllDone = completedArcs === totalArcs;
 
+  const [confetti] = useState(() =>
+    Array.from({ length: 30 }, (_, i) => ({
+      id: i,
+      left: Math.random() * 100,
+      rotate: Math.random() * 720 - 360,
+      x: Math.random() * 200 - 100,
+      duration: Math.random() * 2 + 1.5,
+      delay: Math.random() * 0.5,
+    }))
+  );
+
   const [showHeader, setShowHeader] = useState(false);
   const [activeSagaId, setActiveSagaId] = useState<string | null>(null);
 
@@ -205,23 +216,23 @@ export default function HomePage() {
               </div>
               <div className="text-white/70 mt-2">The One Piece was real all along</div>
             </div>
-            {Array.from({ length: 30 }).map((_, i) => (
+            {confetti.map((c) => (
               <motion.div
-                key={i}
+                key={c.id}
                 className="absolute w-2 h-2 rounded-sm"
                 style={{
-                  background: ["#fbbf24", "#ef4444", "#8b5cf6", "#10b981", "#3b82f6"][i % 5],
-                  left: `${Math.random() * 100}%`,
+                  background: ["#fbbf24", "#ef4444", "#8b5cf6", "#10b981", "#3b82f6"][c.id % 5],
+                  left: `${c.left}%`,
                   top: "-10px",
                 }}
                 animate={{
                   top: "110%",
-                  rotate: Math.random() * 720 - 360,
-                  x: Math.random() * 200 - 100,
+                  rotate: c.rotate,
+                  x: c.x,
                 }}
                 transition={{
-                  duration: Math.random() * 2 + 1.5,
-                  delay: Math.random() * 0.5,
+                  duration: c.duration,
+                  delay: c.delay,
                   ease: "linear",
                 }}
               />
