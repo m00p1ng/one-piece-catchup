@@ -10,7 +10,7 @@ export default function SagaPage() {
   const { sagaId } = useParams<{ sagaId: string }>();
   const saga = findSaga(sagaId ?? "");
   const { arcs, toggleArc } = useProgress();
-  const [hideWatched, setHideWatched] = useState(false);
+  const [hideWatched, setHideWatched] = useState(() => localStorage.getItem("hideWatched") === "true");
 
   if (!saga) {
     return (
@@ -118,7 +118,7 @@ export default function SagaPage() {
         {/* Arc list */}
         <div className="flex justify-end mb-4">
           <button
-            onClick={() => setHideWatched((v) => !v)}
+            onClick={() => setHideWatched((v) => { localStorage.setItem("hideWatched", String(!v)); return !v; })}
             className="flex items-center gap-2 text-xs px-3 py-1.5 rounded-full border transition-all duration-150 font-semibold"
             style={
               hideWatched
@@ -126,7 +126,7 @@ export default function SagaPage() {
                 : { color: "rgba(255,255,255,0.4)", borderColor: "rgba(255,255,255,0.1)" }
             }
           >
-            {hideWatched ? "👁 Show watched" : "👁 Hide watched"}
+            {hideWatched ? "👁 Show" : "👁 Hide"}
           </button>
         </div>
         <div className="grid gap-3">

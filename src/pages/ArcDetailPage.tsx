@@ -48,7 +48,7 @@ export default function ArcDetailPage() {
   const pct = total === 0 ? 0 : Math.round((watched / total) * 100);
 
   const [showOnlyNotes, setShowOnlyNotes] = useState(false);
-  const [hideWatched, setHideWatched] = useState(false);
+  const [hideWatched, setHideWatched] = useState(() => localStorage.getItem("hideWatched") === "true");
 
   const episodes = useMemo(() => {
     const list: { ep: number; landmark: Landmark | undefined }[] = [];
@@ -246,7 +246,7 @@ export default function ArcDetailPage() {
 
             <div className="flex items-center gap-2">
               <button
-                onClick={() => setHideWatched((v) => !v)}
+                onClick={() => setHideWatched((v) => { localStorage.setItem("hideWatched", String(!v)); return !v; })}
                 className="text-xs px-3 py-1.5 rounded-lg font-semibold transition-all duration-150"
                 style={
                   hideWatched

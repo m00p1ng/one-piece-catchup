@@ -7,7 +7,7 @@ import SagaSection from "../components/SagaSection";
 
 export default function HomePage() {
   const { arcs, toggleArc } = useProgress();
-  const [hideWatched, setHideWatched] = useState(false);
+  const [hideWatched, setHideWatched] = useState(() => localStorage.getItem("hideWatched") === "true");
 
   const allArcs = useMemo(() => sagas.flatMap((s) => s.arcs), []);
   const totalArcs = allArcs.length;
@@ -81,7 +81,7 @@ export default function HomePage() {
           {/* Hide watched toggle */}
           <div className="flex justify-end mb-4">
             <button
-              onClick={() => setHideWatched((v) => !v)}
+              onClick={() => setHideWatched((v) => { localStorage.setItem("hideWatched", String(!v)); return !v; })}
               className="flex items-center gap-2 text-xs px-3 py-1.5 rounded-full border transition-all duration-150 font-semibold"
               style={
                 hideWatched
