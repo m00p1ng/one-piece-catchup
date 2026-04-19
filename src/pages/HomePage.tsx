@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { sagas } from "../data/arcs";
 import { useProgress } from "../hooks/useProgress";
-import ProgressHeader from "../components/ProgressHeader";
 import Hero from "../components/Hero";
 import SagaSection from "../components/SagaSection";
 
@@ -68,9 +67,9 @@ export default function HomePage() {
 
   const activeSaga = showHeader
     ? (() => {
-        const s = sagas.find((s) => s.id === activeSagaId) ?? sagas[0] ?? null;
-        return s && openSagas[s.id] ? s : null;
-      })()
+      const s = sagas.find((s) => s.id === activeSagaId) ?? sagas[0] ?? null;
+      return s && openSagas[s.id] ? s : null;
+    })()
     : null;
 
   return (
@@ -90,7 +89,7 @@ export default function HomePage() {
                   : { color: "rgba(255,255,255,0.4)", borderColor: "rgba(255,255,255,0.1)" }
               }
             >
-              {hideWatched ? "👁 Show watched" : "👁 Hide watched"}
+              {hideWatched ? "👁 Show" : "👁 Hide"}
             </button>
           </div>
 
@@ -176,21 +175,6 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {showHeader && (
-          <motion.div
-            key="progress-header"
-            initial={{ y: "100%" }}
-            animate={{ y: 0 }}
-            exit={{ y: "100%" }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 50 }}
-          >
-            <ProgressHeader total={totalEps} watchedEps={watchedEps} />
           </motion.div>
         )}
       </AnimatePresence>

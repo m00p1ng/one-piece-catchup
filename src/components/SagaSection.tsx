@@ -61,13 +61,14 @@ export default function SagaSection({ saga, checkedArcs, onToggle, hideWatched =
                 animate={{ scale: 1 }}
                 className="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
               >
-                ✓ Complete
+                ✓<span className="hidden sm:inline"> Complete</span>
               </motion.span>
             )}
           </div>
-          <div className="flex items-center gap-3 mt-0.5 flex-wrap">
+          <div className="flex items-center gap-x-3 gap-y-0.5 mt-0.5 flex-wrap">
             <span className="text-sm text-white/40 italic">{saga.subtitle}</span>
-            <span className="text-xs text-white/30">·</span>
+            <span className="hidden sm:inline text-xs text-white/30">·</span>
+            <span className="w-full sm:hidden" />
             <span className="text-xs text-white/30 font-mono">Ep {saga.episodes}</span>
             <span className="text-xs text-white/30">·</span>
             <span
