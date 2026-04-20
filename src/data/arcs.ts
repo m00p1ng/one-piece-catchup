@@ -3,7 +3,7 @@ import type { Saga, Arc } from "../types";
 export const sagas: Saga[] = [
   {
     id: "east-blue",
-    name: "East Blue Saga",
+    name: "East Blue",
     subtitle: "Where Legends Begin",
     episodes: "1–61",
     totalEps: 61,
@@ -206,7 +206,7 @@ export const sagas: Saga[] = [
   },
   {
     id: "alabasta",
-    name: "Alabasta Saga",
+    name: "Alabasta",
     subtitle: "Desert Storms & Deception",
     episodes: "62–135",
     totalEps: 74,
@@ -406,7 +406,7 @@ export const sagas: Saga[] = [
   },
   {
     id: "sky-island",
-    name: "Sky Island Saga",
+    name: "Sky Island",
     subtitle: "Among the Clouds",
     episodes: "136–206",
     totalEps: 71,
@@ -571,7 +571,7 @@ export const sagas: Saga[] = [
   },
   {
     id: "water7",
-    name: "Water 7 Saga",
+    name: "Water 7",
     subtitle: "Bonds Broken & Reforged",
     episodes: "207–325",
     totalEps: 119,
@@ -816,7 +816,7 @@ export const sagas: Saga[] = [
   },
   {
     id: "thriller-bark",
-    name: "Thriller Bark Saga",
+    name: "Thriller Bark",
     subtitle: "Shadows in the Night",
     episodes: "326–384",
     totalEps: 59,
@@ -937,7 +937,7 @@ export const sagas: Saga[] = [
   },
   {
     id: "summit-war",
-    name: "Summit War Saga",
+    name: "Summit War",
     subtitle: "The World's Greatest War",
     episodes: "385–516",
     totalEps: 132,
@@ -1179,7 +1179,7 @@ export const sagas: Saga[] = [
   },
   {
     id: "fishman-island",
-    name: "Fish-Man Island Saga",
+    name: "Fish-Man Island",
     subtitle: "Beneath the Waves",
     episodes: "517–578",
     totalEps: 62,
@@ -1303,7 +1303,7 @@ export const sagas: Saga[] = [
   },
   {
     id: "dressrosa",
-    name: "Dressrosa Saga",
+    name: "Dressrosa",
     subtitle: "The Underworld Exposed",
     episodes: "579–750",
     totalEps: 172,
@@ -1553,7 +1553,7 @@ export const sagas: Saga[] = [
   },
   {
     id: "whole-cake",
-    name: "Whole Cake Island Saga",
+    name: "Whole Cake Island",
     subtitle: "A Rescue in the Sweet Sea",
     episodes: "751–889",
     totalEps: 139,
@@ -1770,7 +1770,7 @@ export const sagas: Saga[] = [
   },
   {
     id: "wano",
-    name: "Wano Country Saga",
+    name: "Wano Country",
     subtitle: "The Land of Samurai",
     episodes: "890–1085",
     totalEps: 196,

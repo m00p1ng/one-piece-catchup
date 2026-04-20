@@ -100,8 +100,30 @@ export default function ArcDetailPage() {
 
           {/* Thumbnail + title */}
           <div className="flex gap-5 mb-5">
-            <div className="flex-shrink-0 w-32">
+            <div className="relative shrink-0 w-32">
               <ArcThumbnail arc={arc} sagaColor={saga.color} size="detail" />
+              <AnimatePresence>
+                {arcComplete && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 1.4, rotate: -15 }}
+                    animate={{ opacity: 1, scale: 1, rotate: -12 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 18 }}
+                    className="absolute inset-0 flex items-center justify-center pointer-events-none"
+                  >
+                    <span
+                      className="px-2.5 py-1 rounded border-2 text-[10px] font-black tracking-widest uppercase select-none"
+                      style={{
+                        color: "#10b981",
+                        borderColor: "#10b981",
+                        background: "rgba(0,0,0,0.55)",
+                        boxShadow: "0 0 12px rgba(16,185,129,0.25)",
+                      }}
+                    >
+                      ✓ Complete
+                    </span>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             <div className="flex-1 min-w-0">
@@ -112,28 +134,11 @@ export default function ArcDetailPage() {
                     ★ {arc.rating.toFixed(1)}
                   </span>
                 )}
-                <AnimatePresence>
-                  {arcComplete && (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 1.4, rotate: -15 }}
-                      animate={{ opacity: 1, scale: 1, rotate: -12 }}
-                      transition={{ type: "spring", stiffness: 300, damping: 18 }}
-                      className="flex-shrink-0 mt-1 px-2.5 py-1 rounded border-2 text-[10px] font-black tracking-widest uppercase select-none"
-                      style={{
-                        color: "#10b981",
-                        borderColor: "#10b981",
-                        boxShadow: "0 0 12px rgba(16,185,129,0.25)",
-                      }}
-                    >
-                      ✓ Complete
-                    </motion.div>
-                  )}
-                </AnimatePresence>
               </div>
               <div className="text-sm text-white/40 font-mono">
-                <span>Episodes {arc.episodes}</span>
+                <span>Ep {arc.episodes}</span>
                 <span> · </span>
-                <span style={{ color: saga.color + "cc" }}>{watched}/{total} completed</span>
+                <span style={{ color: saga.color + "cc" }}>{watched}/{total}</span>
               </div>
 
               {/* Progress */}

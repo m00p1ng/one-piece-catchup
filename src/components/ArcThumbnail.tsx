@@ -45,7 +45,7 @@ export default function ArcThumbnail({ arc, sagaColor, size = "card" }: ArcThumb
 
       {/* Emoji */}
       <span
-        className="relative z-10 select-none"
+        className="relative z-0 select-none"
         style={{
           fontSize: isCard ? "1.8rem" : "4rem",
           filter: `drop-shadow(0 0 8px ${sagaColor}88)`,

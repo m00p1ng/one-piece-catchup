@@ -42,16 +42,16 @@ export default function SagaSection({ saga, checkedArcs, onToggle, hideWatched =
         </div>
 
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-3 flex-wrap">
+          <div className="flex items-center gap-3 overflow-hidden">
             <Link
               to={`/saga/${saga.id}`}
               onClick={(e) => e.stopPropagation()}
-              className="text-xl font-black text-white tracking-tight hover:text-amber-300 transition-colors"
+              className="text-xl font-black text-white tracking-tight hover:text-amber-300 transition-colors truncate min-w-0"
             >
               {saga.name}
             </Link>
             {saga.rating != null && (
-              <span className="flex items-center gap-1 text-sm font-bold text-amber-400">
+              <span className="flex items-center gap-1 text-sm font-bold text-amber-400 shrink-0">
                 ★ {saga.rating.toFixed(1)}
               </span>
             )}
@@ -59,7 +59,7 @@ export default function SagaSection({ saga, checkedArcs, onToggle, hideWatched =
               <motion.span
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                className="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                className="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shrink-0"
               >
                 ✓<span className="hidden sm:inline"> Complete</span>
               </motion.span>
