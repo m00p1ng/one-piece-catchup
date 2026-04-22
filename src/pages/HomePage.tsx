@@ -7,16 +7,21 @@ import SagaSection from "../components/SagaSection";
 import { Eye, EyeOff } from "lucide-react";
 
 export default function HomePage() {
-  const { arcs, toggleArc } = useProgress();
+  const { arcs, episodes, toggleArc } = useProgress();
   const [hideWatched, setHideWatched] = useState(() => localStorage.getItem("hideWatched") === "true");
 
   const allArcs = useMemo(() => sagas.flatMap((s) => s.arcs), []);
   const totalArcs = allArcs.length;
   const completedArcs = allArcs.filter((a) => arcs[a.id]).length;
   const totalEps = useMemo(() => allArcs.reduce((sum, a) => sum + a.count, 0), [allArcs]);
-  const watchedEps = allArcs
-    .filter((a) => arcs[a.id])
-    .reduce((sum, a) => sum + a.count, 0);
+  const watchedEps = useMemo(() =>
+    allArcs.reduce((total, arc) =>
+      total + Array.from({ length: arc.count }, (_, i) => arc.startEp + i)
+        .filter((ep) => episodes[`${arc.id}:${ep}`]).length,
+      0
+    ),
+    [allArcs, episodes]
+  );
 
   const isAllDone = completedArcs === totalArcs;
 

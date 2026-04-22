@@ -49,19 +49,23 @@ export function useProgress() {
   }
 
   function toggleEpisode(arc: Arc, epNum: number) {
-    let allWatched = false;
     setEpisodes((prev) => {
       const key = `${arc.id}:${epNum}`;
       const next = { ...prev, [key]: !prev[key] };
+
+      // Calculate if all episodes in the arc are now watched
       if (arc.startEp && arc.endEp) {
-        allWatched = Array.from(
+        const allWatched = Array.from(
           { length: arc.endEp - arc.startEp + 1 },
           (_, i) => arc.startEp + i
         ).every((ep) => !!next[`${arc.id}:${ep}`]);
+
+        // Update arcs state based on individual episodes
+        setArcs((prevArcs) => ({ ...prevArcs, [arc.id]: allWatched }));
       }
+
       return next;
     });
-    setArcs((prev) => ({ ...prev, [arc.id]: allWatched }));
   }
 
   function isArcComplete(arcId: string): boolean {

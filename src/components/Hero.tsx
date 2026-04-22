@@ -75,11 +75,11 @@ export default function Hero({ totalArcs, completedArcs, watchedEps, totalEps }:
 
         {/* Stats */}
         <div className="flex items-center justify-center gap-6">
-          <Stat value={totalArcs} label="Total Arcs" color="#f59e0b" />
+          <Stat value={completedArcs} label="Completed" color="#f59e0b" />
           <div className="w-px h-8 bg-white/10" />
-          <Stat value={completedArcs} label="Completed" color="#10b981" />
+          <Stat value={remaining} label="Remaining" color="#10b981" />
           <div className="w-px h-8 bg-white/10" />
-          <Stat value={remaining} label="Remaining" color="#8b5cf6" />
+          <Stat value={totalArcs} label="Total Arcs" color="#8b5cf6" />
         </div>
 
         {/* Episode stats */}
