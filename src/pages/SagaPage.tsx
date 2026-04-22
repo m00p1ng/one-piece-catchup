@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, Eye, EyeOff } from "lucide-react";
 import { findSaga } from "../data/arcs";
 import { useProgress } from "../hooks/useProgress";
 import ArcCard from "../components/ArcCard";
@@ -19,7 +20,8 @@ export default function SagaPage() {
           <div className="text-4xl mb-4">🌊</div>
           <p className="text-white/50">Saga not found</p>
           <Link to="/" className="mt-4 inline-block text-amber-400 hover:underline">
-            ← Back to home
+            <ChevronLeft className="w-4 h-4 inline" />
+            Back to home
           </Link>
         </div>
       </div>
@@ -44,9 +46,7 @@ export default function SagaPage() {
             to="/"
             className="inline-flex items-center gap-1.5 text-white/50 hover:text-white transition-colors text-sm mb-6"
           >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
+            <ChevronLeft className="w-4 h-4" />
             Back
           </Link>
 
@@ -126,7 +126,7 @@ export default function SagaPage() {
                 : { color: "rgba(255,255,255,0.4)", borderColor: "rgba(255,255,255,0.1)" }
             }
           >
-            {hideWatched ? "👁 Show" : "👁 Hide"}
+            {hideWatched ? <><Eye className="h-4 w-4"/>Show</> : <><EyeOff className="h-4 w-4"/>Hide</>}
           </button>
         </div>
         <div className="grid gap-3">

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import ArcCard from "./ArcCard";
 import type { Arc, Saga } from "../types";
+import { ChevronDown, Check } from "lucide-react";
 
 interface SagaSectionProps {
   saga: Saga;
@@ -61,7 +62,7 @@ export default function SagaSection({ saga, checkedArcs, onToggle, hideWatched =
                 animate={{ scale: 1 }}
                 className="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shrink-0"
               >
-                ✓<span className="hidden sm:inline"> Complete</span>
+                <Check className="inline h-4 w-4" /><span className="hidden sm:inline"> Complete</span>
               </motion.span>
             )}
           </div>
@@ -101,7 +102,7 @@ export default function SagaSection({ saga, checkedArcs, onToggle, hideWatched =
           transition={{ duration: 0.2 }}
           className="text-4xl text-white/50 flex-shrink-0"
         >
-          ▾
+          <ChevronDown />
         </motion.span>
       </button>
 

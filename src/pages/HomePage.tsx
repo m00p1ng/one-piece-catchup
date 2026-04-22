@@ -4,6 +4,7 @@ import { sagas } from "../data/arcs";
 import { useProgress } from "../hooks/useProgress";
 import Hero from "../components/Hero";
 import SagaSection from "../components/SagaSection";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function HomePage() {
   const { arcs, toggleArc } = useProgress();
@@ -100,7 +101,7 @@ export default function HomePage() {
                   : { color: "rgba(255,255,255,0.4)", borderColor: "rgba(255,255,255,0.1)" }
               }
             >
-              {hideWatched ? "👁 Show" : "👁 Hide"}
+              {hideWatched ? <><Eye className="h-4 w-4"/>Show</> : <><EyeOff className="h-4 w-4"/>Hide</>}
             </button>
           </div>
 
@@ -157,7 +158,7 @@ export default function HomePage() {
             ))}
           </div>
 
-          <div className="flex items-center justify-center gap-1.5 text-white/15 text-xs">
+          <div className="flex items-center justify-center gap-1.5 text-white/40 text-xs">
             <span>Built for One Piece fans</span>
             <span>·</span>
             <a

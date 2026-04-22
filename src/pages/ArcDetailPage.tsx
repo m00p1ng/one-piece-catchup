@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import cn from "classnames";
+import { ChevronLeft, Check, Eye, EyeOff } from "lucide-react";
 import { findArc } from "../data/arcs";
 import { useProgress } from "../hooks/useProgress";
 import ArcThumbnail from "../components/ArcThumbnail";
@@ -56,7 +57,8 @@ export default function ArcDetailPage() {
           <div className="text-4xl mb-4">🌊</div>
           <p className="text-white/50">Arc not found</p>
           <Link to="/" className="mt-4 inline-block text-amber-400 hover:underline">
-            ← Back to home
+            <ChevronLeft className="w-4 h-4 inline" />
+            Back to home
           </Link>
         </div>
       </div>
@@ -84,9 +86,7 @@ export default function ArcDetailPage() {
             to="/"
             className="inline-flex items-center gap-1.5 text-white/50 hover:text-white transition-colors text-sm mb-6"
           >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
+            <ChevronLeft className="w-4 h-4" />
             Back
           </Link>
 
@@ -119,7 +119,7 @@ export default function ArcDetailPage() {
                         boxShadow: "0 0 12px rgba(16,185,129,0.25)",
                       }}
                     >
-                      ✓ Complete
+                      <Check className="h-4 w-4 inline"/> Complete
                     </span>
                   </motion.div>
                 )}
@@ -222,17 +222,7 @@ export default function ArcDetailPage() {
                 background: arcComplete ? saga.color : "transparent",
               }}
             >
-              {arcComplete && (
-                <svg viewBox="0 0 12 10" className="w-3.5 h-3.5" fill="none">
-                  <path
-                    d="M1 5L4.5 8.5L11 1"
-                    stroke="white"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              )}
+              {arcComplete && <Check className="w-3.5 h-3.5 text-white" strokeWidth={2.5} />}
             </div>
           </div>
         </motion.div>
@@ -263,7 +253,7 @@ export default function ArcDetailPage() {
                     : { color: "rgba(255,255,255,0.4)", border: "1px solid rgba(255,255,255,0.1)" }
                 }
               >
-                {hideWatched ? "👁 Show" : "👁 Hide"}
+                {hideWatched ? <><Eye className="h-4 w-4"/>Show</> : <><EyeOff className="h-4 w-4"/>Hide</>}
               </button>
             </div>
           </div>
@@ -419,17 +409,7 @@ function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, onToggle
           background: watched ? sagaColor : "transparent",
         }}
       >
-        {watched && (
-          <svg viewBox="0 0 10 8" className="w-2.5 h-2.5" fill="none">
-            <path
-              d="M1 4L3.5 6.5L9 1"
-              stroke="white"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        )}
+        {watched && <Check className="w-2.5 h-2.5 text-white" strokeWidth={2.5} />}
       </div>
 
       {/* Episode number */}
