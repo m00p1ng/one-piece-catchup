@@ -119,7 +119,7 @@ export default function ArcDetailPage() {
                         boxShadow: "0 0 12px rgba(16,185,129,0.25)",
                       }}
                     >
-                      <Check className="h-4 w-4 inline"/> Complete
+                      <Check className="h-4 w-4 inline" /> Complete
                     </span>
                   </motion.div>
                 )}
@@ -242,32 +242,22 @@ export default function ArcDetailPage() {
                 ({total})
               </span>
             </h2>
-
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setHideWatched((v) => { localStorage.setItem("hideWatched", String(!v)); return !v; })}
-                className="text-xs px-3 py-1.5 rounded-lg font-semibold transition-all duration-150"
-                style={
-                  hideWatched
-                    ? { background: "rgba(251,191,36,0.12)", color: "#fbbf24", border: "1px solid rgba(251,191,36,0.3)" }
-                    : { color: "rgba(255,255,255,0.4)", border: "1px solid rgba(255,255,255,0.1)" }
-                }
-              >
-                {hideWatched ? <><Eye className="h-4 w-4"/>Show</> : <><EyeOff className="h-4 w-4"/>Hide</>}
-              </button>
-            </div>
           </div>
 
           {/* Landmark legend + note filter */}
-          {arc.landmarks && arc.landmarks.length > 0 && (
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2 text-xs text-white/35">
-                <span
-                  className="w-2 h-2 rounded-full flex-shrink-0"
-                  style={{ background: saga.color }}
-                />
-                <span>Highlighted episode</span>
-              </div>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2 text-xs text-white/35">
+              {arc.landmarks && arc.landmarks.length > 0 && (
+                <>
+                  <span
+                    className="w-2 h-2 rounded-full flex-shrink-0"
+                    style={{ background: saga.color }}
+                  />
+                  <span>Highlighted episode</span>
+                </>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
               {hasNoteEpisodes && (
                 <button
                   onClick={() => setShowOnlyNotes((v) => !v)}
@@ -288,8 +278,20 @@ export default function ArcDetailPage() {
                   Key only
                 </button>
               )}
+
+              <button
+                onClick={() => setHideWatched((v) => { localStorage.setItem("hideWatched", String(!v)); return !v; })}
+                className="text-xs px-3 py-1.5 rounded-lg font-semibold transition-all duration-150 flex items-center"
+                style={
+                  hideWatched
+                    ? { background: "rgba(251,191,36,0.12)", color: "#fbbf24", border: "1px solid rgba(251,191,36,0.3)" }
+                    : { color: "rgba(255,255,255,0.4)", border: "1px solid rgba(255,255,255,0.1)" }
+                }
+              >
+                {hideWatched ? <><Eye className="h-4 w-4 mr-1" />Show</> : <><EyeOff className="h-4 w-4 mr-1" /> Hide</>}
+              </button>
             </div>
-          )}
+          </div>
 
           {/* Episode grid */}
           <div className="grid gap-1.5">
