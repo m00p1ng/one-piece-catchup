@@ -273,6 +273,17 @@ function Rain() {
 }
 
 export default function WaveBackground() {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const onScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const heroHeight = typeof window !== "undefined" ? window.innerHeight : 800;
+  const moonOpacity = Math.max(0, 0.8 * (1 - scrollY / heroHeight));
+
   const [stars] = useState(() =>
     Array.from({ length: 80 }, (_, i) => ({
       id: i,
@@ -321,8 +332,10 @@ export default function WaveBackground() {
 
       {/* Moon glow */}
       <div
-        className="absolute top-16 right-8 sm:right-24 w-20 h-20 rounded-full bg-amber-100 opacity-80"
+        className="absolute top-16 right-8 sm:right-24 w-20 h-20 rounded-full bg-amber-100"
         style={{
+          opacity: moonOpacity,
+          transition: "opacity 0.1s linear",
           boxShadow: "0 0 60px 30px rgba(254,243,199,0.15), 0 0 120px 60px rgba(254,243,199,0.07)",
         }}
       />
