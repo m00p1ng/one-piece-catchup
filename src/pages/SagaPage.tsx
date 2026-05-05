@@ -10,7 +10,7 @@ import ProgressBar from "../components/ProgressBar";
 export default function SagaPage() {
   const { sagaId } = useParams<{ sagaId: string }>();
   const saga = findSaga(sagaId ?? "");
-  const { arcs, toggleArc } = useProgress();
+  const { isArcComplete, isArcInProgress, getArcEpisodeProgress } = useProgress();
   const [hideWatched, setHideWatched] = useState(() => localStorage.getItem("hideWatched") === "true");
 
   if (!saga) {
@@ -28,7 +28,7 @@ export default function SagaPage() {
     );
   }
 
-  const completedCount = saga.arcs.filter((a) => arcs[a.id]).length;
+  const completedCount = saga.arcs.filter((a) => isArcComplete(a)).length;
   const pct = Math.round((completedCount / saga.arcs.length) * 100);
   const isAllDone = completedCount === saga.arcs.length;
 
@@ -131,7 +131,7 @@ export default function SagaPage() {
         </div>
         <div className="grid gap-3">
           <AnimatePresence initial={false}>
-            {saga.arcs.filter((a) => !hideWatched || !arcs[a.id]).length === 0 ? (
+            {saga.arcs.filter((a) => !hideWatched || !isArcComplete(a)).length === 0 ? (
               <motion.p
                 key="empty"
                 initial={{ opacity: 0, y: -8 }}
@@ -144,25 +144,30 @@ export default function SagaPage() {
               </motion.p>
             ) : (
               saga.arcs
-                .filter((a) => !hideWatched || !arcs[a.id])
-                .map((arc, i) => (
-                  <motion.div
-                    key={arc.id}
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.25, ease: "easeInOut", delay: i * 0.03 }}
-                    style={{ overflow: "hidden" }}
-                  >
-                    <ArcCard
-                      arc={arc}
-                      sagaColor={saga.color}
-                      checked={!!arcs[arc.id]}
-                      onToggle={() => toggleArc(arc)}
-                      index={i}
-                    />
-                  </motion.div>
-                ))
+                .filter((a) => !hideWatched || !isArcComplete(a))
+                .map((arc, i) => {
+                  const { watched, total } = getArcEpisodeProgress(arc);
+                  const progressPct = total === 0 ? 0 : Math.round((watched / total) * 100);
+                  return (
+                    <motion.div
+                      key={arc.id}
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.25, ease: "easeInOut", delay: i * 0.03 }}
+                      style={{ overflow: "hidden" }}
+                    >
+                      <ArcCard
+                        arc={arc}
+                        sagaColor={saga.color}
+                        isComplete={isArcComplete(arc)}
+                        isInProgress={isArcInProgress(arc)}
+                        progressPct={progressPct}
+                        index={i}
+                      />
+                    </motion.div>
+                  );
+                })
             )}
           </AnimatePresence>
         </div>

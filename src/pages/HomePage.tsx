@@ -7,21 +7,13 @@ import SagaSection from "../components/SagaSection";
 import { Eye, EyeOff } from "lucide-react";
 
 export default function HomePage() {
-  const { arcs, episodes, toggleArc } = useProgress();
+  const { currentEpisode, isArcComplete } = useProgress();
   const [hideWatched, setHideWatched] = useState(() => localStorage.getItem("hideWatched") === "true");
 
   const allArcs = useMemo(() => sagas.flatMap((s) => s.arcs), []);
   const totalArcs = allArcs.length;
-  const completedArcs = allArcs.filter((a) => arcs[a.id]).length;
+  const completedArcs = useMemo(() => allArcs.filter((a) => isArcComplete(a)).length, [allArcs, currentEpisode]);
   const totalEps = useMemo(() => allArcs.reduce((sum, a) => sum + a.count, 0), [allArcs]);
-  const watchedEps = useMemo(() =>
-    allArcs.reduce((total, arc) =>
-      total + Array.from({ length: arc.count }, (_, i) => arc.startEp + i)
-        .filter((ep) => episodes[`${arc.id}:${ep}`]).length,
-      0
-    ),
-    [allArcs, episodes]
-  );
 
   const isAllDone = completedArcs === totalArcs;
 
@@ -40,9 +32,8 @@ export default function HomePage() {
   const [activeSagaId, setActiveSagaId] = useState<string | null>(null);
 
   const [openSagas, setOpenSagas] = useState<Record<string, boolean>>(() =>
-    Object.fromEntries(sagas.map((s) => [s.id, s.arcs.some((a) => !arcs[a.id])]))
+    Object.fromEntries(sagas.map((s) => [s.id, s.arcs.some((a) => !isArcComplete(a))]))
   );
-
 
   useEffect(() => {
     const onScroll = () => setShowHeader(window.scrollY > window.innerHeight * 0.8);
@@ -70,7 +61,7 @@ export default function HomePage() {
   const firstIncompleteSagaId = useMemo(
     () =>
       completedArcs > 0
-        ? (sagas.find((s) => s.arcs.some((a) => !arcs[a.id]))?.id ?? null)
+        ? (sagas.find((s) => s.arcs.some((a) => !isArcComplete(a)))?.id ?? null)
         : null,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -91,7 +82,12 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen text-white">
-      <Hero totalArcs={totalArcs} completedArcs={completedArcs} watchedEps={watchedEps} totalEps={totalEps} />
+      <Hero
+        totalArcs={totalArcs}
+        completedArcs={completedArcs}
+        currentEpisode={currentEpisode}
+        totalEps={totalEps}
+      />
 
       <main className="max-w-2xl mx-auto px-4 pb-32 " style={{ backdropFilter: "blur(8px)" }}>
         <div className="mt-4">
@@ -111,7 +107,7 @@ export default function HomePage() {
           </div>
 
           <AnimatePresence initial={false}>
-            {sagas.filter((saga) => !hideWatched || saga.arcs.some((a) => !arcs[a.id])).map((saga) => (
+            {sagas.filter((saga) => !hideWatched || saga.arcs.some((a) => !isArcComplete(a))).map((saga) => (
               <motion.div
                 key={saga.id}
                 id={`saga-${saga.id}`}
@@ -122,8 +118,6 @@ export default function HomePage() {
               >
                 <SagaSection
                   saga={saga}
-                  checkedArcs={arcs}
-                  onToggle={toggleArc}
                   hideWatched={hideWatched}
                   open={openSagas[saga.id] ?? true}
                   onOpenChange={(v) => setOpenSagas((prev) => ({ ...prev, [saga.id]: v }))}
@@ -218,14 +212,14 @@ export default function HomePage() {
               </div>
               <div className="flex items-center gap-2 flex-shrink-0">
                 <span className="text-xs font-semibold" style={{ color: activeSaga.color + "cc" }}>
-                  {activeSaga.arcs.filter((a) => arcs[a.id]).length}/{activeSaga.arcs.length} arcs
+                  {activeSaga.arcs.filter((a) => isArcComplete(a)).length}/{activeSaga.arcs.length} arcs
                 </span>
                 <div className="w-16 h-1 bg-white/10 rounded-full overflow-hidden">
                   <div
                     className="h-full rounded-full transition-all duration-500"
                     style={{
                       background: activeSaga.color,
-                      width: `${(activeSaga.arcs.filter((a) => arcs[a.id]).length / activeSaga.arcs.length) * 100}%`,
+                      width: `${(activeSaga.arcs.filter((a) => isArcComplete(a)).length / activeSaga.arcs.length) * 100}%`,
                     }}
                   />
                 </div>

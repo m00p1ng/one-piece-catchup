@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import cn from "classnames";
-import { ChevronLeft, Check, Eye, EyeOff } from "lucide-react";
+import { ChevronLeft, Check, Eye, EyeOff, Play } from "lucide-react";
 import { findArc } from "../data/arcs";
 import { useProgress } from "../hooks/useProgress";
 import ArcThumbnail from "../components/ArcThumbnail";
@@ -15,7 +15,8 @@ interface EpisodeRowProps {
   sagaColor: string;
   thumbnailEmoji: string;
   watched: boolean;
-  onToggle: () => void;
+  isCurrent: boolean;
+  onSetCurrent: () => void;
   index: number;
 }
 
@@ -23,8 +24,8 @@ export default function ArcDetailPage() {
   const { arcId } = useParams<{ arcId: string }>();
   const result = findArc(arcId ?? "");
   const {
-    toggleArc,
-    toggleEpisode,
+    currentEpisode,
+    setCurrentEpisode,
     isArcComplete,
     isEpisodeWatched,
     getArcEpisodeProgress,
@@ -36,7 +37,7 @@ export default function ArcDetailPage() {
   const arc = result?.arc;
   const saga = result?.saga;
 
-  const arcComplete = arc ? isArcComplete(arc.id) : false;
+  const arcComplete = arc ? isArcComplete(arc) : false;
   const { watched, total } = arc ? getArcEpisodeProgress(arc) : { watched: 0, total: 0 };
   const pct = total === 0 ? 0 : Math.round((watched / total) * 100);
 
@@ -68,7 +69,7 @@ export default function ArcDetailPage() {
   const hasNoteEpisodes = episodes.some(({ landmark }) => landmark?.note);
   const visibleEpisodes = episodes
     .filter(({ landmark }) => !showOnlyNotes || landmark?.note)
-    .filter(({ ep }) => !hideWatched || !isEpisodeWatched(arc.id, ep));
+    .filter(({ ep }) => !hideWatched || !isEpisodeWatched(ep));
 
   const allWatched = total > 0 && watched === total;
 
@@ -183,6 +184,20 @@ export default function ArcDetailPage() {
                 ★ Must Watch
               </div>
             )}
+            {/* Current episode indicator */}
+            {currentEpisode >= arc.startEp && currentEpisode <= arc.endEp && (
+              <div
+                className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full font-bold"
+                style={{
+                  background: `${saga.color}18`,
+                  border: `1px solid ${saga.color}44`,
+                  color: saga.color,
+                }}
+              >
+                <Play className="w-3 h-3" />
+                Now watching Ep.{currentEpisode}
+              </div>
+            )}
           </div>
 
           {/* Highlight quote */}
@@ -199,32 +214,6 @@ export default function ArcDetailPage() {
               {arc.highlight}
             </div>
           )}
-
-          {/* Arc-level completion toggle */}
-          <div
-            className="flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-all duration-200"
-            style={{
-              background: arcComplete ? `${saga.color}15` : "rgba(255,255,255,0.03)",
-              borderColor: arcComplete ? `${saga.color}55` : "rgba(255,255,255,0.1)",
-            }}
-            onClick={() => toggleArc(arc)}
-          >
-            <div>
-              <div className="text-sm font-bold text-white">Mark Arc Complete</div>
-              <div className="text-xs text-white/40 mt-0.5">
-                Overrides individual episode tracking
-              </div>
-            </div>
-            <div
-              className="w-7 h-7 rounded-full border-2 flex items-center justify-center transition-colors duration-200"
-              style={{
-                borderColor: arcComplete ? saga.color : "rgba(255,255,255,0.2)",
-                background: arcComplete ? saga.color : "transparent",
-              }}
-            >
-              {arcComplete && <Check className="w-3.5 h-3.5 text-white" strokeWidth={2.5} />}
-            </div>
-          </div>
         </motion.div>
 
         {/* Divider */}
@@ -243,6 +232,11 @@ export default function ArcDetailPage() {
               </span>
             </h2>
           </div>
+
+          {/* Hint */}
+          <p className="text-xs text-white/30 mb-4 italic">
+            Tap an episode to mark it as your current watching point
+          </p>
 
           {/* Landmark legend + note filter */}
           <div className="flex items-center justify-between mb-4">
@@ -322,8 +316,9 @@ export default function ArcDetailPage() {
                       landmark={landmark}
                       sagaColor={saga.color}
                       thumbnailEmoji={arc.thumbnailEmoji}
-                      watched={isEpisodeWatched(arc.id, ep)}
-                      onToggle={() => toggleEpisode(arc, ep)}
+                      watched={isEpisodeWatched(ep)}
+                      isCurrent={ep === currentEpisode}
+                      onSetCurrent={() => setCurrentEpisode(ep)}
                       index={i}
                     />
                   </motion.div>
@@ -359,7 +354,7 @@ export default function ArcDetailPage() {
   );
 }
 
-function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, onToggle, index }: EpisodeRowProps) {
+function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, isCurrent, onSetCurrent, index }: EpisodeRowProps) {
   const [titleExpanded, setTitleExpanded] = useState(false);
 
   return (
@@ -367,20 +362,28 @@ function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, onToggle
       initial={{ opacity: 0, x: -10 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.2, delay: Math.min(index * 0.008, 0.3) }}
-      onClick={onToggle}
+      onClick={onSetCurrent}
       className={cn(
         "flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer transition-all duration-150 group",
-        landmark?.note
-          ? "border"
-          : "hover:bg-white/4"
+        isCurrent
+          ? "border-2"
+          : landmark?.note
+            ? "border"
+            : "hover:bg-white/4"
       )}
       style={
-        landmark?.note
+        isCurrent
           ? {
-            background: watched ? `${sagaColor}0c` : `${sagaColor}08`,
-            borderColor: watched ? `${sagaColor}33` : `${sagaColor}22`,
+            background: `${sagaColor}18`,
+            borderColor: sagaColor,
+            boxShadow: `0 0 12px ${sagaColor}33`,
           }
-          : {}
+          : landmark?.note
+            ? {
+              background: watched ? `${sagaColor}0c` : `${sagaColor}08`,
+              borderColor: watched ? `${sagaColor}33` : `${sagaColor}22`,
+            }
+            : {}
       }
     >
       {/* Thumbnail */}
@@ -389,7 +392,7 @@ function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, onToggle
         style={{
           background: `linear-gradient(135deg, ${sagaColor}28 0%, ${sagaColor}10 100%)`,
           border: `1px solid ${landmark?.note ? sagaColor + "33" : sagaColor + "18"}`,
-          opacity: watched ? 0.45 : 1,
+          opacity: watched && !isCurrent ? 0.45 : 1,
         }}
       >
         <div
@@ -403,23 +406,27 @@ function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, onToggle
         </span>
       </div>
 
-      {/* Watched indicator */}
+      {/* Watch indicator / current indicator */}
       <div
         className="w-5 h-5 rounded-full border flex items-center justify-center flex-shrink-0 transition-all duration-150"
         style={{
-          borderColor: watched ? sagaColor : "rgba(255,255,255,0.15)",
-          background: watched ? sagaColor : "transparent",
+          borderColor: isCurrent ? sagaColor : watched ? sagaColor : "rgba(255,255,255,0.15)",
+          background: isCurrent ? "transparent" : watched ? sagaColor : "transparent",
         }}
       >
-        {watched && <Check className="w-2.5 h-2.5 text-white" strokeWidth={2.5} />}
+        {isCurrent ? (
+          <div className="w-2 h-2 rounded-full" style={{ background: sagaColor }} />
+        ) : watched ? (
+          <Check className="w-2.5 h-2.5 text-white" strokeWidth={2.5} />
+        ) : null}
       </div>
 
       {/* Episode number */}
       <div
         className="hidden sm:block text-sm font-mono font-bold text-center shrink-0 w-16"
-        style={{ color: watched ? "rgba(255,255,255,0.3)" : "rgba(255,255,255,0.35)" }}
+        style={{ color: isCurrent ? sagaColor : watched ? "rgba(255,255,255,0.3)" : "rgba(255,255,255,0.35)" }}
       >
-        <span style={{ color: landmark?.note ? sagaColor : undefined }}>
+        <span style={{ color: isCurrent ? sagaColor : landmark?.note ? sagaColor : undefined }}>
           Ep.{ep}
         </span>
       </div>
@@ -431,7 +438,7 @@ function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, onToggle
             <div
               className={cn(
                 "text-sm font-semibold leading-snug cursor-text",
-                watched ? "text-white/40 line-through" : "text-white/80",
+                watched && !isCurrent ? "text-white/40 line-through" : "text-white/80",
                 !titleExpanded && "line-clamp-2"
               )}
               onClick={(e) => { e.stopPropagation(); setTitleExpanded((v) => !v); }}
@@ -441,7 +448,7 @@ function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, onToggle
                   ★ {landmark.rating.toFixed(1)}
                 </span>
               )}
-              <span className="sm:hidden text-xs font-mono font-bold mr-1" style={{ color: landmark?.note ? sagaColor : "rgba(255,255,255,0.35)" }}>
+              <span className="sm:hidden text-xs font-mono font-bold mr-1" style={{ color: isCurrent ? sagaColor : landmark?.note ? sagaColor : "rgba(255,255,255,0.35)" }}>
                 Ep.{ep}
               </span>
               {landmark.title}
@@ -449,7 +456,7 @@ function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, onToggle
             {landmark.note && (
               <div
                 className="text-xs mt-0.5 font-medium"
-                style={{ color: watched ? "rgba(255,255,255,0.25)" : sagaColor + "bb" }}
+                style={{ color: watched && !isCurrent ? "rgba(255,255,255,0.25)" : sagaColor + "bb" }}
               >
                 {landmark.note}
               </div>
@@ -459,7 +466,7 @@ function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, onToggle
           <div
             className={cn(
               "text-sm",
-              watched ? "text-white/25" : "text-white/30 group-hover:text-white/45"
+              watched && !isCurrent ? "text-white/25" : isCurrent ? "text-white/80" : "text-white/30 group-hover:text-white/45"
             )}
           >
             Episode {ep}
@@ -467,8 +474,21 @@ function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, onToggle
         )}
       </div>
 
-      {/* Landmark dot */}
-      {landmark?.note && !watched && (
+      {/* Current badge */}
+      {isCurrent && (
+        <div
+          className="text-[9px] font-black px-1.5 py-0.5 rounded flex-shrink-0 tracking-widest uppercase"
+          style={{
+            background: sagaColor,
+            color: "white",
+          }}
+        >
+          NOW
+        </div>
+      )}
+
+      {/* Landmark dot (only when not current and not watched) */}
+      {landmark?.note && !watched && !isCurrent && (
         <div
           className="w-1.5 h-1.5 rounded-full flex-shrink-0"
           style={{ background: sagaColor }}

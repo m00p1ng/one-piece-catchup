@@ -3,17 +3,17 @@ import { motion } from "framer-motion";
 interface HeroProps {
   totalArcs: number;
   completedArcs: number;
-  watchedEps: number;
+  currentEpisode: number;
   totalEps: number;
 }
 
 interface StatProps {
-  value: number;
+  value: number | string;
   label: string;
   color: string;
 }
 
-export default function Hero({ totalArcs, completedArcs, watchedEps, totalEps }: HeroProps) {
+export default function Hero({ totalArcs, completedArcs, currentEpisode, totalEps }: HeroProps) {
   const remaining = totalArcs - completedArcs;
 
   return (
@@ -69,9 +69,23 @@ export default function Hero({ totalArcs, completedArcs, watchedEps, totalEps }:
         </h2>
 
         <p className="text-white/50 text-sm max-w-md mx-auto leading-relaxed mb-8">
-          1000+ episodes of adventure, friendship, and dreams. Mark your progress arc by arc
+          1000+ episodes of adventure, friendship, and dreams. Track your progress episode by episode
           and sail toward the Grand Line.
         </p>
+
+        {/* Current episode highlight */}
+        <div className="mb-6">
+          <div className="inline-flex items-center gap-3 px-5 py-3 rounded-2xl border" style={{
+            background: "rgba(251,191,36,0.08)",
+            borderColor: "rgba(251,191,36,0.25)",
+          }}>
+            <span className="text-amber-400/60 text-xs font-bold tracking-widest uppercase">Now watching</span>
+            <span className="text-amber-400 font-black text-2xl">
+              {currentEpisode > 0 ? `Ep. ${currentEpisode.toLocaleString()}` : "—"}
+            </span>
+            <span className="text-white/20 text-xs">/ {totalEps.toLocaleString()}</span>
+          </div>
+        </div>
 
         {/* Stats */}
         <div className="flex items-center justify-center gap-6">
@@ -80,14 +94,6 @@ export default function Hero({ totalArcs, completedArcs, watchedEps, totalEps }:
           <Stat value={remaining} label="Remaining" color="#10b981" />
           <div className="w-px h-8 bg-white/10" />
           <Stat value={totalArcs} label="Total Arcs" color="#8b5cf6" />
-        </div>
-
-        {/* Episode stats */}
-        <div className="flex items-center justify-center gap-3 mt-4">
-          <span className="text-white/40 text-xs">Episodes watched:</span>
-          <span className="text-amber-400 font-black text-sm">{watchedEps.toLocaleString()}</span>
-          <span className="text-white/20 text-xs">/</span>
-          <span className="text-white/60 font-semibold text-sm">{totalEps.toLocaleString()}</span>
         </div>
 
         <div
@@ -117,7 +123,7 @@ export default function Hero({ totalArcs, completedArcs, watchedEps, totalEps }:
 function Stat({ value, label, color }: StatProps) {
   return (
     <motion.div
-      key={value}
+      key={String(value)}
       initial={{ scale: 1 }}
       animate={{ scale: [1, 1.1, 1] }}
       transition={{ duration: 0.3 }}

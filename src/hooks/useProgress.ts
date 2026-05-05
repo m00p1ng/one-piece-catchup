@@ -1,115 +1,50 @@
 import { useState, useEffect } from "react";
 import type { Arc } from "../types";
 
-const ARC_KEY = "one-piece-arcs";
-const EP_KEY = "one-piece-episodes";
-
-function load(key: string): Record<string, boolean> {
-  try {
-    // Migrate from old key name
-    if (key === ARC_KEY) {
-      const legacy = localStorage.getItem("one-piece-progress");
-      if (legacy && !localStorage.getItem(ARC_KEY)) {
-        localStorage.setItem(ARC_KEY, legacy);
-      }
-    }
-    return JSON.parse(localStorage.getItem(key) || "{}") as Record<string, boolean>;
-  } catch {
-    return {};
-  }
-}
+const CURRENT_EP_KEY = "one-piece-current-ep";
 
 export function useProgress() {
-  const [arcs, setArcs] = useState<Record<string, boolean>>(() => load(ARC_KEY));
-  const [episodes, setEpisodes] = useState<Record<string, boolean>>(() => load(EP_KEY));
+  const [currentEpisode, setCurrentEpisodeState] = useState<number>(() => {
+    try {
+      const stored = localStorage.getItem(CURRENT_EP_KEY);
+      return stored ? parseInt(stored, 10) : 0;
+    } catch {
+      return 0;
+    }
+  });
 
   useEffect(() => {
-    localStorage.setItem(ARC_KEY, JSON.stringify(arcs));
-  }, [arcs]);
+    localStorage.setItem(CURRENT_EP_KEY, String(currentEpisode));
+  }, [currentEpisode]);
 
-  useEffect(() => {
-    localStorage.setItem(EP_KEY, JSON.stringify(episodes));
-  }, [episodes]);
-
-  function toggleArc(arc: Arc) {
-    const newArcState = !arcs[arc.id];
-    setArcs((prev) => ({ ...prev, [arc.id]: newArcState }));
-    setEpisodes((prev) => {
-      const next = { ...prev };
-      for (let i = arc.startEp; i <= arc.endEp; i++) {
-        const key = `${arc.id}:${i}`;
-        if (newArcState) {
-          next[key] = true;
-        } else {
-          delete next[key];
-        }
-      }
-      return next;
-    });
+  function setCurrentEpisode(ep: number) {
+    setCurrentEpisodeState(ep);
   }
 
-  function toggleEpisode(arc: Arc, epNum: number) {
-    setEpisodes((prev) => {
-      const key = `${arc.id}:${epNum}`;
-      const next = { ...prev, [key]: !prev[key] };
-
-      // Calculate if all episodes in the arc are now watched
-      if (arc.startEp && arc.endEp) {
-        const allWatched = Array.from(
-          { length: arc.endEp - arc.startEp + 1 },
-          (_, i) => arc.startEp + i
-        ).every((ep) => !!next[`${arc.id}:${ep}`]);
-
-        // Update arcs state based on individual episodes
-        setArcs((prevArcs) => ({ ...prevArcs, [arc.id]: allWatched }));
-      }
-
-      return next;
-    });
+  function isEpisodeWatched(epNum: number): boolean {
+    return epNum <= currentEpisode;
   }
 
-  function isArcComplete(arcId: string): boolean {
-    return !!arcs[arcId];
+  function isArcComplete(arc: Arc): boolean {
+    return arc.endEp <= currentEpisode;
   }
 
-  function isEpisodeWatched(arcId: string, epNum: number): boolean {
-    return !!episodes[`${arcId}:${epNum}`];
+  function isArcInProgress(arc: Arc): boolean {
+    return arc.startEp <= currentEpisode && arc.endEp > currentEpisode;
   }
 
   function getArcEpisodeProgress(arc: Arc): { watched: number; total: number } {
-    if (!arc.startEp || !arc.endEp) return { watched: 0, total: 0 };
     const total = arc.endEp - arc.startEp + 1;
-    let watched = 0;
-    for (let i = arc.startEp; i <= arc.endEp; i++) {
-      if (episodes[`${arc.id}:${i}`]) watched++;
-    }
+    const watched = Math.min(Math.max(currentEpisode - arc.startEp + 1, 0), total);
     return { watched, total };
   }
 
-  function markAllEpisodes(arc: Arc, value: boolean) {
-    setEpisodes((prev) => {
-      const next = { ...prev };
-      for (let i = arc.startEp; i <= arc.endEp; i++) {
-        const key = `${arc.id}:${i}`;
-        if (value) {
-          next[key] = true;
-        } else {
-          delete next[key];
-        }
-      }
-      return next;
-    });
-    setArcs((prev) => ({ ...prev, [arc.id]: value }));
-  }
-
   return {
-    arcs,
-    episodes,
-    toggleArc,
-    toggleEpisode,
-    isArcComplete,
+    currentEpisode,
+    setCurrentEpisode,
     isEpisodeWatched,
+    isArcComplete,
+    isArcInProgress,
     getArcEpisodeProgress,
-    markAllEpisodes,
   };
 }
