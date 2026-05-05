@@ -81,7 +81,7 @@ export default function Hero({ totalArcs, completedArcs, currentEpisode, totalEp
           }}>
             <span className="text-amber-400/60 text-xs font-bold tracking-widest uppercase">Now watching</span>
             <span className="text-amber-400 font-black text-2xl">
-              {currentEpisode > 0 ? `Ep. ${currentEpisode.toLocaleString()}` : "—"}
+              {currentEpisode > 0 ? currentEpisode.toLocaleString() : "—"}
             </span>
             <span className="text-white/20 text-xs">/ {totalEps.toLocaleString()}</span>
           </div>

@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import cn from "classnames";
-import { ChevronLeft, Check, Eye, EyeOff, Play } from "lucide-react";
+import { ChevronLeft, Check, Eye, EyeOff } from "lucide-react";
 import { findArc } from "../data/arcs";
 import { useProgress } from "../hooks/useProgress";
 import ArcThumbnail from "../components/ArcThumbnail";
@@ -182,20 +182,6 @@ export default function ArcDetailPage() {
                 }}
               >
                 ★ Must Watch
-              </div>
-            )}
-            {/* Current episode indicator */}
-            {currentEpisode >= arc.startEp && currentEpisode <= arc.endEp && (
-              <div
-                className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full font-bold"
-                style={{
-                  background: `${saga.color}18`,
-                  border: `1px solid ${saga.color}44`,
-                  color: saga.color,
-                }}
-              >
-                <Play className="w-3 h-3" />
-                Now watching Ep.{currentEpisode}
               </div>
             )}
           </div>

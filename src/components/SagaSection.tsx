@@ -61,9 +61,9 @@ export default function SagaSection({ saga, hideWatched = false, open, onOpenCha
               <motion.span
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                className="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shrink-0"
+                className="sm:hidden ml-auto text-xs font-bold px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shrink-0"
               >
-                <Check className="inline h-4 w-4" /><span className="hidden sm:inline"> Complete</span>
+                <Check className="inline h-4 w-4" />
               </motion.span>
             )}
           </div>
@@ -82,19 +82,30 @@ export default function SagaSection({ saga, hideWatched = false, open, onOpenCha
           </div>
         </div>
 
-        {/* Mini progress bar */}
+        {/* Mini progress bar / complete badge */}
         <div className="hidden sm:block w-24 flex-shrink-0">
-          <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+          {isAllDone ? (
             <motion.div
-              className="h-full rounded-full"
-              style={{ background: saga.color }}
-              initial={{ width: 0 }}
-              animate={{
-                width: `${(completedCount / saga.arcs.length) * 100}%`,
-              }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-            />
-          </div>
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className="flex items-center justify-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+            >
+              <Check className="h-3.5 w-3.5" />
+              <span>Complete</span>
+            </motion.div>
+          ) : (
+            <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+              <motion.div
+                className="h-full rounded-full"
+                style={{ background: saga.color }}
+                initial={{ width: 0 }}
+                animate={{
+                  width: `${(completedCount / saga.arcs.length) * 100}%`,
+                }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+              />
+            </div>
+          )}
         </div>
 
         {/* Chevron */}
