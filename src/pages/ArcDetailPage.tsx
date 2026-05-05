@@ -416,7 +416,7 @@ function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, onToggle
 
       {/* Episode number */}
       <div
-        className="text-sm font-mono font-bold text-center shrink-0 w-16"
+        className="hidden sm:block text-sm font-mono font-bold text-center shrink-0 w-16"
         style={{ color: watched ? "rgba(255,255,255,0.3)" : "rgba(255,255,255,0.35)" }}
       >
         <span style={{ color: landmark?.note ? sagaColor : undefined }}>
@@ -441,6 +441,9 @@ function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, onToggle
                   ★ {landmark.rating.toFixed(1)}
                 </span>
               )}
+              <span className="sm:hidden text-xs font-mono font-bold mr-1" style={{ color: landmark?.note ? sagaColor : "rgba(255,255,255,0.35)" }}>
+                Ep.{ep}
+              </span>
               {landmark.title}
             </div>
             {landmark.note && (
