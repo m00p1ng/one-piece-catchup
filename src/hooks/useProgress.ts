@@ -22,7 +22,7 @@ export function useProgress() {
   }
 
   function isEpisodeWatched(epNum: number): boolean {
-    return epNum <= currentEpisode;
+    return epNum < currentEpisode;
   }
 
   function isArcComplete(arc: Arc): boolean {
