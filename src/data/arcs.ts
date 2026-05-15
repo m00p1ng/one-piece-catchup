@@ -2214,6 +2214,15 @@ export const totalEpisodes = sagas.reduce(
   0
 );
 
+export function findArcByEp(ep: number): { arc: Arc; saga: Saga } | null {
+  for (const saga of sagas) {
+    for (const arc of saga.arcs) {
+      if (ep >= arc.startEp && ep <= arc.endEp) return { arc, saga };
+    }
+  }
+  return null;
+}
+
 export function findArc(arcId: string): { arc: Arc; saga: Saga } | null {
   for (const saga of sagas) {
     const arc = saga.arcs.find((a) => a.id === arcId);

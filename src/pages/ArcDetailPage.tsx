@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import cn from "classnames";
 import { ChevronLeft, Check, Eye, EyeOff } from "lucide-react";
-import { findArc } from "../data/arcs";
+import { findArc, findArcByEp } from "../data/arcs";
 import { useProgress } from "../hooks/useProgress";
 import ArcThumbnail from "../components/ArcThumbnail";
 import ProgressBar from "../components/ProgressBar";
@@ -33,6 +33,51 @@ export default function ArcDetailPage() {
 
   const [showOnlyNotes, setShowOnlyNotes] = useState(false);
   const [hideWatched, setHideWatched] = useState(() => localStorage.getItem("hideWatched") === "true");
+
+  const UNDO_DURATION = 5000;
+  const [undoPrevEp, setUndoPrevEp] = useState<number | null>(null);
+  const [undoProgress, setUndoProgress] = useState(100);
+  const undoTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const undoStartRef = useRef<number>(0);
+
+  useEffect(() => () => { if (undoTimerRef.current) clearInterval(undoTimerRef.current); }, []);
+
+  function showUndoToast(prevEp: number) {
+    if (undoTimerRef.current) clearInterval(undoTimerRef.current);
+    undoStartRef.current = Date.now();
+    setUndoPrevEp(prevEp);
+    setUndoProgress(100);
+    undoTimerRef.current = setInterval(() => {
+      const pct = Math.max(0, 1 - (Date.now() - undoStartRef.current) / UNDO_DURATION);
+      setUndoProgress(pct * 100);
+      if (pct <= 0) {
+        clearInterval(undoTimerRef.current!);
+        setUndoPrevEp(null);
+      }
+    }, 50);
+  }
+
+  function handleUndoClick() {
+    if (undoTimerRef.current) clearInterval(undoTimerRef.current);
+    if (undoPrevEp !== null) setCurrentEpisode(undoPrevEp);
+    setUndoPrevEp(null);
+  }
+
+  function handleSetCurrentEpisode(ep: number) {
+    const isFirstSet = currentEpisode === 0;
+    if (undoPrevEp !== null) {
+      showUndoToast(undoPrevEp);
+    } else if (!isFirstSet) {
+      const currentArcId = findArcByEp(currentEpisode)?.arc.id;
+      const newArcId = findArcByEp(ep)?.arc.id;
+      const isDifferentArc = currentArcId !== newArcId;
+      const isJump = ep > currentEpisode + 10;
+      if (isDifferentArc || isJump) {
+        showUndoToast(currentEpisode);
+      }
+    }
+    setCurrentEpisode(ep);
+  }
 
   useEffect(() => {
     if (!currentEpisode) return;
@@ -313,7 +358,7 @@ export default function ArcDetailPage() {
                       thumbnailEmoji={arc.thumbnailEmoji}
                       watched={isEpisodeWatched(ep)}
                       isCurrent={ep === currentEpisode}
-                      onSetCurrent={() => setCurrentEpisode(ep)}
+                      onSetCurrent={() => handleSetCurrentEpisode(ep)}
                       index={i}
                     />
                   </motion.div>
@@ -345,6 +390,52 @@ export default function ArcDetailPage() {
           </AnimatePresence>
         </div>
       </main>
+
+      {/* Undo toast */}
+      <AnimatePresence>
+        {undoPrevEp !== null && (
+          <motion.div
+            key="undo-toast"
+            initial={{ opacity: 0, y: 24, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 16, scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 320, damping: 28 }}
+            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[min(calc(100vw-2rem),360px)]"
+          >
+            <div
+              className="rounded-2xl overflow-hidden shadow-2xl"
+              style={{
+                background: "rgba(18,18,24,0.96)",
+                border: "1px solid rgba(255,255,255,0.12)",
+                backdropFilter: "blur(16px)",
+              }}
+            >
+              <div className="flex items-center gap-3 px-4 py-3">
+                <div className="flex-1 text-sm text-white/80 font-medium">
+                  Moved to <span className="text-white font-bold">Ep. {currentEpisode}</span>
+                </div>
+                <button
+                  onClick={handleUndoClick}
+                  className="text-sm font-bold px-3 py-1 rounded-lg transition-colors"
+                  style={{ color: "#fbbf24", background: "rgba(251,191,36,0.12)" }}
+                >
+                  Undo
+                </button>
+              </div>
+              {/* Countdown progress bar */}
+              <div className="h-0.5 bg-white/8">
+                <div
+                  className="h-full transition-none"
+                  style={{
+                    width: `${undoProgress}%`,
+                    background: "linear-gradient(90deg, #fbbf24, #f59e0b)",
+                  }}
+                />
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
