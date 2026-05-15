@@ -190,6 +190,7 @@ export default function HomePage() {
               backdropFilter: "blur(16px)",
               background: `linear-gradient(135deg, ${activeSaga.color}18, rgba(0,0,0,0.6))`,
               borderBottom: `1px solid ${activeSaga.color}33`,
+              paddingTop: "env(safe-area-inset-top)",
             }}
           >
             <div className="max-w-2xl mx-auto px-4 py-2.5 flex items-center gap-3">
