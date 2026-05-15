@@ -112,48 +112,56 @@ export default function HomePage() {
           <div className="mt-6 mb-2 grid grid-cols-2 gap-3">
             {/* Current episode */}
             <div
-              className="rounded-2xl p-4 flex flex-col gap-2 cursor-pointer active:scale-95 transition-transform"
+              className="rounded-2xl p-4 flex flex-col cursor-pointer active:scale-95 transition-transform"
               style={{ background: "rgba(251,191,36,0.05)", border: "1px solid rgba(251,191,36,0.12)" }}
               onClick={() => currentArc && navigate(`/arc/${currentArc.id}`)}
             >
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs text-amber-400/50 font-bold tracking-widest uppercase">Now</span>
-              </div>
-              <div>
-                <div className="text-amber-400 font-black text-2xl leading-none">Ep {currentEpisode}</div>
-                {currentArc && <div className="text-white/35 text-xs mt-1 truncate">{currentArc.name}</div>}
-              </div>
-              {currentLandmark ? (
-                <div className="mt-auto pt-1 border-t" style={{ borderColor: "rgba(251,191,36,0.08)" }}>
-                  <div className="text-white/70 text-xs leading-snug line-clamp-2">{currentLandmark.title}</div>
-                  {currentLandmark.note && (
-                    <div className="text-amber-400/50 text-xs mt-1 truncate">{currentLandmark.note}</div>
-                  )}
+              <div className="flex-1 flex flex-col gap-2">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs text-amber-400/50 font-bold tracking-widest uppercase">Now</span>
                 </div>
-              ) : null}
+                <div>
+                  <div className="text-amber-400 font-black text-2xl leading-none">Ep {currentEpisode}</div>
+                  {currentArc && <div className="text-white/35 text-xs mt-1 truncate">{currentArc.name}</div>}
+                </div>
+              </div>
+              <div className="h-16 pt-2 mt-2 border-t overflow-hidden" style={{ borderColor: "rgba(251,191,36,0.08)" }}>
+                {currentLandmark && (
+                  <>
+                    <div className="text-white/70 text-xs leading-snug line-clamp-2">{currentLandmark.title}</div>
+                    {currentLandmark.note && (
+                      <div className="text-amber-400/50 text-xs mt-1 truncate">{currentLandmark.note}</div>
+                    )}
+                  </>
+                )}
+              </div>
             </div>
 
             {/* Next episode */}
             <div
-              className="rounded-2xl p-4 flex flex-col gap-2 cursor-pointer active:scale-95 transition-transform"
+              className="rounded-2xl p-4 flex flex-col cursor-pointer active:scale-95 transition-transform"
               style={{ background: "rgba(16,185,129,0.04)", border: "1px solid rgba(16,185,129,0.12)" }}
               onClick={() => nextArc && navigate(`/arc/${nextArc.id}`)}
             >
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs text-emerald-400/50 font-bold tracking-widest uppercase">Next</span>
-              </div>
-              <div>
-                <div className="text-emerald-400 font-black text-2xl leading-none">Ep {nextEpisode}</div>
-                {nextArc && <div className="text-white/35 text-xs mt-1 truncate">{nextArc.name}</div>}
-              </div>
-              {nextLandmark ? (
-                <div className="mt-auto pt-1 border-t" style={{ borderColor: "rgba(16,185,129,0.08)" }}>
-                  <div className="text-white/70 text-xs leading-snug line-clamp-2">{nextLandmark.title}</div>
-                  {nextLandmark.note && (
-                    <div className="text-emerald-400/50 text-xs mt-1 truncate">{nextLandmark.note}</div>
-                  )}
+              <div className="flex-1 flex flex-col gap-2">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs text-emerald-400/50 font-bold tracking-widest uppercase">Next</span>
                 </div>
-              ) : null}
+                <div>
+                  <div className="text-emerald-400 font-black text-2xl leading-none">Ep {nextEpisode}</div>
+                  {nextArc && <div className="text-white/35 text-xs mt-1 truncate">{nextArc.name}</div>}
+                </div>
+              </div>
+              <div className="h-16 pt-2 mt-2 border-t overflow-hidden" style={{ borderColor: "rgba(16,185,129,0.08)" }}>
+                {nextLandmark && (
+                  <>
+                    <div className="text-white/70 text-xs leading-snug line-clamp-2">{nextLandmark.title}</div>
+                    {nextLandmark.note && (
+                      <div className="text-emerald-400/50 text-xs mt-1 truncate">{nextLandmark.note}</div>
+                    )}
+                  </>
+                )}
+              </div>
             </div>
           </div>
         )}
