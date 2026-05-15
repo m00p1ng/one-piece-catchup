@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import cn from "classnames";
@@ -33,6 +33,15 @@ export default function ArcDetailPage() {
 
   const [showOnlyNotes, setShowOnlyNotes] = useState(false);
   const [hideWatched, setHideWatched] = useState(() => localStorage.getItem("hideWatched") === "true");
+
+  useEffect(() => {
+    if (!currentEpisode) return;
+    const timer = setTimeout(() => {
+      const el = document.getElementById(`ep-${currentEpisode}`);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 400);
+    return () => clearTimeout(timer);
+  }, []);
 
   const arc = result?.arc;
   const saga = result?.saga;
@@ -345,6 +354,7 @@ function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, isCurren
 
   return (
     <motion.div
+      id={`ep-${ep}`}
       initial={{ opacity: 0, x: -10 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.2, delay: Math.min(index * 0.008, 0.3) }}

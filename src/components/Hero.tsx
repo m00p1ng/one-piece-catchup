@@ -97,8 +97,21 @@ export default function Hero({ totalArcs, completedArcs, currentEpisode, totalEp
         </div>
 
         <div
-          className="text-white/30 text-s flex flex-col items-center gap-1 mt-8"
+          className="text-white/30 text-s flex flex-col items-center gap-1 mt-8 cursor-pointer"
           style={{ animation: "bounce 2s infinite" }}
+          onClick={() => {
+            const start = window.scrollY;
+            const target = window.innerHeight;
+            const duration = 1200;
+            const startTime = performance.now();
+            const ease = (t: number) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+            const step = (now: number) => {
+              const t = Math.min((now - startTime) / duration, 1);
+              window.scrollTo(0, start + (target - start) * ease(t));
+              if (t < 1) requestAnimationFrame(step);
+            };
+            requestAnimationFrame(step);
+          }}
         >
           <span>scroll to explore</span>
           <svg

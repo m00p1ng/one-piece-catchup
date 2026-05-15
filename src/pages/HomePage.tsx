@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { sagas } from "../data/arcs";
 import { useProgress } from "../hooks/useProgress";
 import Hero from "../components/Hero";
@@ -7,6 +8,7 @@ import SagaSection from "../components/SagaSection";
 import { Eye, EyeOff } from "lucide-react";
 
 export default function HomePage() {
+  const navigate = useNavigate();
   const { currentEpisode, isArcComplete } = useProgress();
   const [hideWatched, setHideWatched] = useState(() => localStorage.getItem("hideWatched") === "true");
 
@@ -14,6 +16,22 @@ export default function HomePage() {
   const totalArcs = allArcs.length;
   const completedArcs = useMemo(() => allArcs.filter((a) => isArcComplete(a)).length, [allArcs, currentEpisode]);
   const totalEps = useMemo(() => allArcs.reduce((sum, a) => sum + a.count, 0), [allArcs]);
+  const currentArc = useMemo(() => allArcs.find((a) => a.startEp <= currentEpisode && a.endEp >= currentEpisode) ?? null, [allArcs, currentEpisode]);
+
+  const nextEpisode = currentEpisode + 1;
+  const nextArc = useMemo(
+    () => allArcs.find((a) => a.startEp <= nextEpisode && a.endEp >= nextEpisode) ?? null,
+    [allArcs, nextEpisode]
+  );
+
+  const currentLandmark = useMemo(
+    () => currentArc?.landmarks?.find((l) => l.ep === currentEpisode) ?? null,
+    [currentArc, currentEpisode]
+  );
+  const nextLandmark = useMemo(
+    () => nextArc?.landmarks?.find((l) => l.ep === nextEpisode) ?? null,
+    [nextArc, nextEpisode]
+  );
 
   const isAllDone = completedArcs === totalArcs;
 
@@ -90,6 +108,56 @@ export default function HomePage() {
       />
 
       <main className="max-w-2xl mx-auto px-4 pb-32 " style={{ backdropFilter: "blur(8px)" }}>
+        {currentEpisode > 0 && (
+          <div className="mt-6 mb-2 grid grid-cols-2 gap-3">
+            {/* Current episode */}
+            <div
+              className="rounded-2xl p-4 flex flex-col gap-2 cursor-pointer active:scale-95 transition-transform"
+              style={{ background: "rgba(251,191,36,0.05)", border: "1px solid rgba(251,191,36,0.12)" }}
+              onClick={() => currentArc && navigate(`/arc/${currentArc.id}`)}
+            >
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs text-amber-400/50 font-bold tracking-widest uppercase">Now</span>
+              </div>
+              <div>
+                <div className="text-amber-400 font-black text-2xl leading-none">Ep {currentEpisode}</div>
+                {currentArc && <div className="text-white/35 text-xs mt-1 truncate">{currentArc.name}</div>}
+              </div>
+              {currentLandmark ? (
+                <div className="mt-auto pt-1 border-t" style={{ borderColor: "rgba(251,191,36,0.08)" }}>
+                  <div className="text-white/70 text-xs leading-snug line-clamp-2">{currentLandmark.title}</div>
+                  {currentLandmark.note && (
+                    <div className="text-amber-400/50 text-xs mt-1 truncate">{currentLandmark.note}</div>
+                  )}
+                </div>
+              ) : null}
+            </div>
+
+            {/* Next episode */}
+            <div
+              className="rounded-2xl p-4 flex flex-col gap-2 cursor-pointer active:scale-95 transition-transform"
+              style={{ background: "rgba(16,185,129,0.04)", border: "1px solid rgba(16,185,129,0.12)" }}
+              onClick={() => nextArc && navigate(`/arc/${nextArc.id}`)}
+            >
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs text-emerald-400/50 font-bold tracking-widest uppercase">Next</span>
+              </div>
+              <div>
+                <div className="text-emerald-400 font-black text-2xl leading-none">Ep {nextEpisode}</div>
+                {nextArc && <div className="text-white/35 text-xs mt-1 truncate">{nextArc.name}</div>}
+              </div>
+              {nextLandmark ? (
+                <div className="mt-auto pt-1 border-t" style={{ borderColor: "rgba(16,185,129,0.08)" }}>
+                  <div className="text-white/70 text-xs leading-snug line-clamp-2">{nextLandmark.title}</div>
+                  {nextLandmark.note && (
+                    <div className="text-emerald-400/50 text-xs mt-1 truncate">{nextLandmark.note}</div>
+                  )}
+                </div>
+              ) : null}
+            </div>
+          </div>
+        )}
+
         <div className="mt-4">
           {/* Hide watched toggle */}
           <div className="flex justify-end mb-4">
@@ -102,7 +170,7 @@ export default function HomePage() {
                   : { color: "rgba(255,255,255,0.4)", borderColor: "rgba(255,255,255,0.1)" }
               }
             >
-              {hideWatched ? <><Eye className="h-4 w-4"/>Show</> : <><EyeOff className="h-4 w-4"/>Hide</>}
+              {hideWatched ? <><Eye className="h-4 w-4" />Show</> : <><EyeOff className="h-5 w-4" />Hide</>}
             </button>
           </div>
 
