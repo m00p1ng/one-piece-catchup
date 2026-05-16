@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, Eye, EyeOff } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import { findSaga } from "../data/arcs";
 import { useProgress } from "../hooks/useProgress";
-import ArcCard from "../components/ArcCard";
+import ArcList from "../components/ArcList";
+import HideWatchedButton from "../components/HideWatchedButton";
 import ProgressBar from "../components/ProgressBar";
 
 export default function SagaPage() {
   const { sagaId } = useParams<{ sagaId: string }>();
   const saga = findSaga(sagaId ?? "");
-  const { isArcComplete, isArcInProgress, getArcEpisodeProgress } = useProgress();
+  const { isArcComplete } = useProgress();
   const [hideWatched, setHideWatched] = useState(() => localStorage.getItem("hideWatched") === "true");
 
   if (!saga) {
@@ -117,60 +118,15 @@ export default function SagaPage() {
 
         {/* Arc list */}
         <div className="flex justify-end mb-4">
-          <button
-            onClick={() => setHideWatched((v) => { localStorage.setItem("hideWatched", String(!v)); return !v; })}
-            className="flex items-center gap-2 text-xs px-3 py-1.5 rounded-full border transition-all duration-150 font-semibold"
-            style={
-              hideWatched
-                ? { background: "rgba(251,191,36,0.12)", color: "#fbbf24", borderColor: "rgba(251,191,36,0.3)" }
-                : { color: "rgba(255,255,255,0.4)", borderColor: "rgba(255,255,255,0.1)" }
-            }
-          >
-            {hideWatched ? <><Eye className="h-4 w-4"/>Show</> : <><EyeOff className="h-4 w-4"/>Hide</>}
-          </button>
+          <HideWatchedButton
+            hideWatched={hideWatched}
+            onToggle={() => setHideWatched((value) => {
+              localStorage.setItem("hideWatched", String(!value));
+              return !value;
+            })}
+          />
         </div>
-        <div className="grid gap-3">
-          <AnimatePresence initial={false}>
-            {saga.arcs.filter((a) => !hideWatched || !isArcComplete(a)).length === 0 ? (
-              <motion.p
-                key="empty"
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.2 }}
-                className="text-sm text-white/25 italic"
-              >
-                All arcs watched
-              </motion.p>
-            ) : (
-              saga.arcs
-                .filter((a) => !hideWatched || !isArcComplete(a))
-                .map((arc, i) => {
-                  const { watched, total } = getArcEpisodeProgress(arc);
-                  const progressPct = total === 0 ? 0 : Math.round((watched / total) * 100);
-                  return (
-                    <motion.div
-                      key={arc.id}
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.25, ease: "easeInOut", delay: i * 0.03 }}
-                      style={{ overflow: "hidden" }}
-                    >
-                      <ArcCard
-                        arc={arc}
-                        sagaColor={saga.color}
-                        isComplete={isArcComplete(arc)}
-                        isInProgress={isArcInProgress(arc)}
-                        progressPct={progressPct}
-                        index={i}
-                      />
-                    </motion.div>
-                  );
-                })
-            )}
-          </AnimatePresence>
-        </div>
+        <ArcList arcs={saga.arcs} sagaColor={saga.color} hideWatched={hideWatched} />
       </main>
     </div>
   );

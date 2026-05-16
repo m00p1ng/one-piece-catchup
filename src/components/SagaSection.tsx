@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import ArcCard from "./ArcCard";
+import ArcList from "./ArcList";
 import type { Saga } from "../types";
 import { ChevronDown, Check } from "lucide-react";
 import { useProgress } from "../hooks/useProgress";
@@ -13,10 +13,9 @@ interface SagaSectionProps {
 }
 
 export default function SagaSection({ saga, hideWatched = false, open, onOpenChange }: SagaSectionProps) {
-  const { isArcComplete, isArcInProgress, getArcEpisodeProgress } = useProgress();
+  const { isArcComplete } = useProgress();
 
   const completedCount = saga.arcs.filter((a) => isArcComplete(a)).length;
-  const visibleArcs = hideWatched ? saga.arcs.filter((a) => !isArcComplete(a)) : saga.arcs;
   const isAllDone = completedCount === saga.arcs.length;
 
   return (
@@ -133,47 +132,12 @@ export default function SagaSection({ saga, hideWatched = false, open, onOpenCha
               {saga.description}
             </p>
 
-            {/* Arc cards */}
-            <div className="grid gap-3">
-              <AnimatePresence initial={false}>
-                {visibleArcs.length === 0 ? (
-                  <motion.p
-                    key="empty"
-                    initial={{ opacity: 0, y: -8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
-                    transition={{ duration: 0.2 }}
-                    className="text-sm text-white/25 pl-16 italic"
-                  >
-                    All arcs watched
-                  </motion.p>
-                ) : (
-                  visibleArcs.map((arc, i) => {
-                    const { watched, total } = getArcEpisodeProgress(arc);
-                    const progressPct = total === 0 ? 0 : Math.round((watched / total) * 100);
-                    return (
-                      <motion.div
-                        key={arc.id}
-                        initial={{ opacity: 0, height: 0, marginBottom: 0 }}
-                        animate={{ opacity: 1, height: "auto", marginBottom: 0 }}
-                        exit={{ opacity: 0, height: 0, marginBottom: 0 }}
-                        transition={{ duration: 0.25, ease: "easeInOut", delay: i * 0.03 }}
-                        style={{ overflow: "hidden" }}
-                      >
-                        <ArcCard
-                          arc={arc}
-                          sagaColor={saga.color}
-                          isComplete={isArcComplete(arc)}
-                          isInProgress={isArcInProgress(arc)}
-                          progressPct={progressPct}
-                          index={i}
-                        />
-                      </motion.div>
-                    );
-                  })
-                )}
-              </AnimatePresence>
-            </div>
+            <ArcList
+              arcs={saga.arcs}
+              sagaColor={saga.color}
+              hideWatched={hideWatched}
+              emptyClassName="text-sm text-white/25 pl-16 italic"
+            />
           </motion.div>
         )}
       </AnimatePresence>

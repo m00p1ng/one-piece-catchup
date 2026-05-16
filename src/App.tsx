@@ -5,9 +5,13 @@ import SagaPage from "./pages/SagaPage";
 import WaveBackground from "./components/WaveBackground";
 import ScrollToTop from "./components/ScrollToTop";
 
-export default function App() {
+interface AppProps {
+  basename?: string;
+}
+
+export default function App({ basename = import.meta.env.BASE_URL }: AppProps) {
   return (
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
+    <BrowserRouter basename={basename}>
       <ScrollToTop />
       <WaveBackground />
       <Routes>
