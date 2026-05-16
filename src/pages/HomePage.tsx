@@ -64,7 +64,8 @@ export default function HomePage() {
       let activeId: string | null = null;
       for (const saga of sagas) {
         const el = document.getElementById(`saga-${saga.id}`);
-        if (el && el.getBoundingClientRect().top < 0) {
+        if (!el) continue;
+        if (el.getBoundingClientRect().top < 0) {
           activeId = saga.id;
         } else {
           break;
@@ -93,8 +94,8 @@ export default function HomePage() {
 
   const activeSaga = showHeader
     ? (() => {
-      const s = sagas.find((s) => s.id === activeSagaId) ?? sagas[0] ?? null;
-      return s && openSagas[s.id] ? s : null;
+      const visibleSagas = sagas.filter((s) => !hideWatched || s.arcs.some((a) => !isArcComplete(a)));
+      return visibleSagas.find((s) => s.id === activeSagaId) ?? null;
     })()
     : null;
 

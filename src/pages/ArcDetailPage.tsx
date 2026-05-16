@@ -129,7 +129,7 @@ export default function ArcDetailPage() {
 
   return (
     <div className="min-h-screen text-white">
-      <main className="max-w-2xl mx-auto px-4 pb-24 " style={{ backdropFilter: "blur(8px)" }}>
+      <main className="max-w-2xl mx-auto px-4 pb-24 " style={{ backdropFilter: "blur(8px)", paddingTop: "env(safe-area-inset-top)" }}>
         {/* Arc header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
