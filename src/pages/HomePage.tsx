@@ -14,7 +14,7 @@ export default function HomePage() {
 
   const allArcs = useMemo(() => sagas.flatMap((s) => s.arcs), []);
   const totalArcs = allArcs.length;
-  const completedArcs = useMemo(() => allArcs.filter((a) => isArcComplete(a)).length, [allArcs, currentEpisode]);
+  const completedArcs = useMemo(() => allArcs.filter((a) => isArcComplete(a)).length, [allArcs, isArcComplete]);
   const totalEps = useMemo(() => allArcs.reduce((sum, a) => sum + a.count, 0), [allArcs]);
   const currentArc = useMemo(() => allArcs.find((a) => a.startEp <= currentEpisode && a.endEp >= currentEpisode) ?? null, [allArcs, currentEpisode]);
 
@@ -82,8 +82,7 @@ export default function HomePage() {
       completedArcs > 0
         ? (sagas.find((s) => s.arcs.some((a) => !isArcComplete(a)))?.id ?? null)
         : null,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [completedArcs, isArcComplete]
   );
 
   useEffect(() => {

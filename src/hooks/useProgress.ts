@@ -1,13 +1,19 @@
-import { useState, useEffect } from "react";
+import { useCallback, useState, useEffect } from "react";
 import type { Arc } from "../types";
+import {
+  getArcEpisodeProgress as getArcEpisodeProgressForEpisode,
+  getStoredEpisode,
+  isArcComplete as isArcCompleteForEpisode,
+  isArcInProgress as isArcInProgressForEpisode,
+  isEpisodeWatched as isEpisodeWatchedForEpisode,
+} from "../utils/progress";
 
 const CURRENT_EP_KEY = "one-piece-current-ep";
 
 export function useProgress() {
   const [currentEpisode, setCurrentEpisodeState] = useState<number>(() => {
     try {
-      const stored = localStorage.getItem(CURRENT_EP_KEY);
-      return stored ? parseInt(stored, 10) : 0;
+      return getStoredEpisode(localStorage.getItem(CURRENT_EP_KEY));
     } catch {
       return 0;
     }
@@ -17,27 +23,25 @@ export function useProgress() {
     localStorage.setItem(CURRENT_EP_KEY, String(currentEpisode));
   }, [currentEpisode]);
 
-  function setCurrentEpisode(ep: number) {
+  const setCurrentEpisode = useCallback((ep: number) => {
     setCurrentEpisodeState(ep);
-  }
+  }, []);
 
-  function isEpisodeWatched(epNum: number): boolean {
-    return epNum < currentEpisode;
-  }
+  const isEpisodeWatched = useCallback((epNum: number): boolean => {
+    return isEpisodeWatchedForEpisode(currentEpisode, epNum);
+  }, [currentEpisode]);
 
-  function isArcComplete(arc: Arc): boolean {
-    return arc.endEp <= currentEpisode;
-  }
+  const isArcComplete = useCallback((arc: Arc): boolean => {
+    return isArcCompleteForEpisode(currentEpisode, arc);
+  }, [currentEpisode]);
 
-  function isArcInProgress(arc: Arc): boolean {
-    return arc.startEp <= currentEpisode && arc.endEp > currentEpisode;
-  }
+  const isArcInProgress = useCallback((arc: Arc): boolean => {
+    return isArcInProgressForEpisode(currentEpisode, arc);
+  }, [currentEpisode]);
 
-  function getArcEpisodeProgress(arc: Arc): { watched: number; total: number } {
-    const total = arc.endEp - arc.startEp + 1;
-    const watched = Math.min(Math.max(currentEpisode - arc.startEp + 1, 0), total);
-    return { watched, total };
-  }
+  const getArcEpisodeProgress = useCallback((arc: Arc): { watched: number; total: number } => {
+    return getArcEpisodeProgressForEpisode(currentEpisode, arc);
+  }, [currentEpisode]);
 
   return {
     currentEpisode,

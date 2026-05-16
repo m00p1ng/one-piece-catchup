@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import cn from "classnames";
@@ -16,9 +16,11 @@ interface EpisodeRowProps {
   thumbnailEmoji: string;
   watched: boolean;
   isCurrent: boolean;
-  onSetCurrent: () => void;
+  onSetCurrent: (ep: number) => void;
   index: number;
 }
+
+const UNDO_DURATION = 5000;
 
 export default function ArcDetailPage() {
   const { arcId } = useParams<{ arcId: string }>();
@@ -34,7 +36,6 @@ export default function ArcDetailPage() {
   const [showOnlyNotes, setShowOnlyNotes] = useState(false);
   const [hideWatched, setHideWatched] = useState(() => localStorage.getItem("hideWatched") === "true");
 
-  const UNDO_DURATION = 5000;
   const [undoPrevEp, setUndoPrevEp] = useState<number | null>(null);
   const [undoProgress, setUndoProgress] = useState(100);
   const undoTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -42,7 +43,7 @@ export default function ArcDetailPage() {
 
   useEffect(() => () => { if (undoTimerRef.current) clearInterval(undoTimerRef.current); }, []);
 
-  function showUndoToast(prevEp: number) {
+  const showUndoToast = useCallback((prevEp: number) => {
     if (undoTimerRef.current) clearInterval(undoTimerRef.current);
     undoStartRef.current = Date.now();
     setUndoPrevEp(prevEp);
@@ -55,15 +56,15 @@ export default function ArcDetailPage() {
         setUndoPrevEp(null);
       }
     }, 50);
-  }
+  }, []);
 
-  function handleUndoClick() {
+  const handleUndoClick = useCallback(() => {
     if (undoTimerRef.current) clearInterval(undoTimerRef.current);
     if (undoPrevEp !== null) setCurrentEpisode(undoPrevEp);
     setUndoPrevEp(null);
-  }
+  }, [setCurrentEpisode, undoPrevEp]);
 
-  function handleSetCurrentEpisode(ep: number) {
+  const handleSetCurrentEpisode = useCallback((ep: number) => {
     const isFirstSet = currentEpisode === 0;
     if (undoPrevEp !== null) {
       showUndoToast(undoPrevEp);
@@ -77,7 +78,7 @@ export default function ArcDetailPage() {
       }
     }
     setCurrentEpisode(ep);
-  }
+  }, [currentEpisode, setCurrentEpisode, showUndoToast, undoPrevEp]);
 
   useEffect(() => {
     if (!currentEpisode) return;
@@ -86,7 +87,7 @@ export default function ArcDetailPage() {
       if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
     }, 400);
     return () => clearTimeout(timer);
-  }, []);
+  }, [currentEpisode]);
 
   const arc = result?.arc;
   const saga = result?.saga;
@@ -95,15 +96,12 @@ export default function ArcDetailPage() {
   const { watched, total } = arc ? getArcEpisodeProgress(arc) : { watched: 0, total: 0 };
   const pct = total === 0 ? 0 : Math.round((watched / total) * 100);
 
-  const episodes = useMemo(() => {
-    if (!arc) return [];
-    const list: { ep: number; landmark: Landmark | undefined }[] = [];
+  const episodes: { ep: number; landmark: Landmark | undefined }[] = [];
+  if (arc) {
     for (let i = arc.startEp; i <= arc.endEp; i++) {
-      const landmark = arc.landmarks?.find((l) => l.ep === i);
-      list.push({ ep: i, landmark });
+      episodes.push({ ep: i, landmark: arc.landmarks?.find((l) => l.ep === i) });
     }
-    return list;
-  }, [arc]);
+  }
 
   if (!result || !arc || !saga) {
     return (
@@ -358,7 +356,7 @@ export default function ArcDetailPage() {
                       thumbnailEmoji={arc.thumbnailEmoji}
                       watched={isEpisodeWatched(ep)}
                       isCurrent={ep === currentEpisode}
-                      onSetCurrent={() => handleSetCurrentEpisode(ep)}
+                      onSetCurrent={handleSetCurrentEpisode}
                       index={i}
                     />
                   </motion.div>
@@ -442,6 +440,7 @@ export default function ArcDetailPage() {
 
 function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, isCurrent, onSetCurrent, index }: EpisodeRowProps) {
   const [titleExpanded, setTitleExpanded] = useState(false);
+  const handleClick = useCallback(() => onSetCurrent(ep), [ep, onSetCurrent]);
 
   return (
     <motion.div
@@ -449,7 +448,7 @@ function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, isCurren
       initial={{ opacity: 0, x: -10 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.2, delay: Math.min(index * 0.008, 0.3) }}
-      onClick={onSetCurrent}
+      onClick={handleClick}
       className={cn(
         "flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer transition-all duration-150 group",
         isCurrent
