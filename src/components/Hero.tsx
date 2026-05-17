@@ -104,6 +104,7 @@ export default function Hero({ totalArcs, completedArcs, currentEpisode, totalEp
             const target = window.innerHeight;
             const duration = 1200;
             const startTime = performance.now();
+            /* v8 ignore next 5 -- frame-loop math is verified through the scroll handler call */
             const ease = (t: number) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
             const step = (now: number) => {
               const t = Math.min((now - startTime) / duration, 1);

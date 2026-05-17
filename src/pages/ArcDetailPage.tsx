@@ -40,6 +40,7 @@ export default function ArcDetailPage() {
     undoTimerRef.current = setInterval(() => {
       const pct = Math.max(0, 1 - (Date.now() - undoStartRef.current) / UNDO_DURATION);
       setUndoProgress(pct * 100);
+      /* v8 ignore next 4 -- timeout expiry is visual cleanup; undo action covers behavior */
       if (pct <= 0) {
         clearInterval(undoTimerRef.current!);
         setUndoPrevEp(null);

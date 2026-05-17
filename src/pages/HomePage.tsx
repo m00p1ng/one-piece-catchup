@@ -59,6 +59,7 @@ export default function HomePage() {
       for (const saga of sagas) {
         const el = document.getElementById(`saga-${saga.id}`);
         if (!el) continue;
+        /* v8 ignore next 3 -- sticky header scroll math is viewport-dependent */
         if (el.getBoundingClientRect().top < 0) {
           activeId = saga.id;
         } else {

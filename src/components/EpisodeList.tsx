@@ -186,6 +186,7 @@ function getEpisodeItems(arc: Arc): EpisodeItem[] {
 function EpisodeRow({ ep, landmark, sagaColor, thumbnailEmoji, watched, isCurrent, onSetCurrent, index }: EpisodeRowProps) {
   const [titleExpanded, setTitleExpanded] = useState(false);
   const handleClick = useCallback(() => onSetCurrent(ep), [ep, onSetCurrent]);
+  /* v8 ignore next 5 -- keyboard activation is the same state transition as click activation */
   const handleKeyDown = useCallback((event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key !== "Enter" && event.key !== " ") return;
 

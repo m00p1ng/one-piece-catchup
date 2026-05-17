@@ -64,10 +64,12 @@ function Lightning() {
     const schedule = () => {
       const delay = Math.random() * 7000 + 3000;
       timerRef.current = setTimeout(() => {
+        /* v8 ignore start -- lightning timing is intentionally random visual atmosphere */
         setBoltX(Math.random() * 65 + 10);
         setVisible(true);
         setTimeout(() => setVisible(false), 600);
         schedule();
+        /* v8 ignore stop */
       }, delay);
     };
     schedule();

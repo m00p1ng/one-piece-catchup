@@ -9,10 +9,17 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       include: ["src/**/*.{ts,tsx}"],
-      exclude: ["src/**/*.test.{ts,tsx}", "src/**/*.browser.test.{ts,tsx}", "src/**/*.d.ts"],
+      exclude: ["src/main.tsx", "src/**/*.test.{ts,tsx}", "src/**/*.browser.test.{ts,tsx}", "src/**/*.d.ts"],
+      thresholds: {
+        statements: 98,
+        functions: 98,
+        lines: 98,
+        branches: 90,
+      },
     },
     projects: [
       {
+        extends: true,
         test: {
           name: "unit",
           environment: "node",
@@ -20,9 +27,11 @@ export default defineConfig({
         },
       },
       {
+        extends: true,
         test: {
           name: "browser",
           include: ["src/**/*.browser.test.{ts,tsx}"],
+          setupFiles: ["./src/test/browser-setup.ts"],
           browser: {
             enabled: true,
             headless: true,
