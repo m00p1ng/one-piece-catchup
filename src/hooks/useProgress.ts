@@ -1,5 +1,6 @@
-import { useCallback, useState, useEffect } from "react";
+import { useCallback } from "react";
 import type { Arc } from "../types";
+import { useStoredState } from "./useStoredState";
 import {
   getArcEpisodeProgress as getArcEpisodeProgressForEpisode,
   getStoredEpisode,
@@ -11,21 +12,9 @@ import {
 const CURRENT_EP_KEY = "one-piece-current-ep";
 
 export function useProgress() {
-  const [currentEpisode, setCurrentEpisodeState] = useState<number>(() => {
-    try {
-      return getStoredEpisode(localStorage.getItem(CURRENT_EP_KEY));
-    } catch {
-      return 0;
-    }
+  const [currentEpisode, setCurrentEpisode] = useStoredState(CURRENT_EP_KEY, 0, {
+    parse: getStoredEpisode,
   });
-
-  useEffect(() => {
-    localStorage.setItem(CURRENT_EP_KEY, String(currentEpisode));
-  }, [currentEpisode]);
-
-  const setCurrentEpisode = useCallback((ep: number) => {
-    setCurrentEpisodeState(ep);
-  }, []);
 
   const isEpisodeWatched = useCallback((epNum: number): boolean => {
     return isEpisodeWatchedForEpisode(currentEpisode, epNum);

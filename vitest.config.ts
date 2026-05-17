@@ -6,6 +6,11 @@ import { playwright } from "@vitest/browser-playwright";
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   test: {
+    coverage: {
+      provider: "v8",
+      include: ["src/**/*.{ts,tsx}"],
+      exclude: ["src/**/*.test.{ts,tsx}", "src/**/*.browser.test.{ts,tsx}", "src/**/*.d.ts"],
+    },
     projects: [
       {
         test: {

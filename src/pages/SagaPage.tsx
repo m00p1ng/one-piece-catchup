@@ -1,8 +1,8 @@
-import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft } from "lucide-react";
 import { findSaga } from "../data/arcs";
+import { useHideWatched } from "../hooks/useHideWatched";
 import { useProgress } from "../hooks/useProgress";
 import ArcList from "../components/ArcList";
 import HideWatchedButton from "../components/HideWatchedButton";
@@ -12,7 +12,7 @@ export default function SagaPage() {
   const { sagaId } = useParams<{ sagaId: string }>();
   const saga = findSaga(sagaId ?? "");
   const { isArcComplete } = useProgress();
-  const [hideWatched, setHideWatched] = useState(() => localStorage.getItem("hideWatched") === "true");
+  const [hideWatched, setHideWatched] = useHideWatched();
 
   if (!saga) {
     return (
@@ -120,10 +120,7 @@ export default function SagaPage() {
         <div className="flex justify-end mb-4">
           <HideWatchedButton
             hideWatched={hideWatched}
-            onToggle={() => setHideWatched((value) => {
-              localStorage.setItem("hideWatched", String(!value));
-              return !value;
-            })}
+            onToggle={() => setHideWatched((value) => !value)}
           />
         </div>
         <ArcList arcs={saga.arcs} sagaColor={saga.color} hideWatched={hideWatched} />

@@ -9,7 +9,9 @@
     "typecheck": "tsc -b",
     "lint": "eslint .",
     "test": "vitest run --config vitest.config.ts --project unit",
+    "test:coverage": "vitest run --config vitest.config.ts --project unit --project browser --coverage",
     "test:browser": "vitest run --config vitest.config.ts --project browser",
+    "test:browser-mode": "vitest run --config vitest.config.ts --project browser",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -30,6 +32,7 @@
     "@typescript-eslint/parser": "^8.58.2",
     "@vitejs/plugin-react": "^6.0.1",
     "@vitest/browser-playwright": "^4.1.6",
+    "@vitest/coverage-v8": "^4.1.6",
     "eslint": "^9.39.4",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",

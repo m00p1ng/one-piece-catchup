@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, Check } from "lucide-react";
 import { findArc, findArcByEp } from "../data/arcs";
+import { useHideWatched } from "../hooks/useHideWatched";
 import { useProgress } from "../hooks/useProgress";
 import ArcThumbnail from "../components/ArcThumbnail";
 import EpisodeList from "../components/EpisodeList";
@@ -21,7 +22,7 @@ export default function ArcDetailPage() {
     getArcEpisodeProgress,
   } = useProgress();
 
-  const [hideWatched, setHideWatched] = useState(() => localStorage.getItem("hideWatched") === "true");
+  const [hideWatched, setHideWatched] = useHideWatched();
 
   const [undoPrevEp, setUndoPrevEp] = useState<number | null>(null);
   const [undoProgress, setUndoProgress] = useState(100);
@@ -241,10 +242,7 @@ export default function ArcDetailPage() {
           total={total}
           isEpisodeWatched={isEpisodeWatched}
           hideWatched={hideWatched}
-          onHideWatchedChange={(value) => {
-            localStorage.setItem("hideWatched", String(value));
-            setHideWatched(value);
-          }}
+          onHideWatchedChange={setHideWatched}
           onSetCurrentEpisode={handleSetCurrentEpisode}
         />
       </main>

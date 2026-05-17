@@ -2,15 +2,17 @@ import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { sagas } from "../data/arcs";
+import { useHideWatched } from "../hooks/useHideWatched";
 import { useProgress } from "../hooks/useProgress";
 import Hero from "../components/Hero";
 import SagaSection from "../components/SagaSection";
-import { Eye, EyeOff } from "lucide-react";
+import HideWatchedButton from "../components/HideWatchedButton";
+import EpisodePreviewCard from "../components/EpisodePreviewCard";
 
 export default function HomePage() {
   const navigate = useNavigate();
   const { currentEpisode, isArcComplete } = useProgress();
-  const [hideWatched, setHideWatched] = useState(() => localStorage.getItem("hideWatched") === "true");
+  const [hideWatched, setHideWatched] = useHideWatched();
 
   const allArcs = useMemo(() => sagas.flatMap((s) => s.arcs), []);
   const totalArcs = allArcs.length;
@@ -110,76 +112,34 @@ export default function HomePage() {
       <main className="max-w-2xl mx-auto px-4 pb-32 " style={{ backdropFilter: "blur(8px)" }}>
         {currentEpisode > 0 && (
           <div className="mt-6 mb-2 grid grid-cols-2 gap-3">
-            {/* Current episode */}
-            <div
-              className="rounded-2xl p-4 flex flex-col cursor-pointer active:scale-95 transition-transform"
-              style={{ background: "rgba(251,191,36,0.05)", border: "1px solid rgba(251,191,36,0.12)" }}
+            <EpisodePreviewCard
+              label="Now"
+              episode={currentEpisode}
+              arc={currentArc}
+              landmark={currentLandmark}
+              accentColor="#fbbf24"
+              backgroundColor="rgba(251,191,36,0.05)"
+              borderColor="rgba(251,191,36,0.12)"
               onClick={() => currentArc && navigate(`/arc/${currentArc.id}`)}
-            >
-              <div className="flex-1 flex flex-col gap-2">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-xs text-amber-400/50 font-bold tracking-widest uppercase">Now</span>
-                </div>
-                <div>
-                  <div className="text-amber-400 font-black text-2xl leading-none">Ep {currentEpisode}</div>
-                  {currentArc && <div className="text-white/35 text-xs mt-1 truncate">{currentArc.name}</div>}
-                </div>
-              </div>
-              <div className="h-16 pt-2 mt-2 border-t overflow-hidden" style={{ borderColor: "rgba(251,191,36,0.08)" }}>
-                {currentLandmark && (
-                  <>
-                    <div className="text-white/70 text-xs leading-snug line-clamp-2">{currentLandmark.title}</div>
-                    {currentLandmark.note && (
-                      <div className="text-amber-400/50 text-xs mt-1 truncate">{currentLandmark.note}</div>
-                    )}
-                  </>
-                )}
-              </div>
-            </div>
+            />
 
-            {/* Next episode */}
-            <div
-              className="rounded-2xl p-4 flex flex-col cursor-pointer active:scale-95 transition-transform"
-              style={{ background: "rgba(16,185,129,0.04)", border: "1px solid rgba(16,185,129,0.12)" }}
+            <EpisodePreviewCard
+              label="Next"
+              episode={nextEpisode}
+              arc={nextArc}
+              landmark={nextLandmark}
+              accentColor="#10b981"
+              backgroundColor="rgba(16,185,129,0.04)"
+              borderColor="rgba(16,185,129,0.12)"
               onClick={() => nextArc && navigate(`/arc/${nextArc.id}`)}
-            >
-              <div className="flex-1 flex flex-col gap-2">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-xs text-emerald-400/50 font-bold tracking-widest uppercase">Next</span>
-                </div>
-                <div>
-                  <div className="text-emerald-400 font-black text-2xl leading-none">Ep {nextEpisode}</div>
-                  {nextArc && <div className="text-white/35 text-xs mt-1 truncate">{nextArc.name}</div>}
-                </div>
-              </div>
-              <div className="h-16 pt-2 mt-2 border-t overflow-hidden" style={{ borderColor: "rgba(16,185,129,0.08)" }}>
-                {nextLandmark && (
-                  <>
-                    <div className="text-white/70 text-xs leading-snug line-clamp-2">{nextLandmark.title}</div>
-                    {nextLandmark.note && (
-                      <div className="text-emerald-400/50 text-xs mt-1 truncate">{nextLandmark.note}</div>
-                    )}
-                  </>
-                )}
-              </div>
-            </div>
+            />
           </div>
         )}
 
         <div className="mt-4">
           {/* Hide watched toggle */}
           <div className="flex justify-end mb-4">
-            <button
-              onClick={() => setHideWatched((v) => { localStorage.setItem("hideWatched", String(!v)); return !v; })}
-              className="flex items-center gap-2 text-xs px-3 py-1.5 rounded-full border transition-all duration-150 font-semibold"
-              style={
-                hideWatched
-                  ? { background: "rgba(251,191,36,0.12)", color: "#fbbf24", borderColor: "rgba(251,191,36,0.3)" }
-                  : { color: "rgba(255,255,255,0.4)", borderColor: "rgba(255,255,255,0.1)" }
-              }
-            >
-              {hideWatched ? <><Eye className="h-4 w-4" />Show</> : <><EyeOff className="h-5 w-4" />Hide</>}
-            </button>
+            <HideWatchedButton hideWatched={hideWatched} onToggle={() => setHideWatched((value) => !value)} />
           </div>
 
           <AnimatePresence initial={false}>
