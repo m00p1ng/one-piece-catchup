@@ -7,6 +7,7 @@ import { useProgress } from "../hooks/useProgress";
 import ArcList from "../components/ArcList";
 import HideWatchedButton from "../components/HideWatchedButton";
 import ProgressBar from "../components/ProgressBar";
+import NotFoundState from "../components/NotFoundState";
 
 export default function SagaPage() {
   const { sagaId } = useParams<{ sagaId: string }>();
@@ -15,18 +16,7 @@ export default function SagaPage() {
   const [hideWatched, setHideWatched] = useHideWatched();
 
   if (!saga) {
-    return (
-      <div className="min-h-screen flex items-center justify-center text-white">
-        <div className="text-center">
-          <div className="text-4xl mb-4">🌊</div>
-          <p className="text-white/50">Saga not found</p>
-          <Link to="/" className="mt-4 inline-block text-amber-400 hover:underline">
-            <ChevronLeft className="w-4 h-4 inline" />
-            Back to home
-          </Link>
-        </div>
-      </div>
-    );
+    return <NotFoundState message="Saga not found" />;
   }
 
   const completedCount = saga.arcs.filter((a) => isArcComplete(a)).length;
